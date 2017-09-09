@@ -1,0 +1,80 @@
+﻿%%
+%% latex-header.tex begin
+%%
+
+\usepackage{fix-cm}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{anyfontsize}
+\usepackage{amssymb}
+\usepackage{newunicodechar}
+\usepackage{fancyhdr}
+\usepackage{footnote}
+\usepackage{listings}
+\usepackage{accsupp}
+\usepackage{MnSymbol}
+\usepackage{textcomp}
+\usepackage{upquote}
+\usepackage{etoolbox}
+
+\setmainfont[Ligatures={TeX, Common}]{TeX Gyre Pagella}
+\setmonofont[Scale=MatchLowercase,Ligatures={NoCommon}]{DejaVu Sans Mono}
+%\setromanfont{Georgia}
+%\setsansfont{DejaVu Sans}
+
+\newfontfamily{\cjkfont}{WenQuanYi Zen Hei}[]
+\newfontfamily{\devanagarifont}{Lohit Devanagari}[]
+\newfontfamily{\tamilfont}{Lohit Tamil}[]
+\newfontfamily{\cyrilicfont}{CMU Serif}
+
+%% These unfortunately break too many things. PDF will have to be without
+%% contributors' native names.
+% \ifxetex
+%   \usepackage{xeCJK}
+%   \setCJKmainfont{WenQuanYi Zen Hei}
+%   \setCJKmonofont{WenQuanYi Zen Hei Mono}
+% \else
+%   %% Adding senolig breaks compilation in the CJK support.
+%   %\usepackage{selnolig}
+%   \usepackage{luatexja-fontspec}
+%   \setmainjfont{WenQuanYi Zen Hei}
+% \fi
+
+\pagestyle{fancy}
+\chead{\raisebox{\baselineskip}{\includegraphics[width=1.5cm,keepaspectratio]{./docs/log4cplus}}}
+\setlength{\headheight}{47.0pt}
+\addtolength{\topmargin}{-4\baselineskip}
+
+%\title{}
+%\author[The author]{Václav Zeman}
+%\institute{}
+%\date{\today}
+
+\defaultfontfeatures{Ligatures={TeX, Common}}
+\setmainfont{TeX Gyre Pagella}
+\setmonofont[Scale=MatchLowercase,Ligatures={NoCommon}]{DejaVu Sans Mono}
+
+\AtBeginEnvironment{quote}{\slshape}
+
+\newunicodechar{⊆}{$\subseteq$}
+\newunicodechar{↔}{$\leftrightarrow$}
+
+\newcommand{\noncopy}[1]{%
+    \BeginAccSupp{method=escape,ActualText={}}%
+    #1%
+    \EndAccSupp{}%
+}
+
+\lstset{breaklines=true,
+  basicstyle=\ttfamily,
+  upquote=true,
+  literate={`}{{\BeginAccSupp{method=plain,ActualText=`}‵\EndAccSupp{}}}1
+  {"}{{\BeginAccSupp{method=plain,ActualText="}"\EndAccSupp{}}}1
+  {'}{{\BeginAccSupp{method=plain,ActualText='}'\EndAccSupp{}}}1,
+  showstringspaces=false,
+  numbers=left, numberstyle=\scriptsize\noncopy,
+  prebreak={\raisebox{0ex}[0ex][0ex]{\ensuremath{\noncopy{\rhookswarrow}}}}}
+
+%%
+%% latex-header.tex end
+%%

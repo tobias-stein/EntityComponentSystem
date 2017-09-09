@@ -1,0 +1,174 @@
+/*
+	Author : Tobias Stein
+	Date   : 9th July, 2016
+	File   : EventHandler.h
+
+	EventHandler class.
+
+	All Rights Reserved. (c) Copyright 2016.
+*/
+
+#ifndef __EVENT_HANDLER_H__
+#define __EVENT_HANDLER_H__
+
+
+#define ECS_EVENT_MEMORY_CAPACITY 4096 // 4Mb
+
+#include <assert.h>
+#include <unordered_map>
+#include <vector>
+
+#include "ECS.h"
+#include "Memory/ECSMM.h"
+#include "Log/ILogSubscriber.h"
+#include "Memory/Allocator/LinearAllocator.h"
+
+#include "IEvent.h"
+#include "EventDispatcher.h"
+
+namespace ECS { namespace Event {
+
+	class ECS_API EventHandler : protected Log::ILogSubscriber, protected Memory::Internal::GlobalMemoryUser
+	{
+		// allow IEventListener access private methods for Add/Remove callbacks
+		friend class IEventListener;
+	
+		using EventDispatcherMap = std::unordered_map<EventTypeId, Internal::IEventDispatcher*>;
+	
+		using EventStorage = std::vector<IEvent*>;
+	
+		using EventMemoryAllocator = Memory::Allocator::LinearAllocator;
+
+		static const size_t EVENT_MEMORY_CAPACITY = ECS_EVENT_MEMORY_CAPACITY;
+	
+	
+	private:
+	
+		EventHandler();
+		EventHandler(const EventHandler&);
+		EventHandler& operator=(EventHandler&);
+	
+		EventDispatcherMap			m_EventDispatcherMap;
+		
+	
+		EventMemoryAllocator*		m_EventMemoryAllocator;
+
+		// Holds a list of all sent events since last EventHandler::DispatchEvents() call
+		EventStorage				m_EventStorage;
+	
+	
+		// Add event callback
+		template<class E>
+		inline void AddEventCallback(Internal::IEventDelegate* const eventDelegate)
+		{
+			EventTypeId tid = E::STATIC_EVENT_TYPE_ID;
+	
+			EventDispatcherMap::const_iterator iter = this->m_EventDispatcherMap.find(tid);
+			if (iter == this->m_EventDispatcherMap.end())
+			{
+				std::pair<EventTypeId, Internal::IEventDispatcher*> kvp(tid, new Internal::EventDispatcher<E>());
+	
+				kvp.second->AddEventCallback(eventDelegate);
+	
+				this->m_EventDispatcherMap.insert(kvp);
+			}
+			else
+			{
+				this->m_EventDispatcherMap[tid]->AddEventCallback(eventDelegate);
+			}
+	
+		}
+	
+		// Remove event callback
+		template<class E>
+		static inline void RemoveEventCallback(Internal::EventDelegateId eventDelegateId)
+		{
+			EventTypeId tid = E::STATIC_EVENT_TYPE_ID;
+	
+			EventDispatcherMap::const_iterator iter = this->m_EventDispatcherMap.find(tid);
+			if (iter != this->m_EventDispatcherMap.end())
+			{
+				this->m_EventDispatcherMap[tid]->RemoveEventCallback(eventDelegateId);
+			}
+		}
+	
+	
+	
+	public:
+	
+		~EventHandler();
+	
+		
+		static inline EventHandler& GetInstance()
+		{
+			// Singleton
+			static EventHandler INSTANCE;
+			return INSTANCE;
+		}
+	
+		// clear buffer, that is, simply reset index buffer
+		inline void ClearEventBuffer()
+		{
+			//this->m_EventMemoryBufferIndex = this->m_EventMemoryBuffer;
+			this->m_EventMemoryAllocator->clear();
+			this->m_EventStorage.clear();
+		}
+	
+		inline void ClearEventDispatcher()
+		{
+			this->m_EventDispatcherMap.clear();
+		}
+	
+		template<class E, class... ARGS>
+		void Send(ARGS&&... eventArgs)
+		{
+			// check if type of object is trivially copyable
+			static_assert(std::is_trivially_copyable<E>::value, "Event T is not trivially copyable.");
+	
+	
+			// allocate memory to store event data
+			void* pMem = this->m_EventMemoryAllocator->allocate(sizeof(E), alignof(E));
+
+			// add new event to buffer and event storage
+			if (pMem != nullptr)
+			{
+				this->m_EventStorage.push_back(new (pMem)E(std::forward<ARGS>(eventArgs)...));
+
+				LogTrace("New \'%s\' event buffered.", typeid(E).name());
+			}
+			else
+			{
+				LogWarning("Event buffer is full! Call EventHandler::DispatchEvents().");
+			}
+		}
+	
+		// dispatches all stores events and clears buffer
+		void DispatchEvents()
+		{
+			LogDebug("Dispatching %d event(s) ...", this->m_EventStorage.size());
+			for (auto event : this->m_EventStorage)
+			{
+				if (event == nullptr)
+				{
+					LogError("Skip corrupted event.", event->GetEventTypeID());
+					continue;
+				}
+	
+				Internal::IEventDispatcher* dispatcher = this->m_EventDispatcherMap[event->GetEventTypeID()];
+				if (dispatcher == nullptr)
+				{
+					LogError("EventType %d: No event dispatcher found. Interrupting dispatching.", event->GetEventTypeID());
+					continue;
+				}
+	
+				dispatcher->Dispatch(event);
+			}
+			
+			// reset
+			ClearEventBuffer();
+		}
+	};
+
+}} // namespace ECS::Event
+
+#endif // __EVENT_HANDLER_H__ 

@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Event">
+      <UniqueIdentifier>{c33a721d-7054-4c64-ba18-fd6aa4bfa083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Event">
+      <UniqueIdentifier>{1a7d48ac-5f6d-4f16-8663-2f0c7e2e19e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Memory">
+      <UniqueIdentifier>{11ee7dde-8a79-4e74-983c-982c25ba9bf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Memory">
+      <UniqueIdentifier>{440b7267-ae45-4dad-aa5f-8280cfc6cce6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{6a124ea5-12e6-4154-8867-a7e49047f0a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{f61bc7f2-7b6d-4fb1-aba1-77826ffb0fcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Log">
+      <UniqueIdentifier>{6a505cfb-0180-4bbe-b5bb-df3071803bdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Log">
+      <UniqueIdentifier>{d0ba76b6-b51a-426c-b920-6eb16b2c8c3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Memory\Allocator">
+      <UniqueIdentifier>{0fa20c40-79f6-4ead-bbc2-17d181948abe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Memory\Allocator">
+      <UniqueIdentifier>{c241fa35-e4e6-4327-a34f-521ead3f6096}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ISystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Event\IEvent.h">
+      <Filter>Header Files\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Event\Event.h">
+      <Filter>Header Files\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Event\EventHandler.h">
+      <Filter>Header Files\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Event\EventDispatcher.h">
+      <Filter>Header Files\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Event\IEventListener.h">
+      <Filter>Header Files\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Memory\Types.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EntityManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Event\IEventDispatcher.h">
+      <Filter>Header Files\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SystemManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\IdManager.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Event\EventDelegate.h">
+      <Filter>Header Files\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Log\Logger.h">
+      <Filter>Header Files\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Log\ILogSubscriber.h">
+      <Filter>Header Files\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Memory\Allocator\LinearAllocator.h">
+      <Filter>Header Files\Memory\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Memory\Allocator\StackAllocator.h">
+      <Filter>Header Files\Memory\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Memory\Allocator\PoolAllocator.h">
+      <Filter>Header Files\Memory\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Memory\Allocator\IAllocator.h">
+      <Filter>Header Files\Memory\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\StaticTypeCounter.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Memory\ECSMM.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ComponentContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ComponentManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Event\EventHandler.cpp">
+      <Filter>Source Files\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SystemManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\IdManager.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Log\Logger.cpp">
+      <Filter>Source Files\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Memory\Allocator\LinearAllocator.cpp">
+      <Filter>Source Files\Memory\Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Memory\Allocator\PoolAllocator.cpp">
+      <Filter>Source Files\Memory\Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Memory\Allocator\StackAllocator.cpp">
+      <Filter>Source Files\Memory\Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Memory\Allocator\IAllocator.cpp">
+      <Filter>Source Files\Memory\Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\StaticTypeCounter.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Memory\ECSMM.cpp">
+      <Filter>Source Files\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ComponentManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
