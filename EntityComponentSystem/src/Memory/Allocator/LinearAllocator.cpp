@@ -10,7 +10,6 @@
 
 #include "Memory/Allocator/LinearAllocator.h"
 
-#include <assert.h>
 
 namespace ECS { namespace Memory { namespace Allocator {
 

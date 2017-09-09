@@ -13,16 +13,10 @@
 
 #define ECS_SYSTEM_MEMORY_CAPACITY	8192 // 8Mb
 
-#include <vector>
-#include <assert.h>
-
-#include "ECS.h"
-
-#include "Memory/ECSMM.h"
-#include "Log/ILogSubscriber.h"
+#include "API.h"
 
 #include "Memory/Allocator/LinearAllocator.h"
-#include "util/StaticTypeCounter.h"
+#include "util/FamilyTypeCounter.h"
 
 
 
@@ -32,8 +26,9 @@ namespace ECS
 	// forward declaration
 	class ISystem;
 
-	class ECS_API SystemManager : protected Log::ILogSubscriber, protected Memory::Internal::GlobalMemoryUser
+	class ECS_API SystemManager : protected Memory::GlobalMemoryUser
 	{
+		static Log::Logger* s_Logger;
 
 	private:
 
@@ -73,11 +68,11 @@ namespace ECS
 				system = new (pSystemMem)T(std::forward<ARGS>(systemArgs)...);
 				m_Systems[T::STATIC_SYSTEM_TYPE_ID] = system;
 
-				LogInfo("System \'%s\' (%d bytes) created.", typeid(T).name(), sizeof(T));
+				s_Logger->LogInfo("System \'%s\' (%d bytes) created.", typeid(T).name(), sizeof(T));
 			}
 			else
 			{
-				LogError("Unable to create system \'%s\' (%d bytes).", typeid(T).name(), sizeof(T));
+				s_Logger->LogError("Unable to create system \'%s\' (%d bytes).", typeid(T).name(), sizeof(T));
 				assert(true);
 			}
 
@@ -87,7 +82,7 @@ namespace ECS
 		template<class T>
 		inline T* GetSystem() const
 		{
-			assert(T::STATIC_SYSTEM_TYPE_ID < util::StaticTypeCounter<ISystem>::Get() && "Unknown system!");
+			assert(T::STATIC_SYSTEM_TYPE_ID < util::Internal::FamilyTypeCounter<ISystem>::Get() && "Unknown system!");
 			return reinterpret_cast<T*>(this->m_Systems[T::STATIC_SYSTEM_TYPE_ID]);
 		}
 	};

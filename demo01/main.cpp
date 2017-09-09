@@ -1,13 +1,10 @@
 #include <iostream>
 
+#include "ECS.h"
+
 #include "PositionSystem.h"
 #include "GravitySystem.h"
-
 #include "RigidbodyObject.h"
-
-#include "SystemManager.h"
-
-#include "Log/Logger.h"
 
 using namespace ECS;
 
@@ -19,7 +16,6 @@ const int MAX_ENTITIES = 100;
 
 int main(const int argc, const char* argv[])
 {
-
 	// get systems
 	PositionSystem* posSys = SystemManager::GetInstance().AddSystem<PositionSystem>();
 	GravitySystem* gravSys = SystemManager::GetInstance().AddSystem<GravitySystem>(G);
@@ -28,10 +24,7 @@ int main(const int argc, const char* argv[])
 	RigidBodyObject* rbo[MAX_ENTITIES];
 
 	for (int i = 0; i < MAX_ENTITIES; ++i)
-	{
 		rbo[i] = new RigidBodyObject(Vec3_t(0.0f, i, 0.0f), 1.0f);
-	}
-
 
 
 	// Update system 200 frames
@@ -40,8 +33,6 @@ int main(const int argc, const char* argv[])
 
 	for (int i = 0; i < MAX_FRAMES; ++i)
 	{
-		ECS::Log::Logger::GetInstance().LogInfo("--- FRAME #%d ---", i);
-
 		Event::EventHandler::GetInstance().DispatchEvents();
 
 		gravSys->Tick(FPS);
@@ -50,11 +41,7 @@ int main(const int argc, const char* argv[])
 
 	// destroy entities
 	for (int i = 0; i < MAX_ENTITIES; ++i)
-	{
-		std::cout << rbo[i]->GetComponent<PositionComponent>()->GetY() << std::endl;
 		delete rbo[i];
-	}
-
 
 	return 0;
 }

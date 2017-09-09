@@ -13,25 +13,22 @@
 
 #define ECS_MAX_T_COMPONENTS 5000
 
-#include <vector>
-#include <assert.h>
+#include "API.h"
 
-#include "ECS.h"
-#include "Log/ILogSubscriber.h"
-
-#include "Memory/ECSMM.h"
 #include "Memory/Allocator/PoolAllocator.h"
 #include "ComponentContainer.h"
 
 namespace ECS
 {
-	class ECS_API ComponentManager : protected Log::ILogSubscriber, protected Memory::Internal::GlobalMemoryUser
+	class ECS_API ComponentManager : protected Memory::GlobalMemoryUser
 	{
 		static const u64 MAX_T_COMPONENTS = ECS_MAX_T_COMPONENTS;
 
 		using ComponentAllocator = Memory::Allocator::PoolAllocator;
 
 		using ComponentContainerRegistry = std::vector<Internal::IComponentContainer*>;
+
+		Log::Logger* m_Logger;
 
 		ComponentManager();
 		ComponentManager(const ComponentManager&) = delete;
@@ -52,6 +49,8 @@ namespace ECS
 
 				cc = new Internal::ComponentContainer<T>(allocator, ComponentManager::MAX_T_COMPONENTS);
 				this->m_ComponentContainerRegistry[T::STATIC_COMPONENT_TYPE_ID] = cc;
+
+				//m_Logger->LogDebug("New component container for \'%s\' created.", typeid(T).name()));
 			}
 
 			assert(cc != nullptr && "Failed to create ComponentContainer<T>!");

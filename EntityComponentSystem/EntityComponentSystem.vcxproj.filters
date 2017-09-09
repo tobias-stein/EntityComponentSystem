@@ -75,9 +75,6 @@
     <ClInclude Include="include\Event\IEventListener.h">
       <Filter>Header Files\Event</Filter>
     </ClInclude>
-    <ClInclude Include="include\Memory\Types.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
     <ClInclude Include="include\EntityManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -96,9 +93,6 @@
     <ClInclude Include="include\Log\Logger.h">
       <Filter>Header Files\Log</Filter>
     </ClInclude>
-    <ClInclude Include="include\Log\ILogSubscriber.h">
-      <Filter>Header Files\Log</Filter>
-    </ClInclude>
     <ClInclude Include="include\Memory\Allocator\LinearAllocator.h">
       <Filter>Header Files\Memory\Allocator</Filter>
     </ClInclude>
@@ -114,9 +108,6 @@
     <ClInclude Include="include\ECS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\util\StaticTypeCounter.h">
-      <Filter>Header Files\util</Filter>
-    </ClInclude>
     <ClInclude Include="include\Memory\ECSMM.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
@@ -125,6 +116,18 @@
     </ClInclude>
     <ClInclude Include="include\ComponentManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\API.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Log\LoggerManager.h">
+      <Filter>Header Files\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\FamilyTypeCounter.h">
+      <Filter>Header Files\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -155,14 +158,23 @@
     <ClCompile Include="src\Memory\Allocator\IAllocator.cpp">
       <Filter>Source Files\Memory\Allocator</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\StaticTypeCounter.cpp">
-      <Filter>Source Files\util</Filter>
-    </ClCompile>
     <ClCompile Include="src\Memory\ECSMM.cpp">
       <Filter>Source Files\Memory</Filter>
     </ClCompile>
     <ClCompile Include="src\ComponentManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\API.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Log\LoggerManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Event\IEventListener.cpp">
+      <Filter>Source Files\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\FamilyTypeCounter.cpp">
+      <Filter>Source Files\util</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

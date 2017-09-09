@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\API.h" />
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\ComponentContainer.h" />
     <ClInclude Include="include\ComponentManager.h" />
@@ -165,24 +166,27 @@
     <ClInclude Include="include\Event\IEventListener.h" />
     <ClInclude Include="include\IComponent.h" />
     <ClInclude Include="include\ISystem.h" />
-    <ClInclude Include="include\Log\ILogSubscriber.h" />
     <ClInclude Include="include\Log\Logger.h" />
+    <ClInclude Include="include\Log\LoggerManager.h" />
     <ClInclude Include="include\Memory\Allocator\IAllocator.h" />
     <ClInclude Include="include\Memory\Allocator\LinearAllocator.h" />
     <ClInclude Include="include\Memory\Allocator\PoolAllocator.h" />
     <ClInclude Include="include\Memory\Allocator\StackAllocator.h" />
     <ClInclude Include="include\Memory\ECSMM.h" />
-    <ClInclude Include="include\Memory\Types.h" />
+    <ClInclude Include="include\Platform.h" />
     <ClInclude Include="include\System.h" />
     <ClInclude Include="include\SystemManager.h" />
-    <ClInclude Include="include\util\StaticTypeCounter.h" />
+    <ClInclude Include="include\util\FamilyTypeCounter.h" />
     <ClInclude Include="include\util\IdManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\API.cpp" />
     <ClCompile Include="src\ComponentManager.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Event\EventHandler.cpp" />
+    <ClCompile Include="src\Event\IEventListener.cpp" />
     <ClCompile Include="src\Log\Logger.cpp" />
+    <ClCompile Include="src\Log\LoggerManager.cpp" />
     <ClCompile Include="src\Memory\Allocator\IAllocator.cpp" />
     <ClCompile Include="src\Memory\Allocator\LinearAllocator.cpp" />
     <ClCompile Include="src\Memory\Allocator\PoolAllocator.cpp" />
@@ -190,7 +194,7 @@
     <ClCompile Include="src\Memory\ECSMM.cpp" />
     <ClCompile Include="src\SystemManager.cpp" />
     <ClCompile Include="src\util\IdManager.cpp" />
-    <ClCompile Include="src\util\StaticTypeCounter.cpp" />
+    <ClCompile Include="src\util\FamilyTypeCounter.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

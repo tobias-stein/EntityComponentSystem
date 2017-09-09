@@ -13,15 +13,16 @@
 
 namespace ECS
 {
-	SystemManager::SystemManager() : 
-		ILogSubscriber("SystemManager")
+	Log::Logger* SystemManager::s_Logger = GetLogger("SystemManager");
+
+	SystemManager::SystemManager()
 	{
-		LogInfo("Initialize SystemManager!");
+		s_Logger->LogInfo("Initialize SystemManager!");
 
 		// acquire global memory
 		this->m_SystemAllocator = new SystemAllocator(SystemManager::SYSTEM_MEMORY_CAPACITY, Allocate(SystemManager::SYSTEM_MEMORY_CAPACITY, "SystemManager"));
 
-		this->m_Systems.resize(util::StaticTypeCounter<ISystem>::Get());
+		this->m_Systems.resize(util::Internal::FamilyTypeCounter<ISystem>::Get());
 
 		for (auto system : this->m_Systems)
 			system = nullptr;
@@ -42,7 +43,7 @@ namespace ECS
 
 		m_Systems.clear();
 
-		LogInfo("Realse SystemManager!");
+		s_Logger->LogInfo("Realse SystemManager!");
 	}
 
 } // namespace ECS

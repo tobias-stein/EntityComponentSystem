@@ -12,13 +12,12 @@
 #define __COUNT_BY_TYPE_H__
 
 
-#include "ECS.h"
-#include "Memory/Types.h"
+#include "API.h"
 
-namespace ECS { namespace util {
+namespace ECS { namespace util { namespace Internal {
 
 	template<class T>
-	class ECS_API StaticTypeCounter
+	class ECS_API FamilyTypeCounter
 	{
 		static u64 s_count;
 	
@@ -35,6 +34,6 @@ namespace ECS { namespace util {
 		}
 	};	
 
-}} // namespace ECS::util
+}}} // namespace ECS::util::Internal
 
 #endif // __COUNT_BY_TYPE_H__

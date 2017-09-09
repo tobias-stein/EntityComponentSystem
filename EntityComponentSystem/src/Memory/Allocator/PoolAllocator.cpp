@@ -10,9 +10,6 @@
 
 #include "Memory/Allocator/PoolAllocator.h"
 
-#include <assert.h>
-#include <math.h>
-
 namespace ECS { namespace Memory { namespace Allocator {
 
 	PoolAllocator::PoolAllocator(size_t memSize, const void* mem, size_t objectSize, u8 objectAlignment) :

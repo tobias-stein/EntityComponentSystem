@@ -11,8 +11,7 @@
 #ifndef __I_ALLOC_H__
 #define __I_ALLOC_H__
 
-#include "ECS.h"
-#include "Memory/Types.h"
+#include "API.h"
 
 namespace ECS { namespace Memory { namespace Allocator {
 

@@ -1,8 +1,8 @@
 #ifndef __POSITION_COMPONENT_H__
 #define __POSITION_COMPONENT_H__
 
+#include "ECS.h"
 #include "Vec3.h"
-#include "Component.h"
 
 using Position3d = Vec3_t;
 

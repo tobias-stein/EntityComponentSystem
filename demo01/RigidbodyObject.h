@@ -1,26 +1,21 @@
 #ifndef __RIGIDBODY_OBJECT_H__
 #define __RIGIDBODY_OBJECT_H__
 
-#include "Entity.h"
-
-#include "Event/IEventListener.h"
+#include "ECS.h"
 
 #include "EntityBellowSeaLevelEvent.h"
 
 #include "PositionComponent.h"
 #include "RigidbodyComponent.h"
 
-#include "Log/ILogSubscriber.h"
-
 class RigidBodyObject : 
 	public ECS::Entity, 
-	public ECS::Event::IEventListener,
-	public ECS::Log::ILogSubscriber
+	public ECS::Event::IEventListener
 {
+
 public:
 
-	RigidBodyObject(Vec3_t& pos, float mass) :
-		ILogSubscriber("RigidBodyObject")
+	RigidBodyObject(Vec3_t& pos, float mass)
 	{
 		this->AddComponent<PositionComponent>(pos);
 		this->AddComponent<RigidBodyComponent>(mass);
@@ -33,7 +28,7 @@ public:
 
 	inline void OnEntityBellowSeaLevel(const EntityBellowSeaLevelEvent* const event)
 	{
-		LogTrace("Entity [%d]: received \'EntityBellowSealevel\' event.", this->GetEntityId());
+		s_Logger->LogTrace("Entity [%d]: received \'EntityBellowSealevel\' event.", this->GetEntityId());
 
 		// diable this enity, if bellow sea level
 		this->SetActive(false);

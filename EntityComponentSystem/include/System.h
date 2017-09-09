@@ -11,32 +11,37 @@
 #ifndef __SYSTEM_H__
 #define __SYSTEM_H__
 
+#include "API.h"
+
 #include "ISystem.h"
-#include "util/StaticTypeCounter.h"
-#include "Log/ILogSubscriber.h"
+#include "util/FamilyTypeCounter.h"
 
 
 namespace ECS
 {
 	template<class T>
-	class System : public ISystem, protected Log::ILogSubscriber
+	class System : public ISystem
 	{
+	protected:
+
+		Log::Logger* m_Logger;
+
 	public:
 
 		static const SystemTypeId STATIC_SYSTEM_TYPE_ID;
 
 	protected:
 
-		System() : ILogSubscriber(typeid(T).name())
+		System() : m_Logger(GetLogger(typeid(T).name()))
 		{
-			LogInfo("System %s created.", typeid(T).name());
+			m_Logger->LogInfo("System %s created.", typeid(T).name());
 		}
 
 	public:
 
 		virtual ~System()
 		{
-			LogInfo("System %s released.", typeid(T).name());
+			m_Logger->LogInfo("System %s released.", typeid(T).name());
 		}
 
 		virtual void Tick(float dt)
@@ -47,16 +52,11 @@ namespace ECS
 			return STATIC_SYSTEM_TYPE_ID;
 		}
 
-	private:
-
-		static inline const u64 SetSystemTypeId()
-		{
-			return util::StaticTypeCounter<ISystem>::Increment();
-		}
-	};
+	}; // class System<T>
 
 	template<class T>
-	const SystemTypeId System<T>::STATIC_SYSTEM_TYPE_ID = System<T>::SetSystemTypeId();
-}
+	const SystemTypeId System<T>::STATIC_SYSTEM_TYPE_ID = util::Internal::FamilyTypeCounter<ISystem>::Increment();
+
+} // namespace ECS
 
 #endif // __SYSTEM_H__

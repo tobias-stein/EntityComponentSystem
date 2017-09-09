@@ -10,8 +10,6 @@
 
 #include "Memory/Allocator/StackAllocator.h"
 
-#include <assert.h>
-
 namespace ECS { namespace Memory { namespace Allocator {
 
 	StackAllocator::StackAllocator(size_t memSize, const void* mem) :

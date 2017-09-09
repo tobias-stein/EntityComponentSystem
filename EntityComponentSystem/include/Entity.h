@@ -11,12 +11,8 @@
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
 
-#include <assert.h>
-#include <vector>
 
-#include "ECS.h"
-#include "Memory/ECSMM.h"
-#include "Memory/Types.h"
+#include "API.h"
 
 #include "util/IdManager.h"
 
@@ -30,6 +26,10 @@ namespace ECS {
 
 	class ECS_API Entity
 	{
+	protected:
+
+		static Log::Logger* s_Logger;
+
 	private:
 
 		static EntityId s_NextValidEntityId;

@@ -1,10 +1,9 @@
 #ifndef __GRAV_SYS_H__
 #define __GRAV_SYS_H__
 
-#include "Vec3.h"
-#include "System.h"
-#include "ComponentManager.h"
+#include "ECS.h"
 
+#include "Vec3.h"
 #include "RigidbodyComponent.h"
 
 // gravity system affects all entities with RigidBodyComponents

@@ -11,9 +11,7 @@
 #ifndef __ID_MANAGER_H__
 #define __ID_MANAGER_H__
 
-#include "ECS.h"
-
-#include "Memory/Types.h"
+#include "API.h"
 
 namespace ECS { namespace util {
 

@@ -11,16 +11,17 @@
 #ifndef __COMPONENT_H__
 #define __COMPONENT_H__
 
-#include "IComponent.h"
-#include "util/StaticTypeCounter.h"
+#include "API.h"
 
-#include "Log/Logger.h"
+#include "IComponent.h"
+#include "util/FamilyTypeCounter.h"
 
 namespace ECS
 {
 	template<class T>
 	class Component : public IComponent
 	{
+
 	public:
 
 		static const ComponentTypeId STATIC_COMPONENT_TYPE_ID;
@@ -34,21 +35,13 @@ namespace ECS
 		inline ComponentTypeId GetStaticComponentTypeID() const
 		{
 			return STATIC_COMPONENT_TYPE_ID;
-		}
-	private:
-
-		static inline const u64 SetComponentTypeId()
-		{
-			u64 CID = util::StaticTypeCounter<IComponent>::Increment();
-			Log::Logger::GetInstance().LogDebug("Register component \'%s\' [COMPONENT-ID: %d]", typeid(T).name(), CID);
-			return CID;
-		}		
+		}	
 	};
 
 	// This private member only exists to force the compiler to create an instance of Component T,
 	// which will set its unique identifier.
 	template<class T>
-	const ComponentTypeId Component<T>::STATIC_COMPONENT_TYPE_ID = Component<T>::SetComponentTypeId();
+	const ComponentTypeId Component<T>::STATIC_COMPONENT_TYPE_ID = util::Internal::FamilyTypeCounter<IComponent>::Increment();;
 }
 
 #endif // __COMPONENT_H__

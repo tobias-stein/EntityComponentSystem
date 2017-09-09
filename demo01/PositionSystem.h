@@ -6,14 +6,9 @@
 #ifndef __POS_SYS_H__
 #define __POS_SYS_H__
 
-#include "Log/ILogSubscriber.h"
+#include "ECS.h"
 
 #include "Vec3.h"
-
-#include "Entity.h"
-#include "System.h"
-#include "Component.h"
-#include "SystemManager.h"
 
 #include "PositionComponent.h"
 #include "RigidbodyComponent.h"
@@ -77,10 +72,8 @@ public:
 				// check if entity is bellow sea level
 				if (pos.y < 0.0f)
 				{
-					LogTrace("Entity [%d] is bellow sea level.", posComp->GetOwner()->GetEntityId());
+					m_Logger->LogTrace("Entity [%d] is bellow sea level.", posComp->GetOwner()->GetEntityId());
 
-					// send event
-					//EntityBellowSeaLevelEvent bellowSeaLevelEvent(posComp->GetOwner()->GetEntityId(), pos.y);
 					ECS::Event::EventHandler::GetInstance().Send<EntityBellowSeaLevelEvent>(posComp->GetOwner()->GetEntityId(), pos.y);
 				}
 			}

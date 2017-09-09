@@ -10,24 +10,24 @@
 
 #include "Memory/ECSMM.h"
 
-#include <stdlib.h>
-#include <assert.h>
-
 namespace ECS { namespace Memory { namespace Internal {
 
-	MemoryManager::MemoryManager() : ILogSubscriber("MemoryManager")
+	Log::Logger* MemoryManager::s_Logger = GetLogger("MemoryManager");
+
+
+	MemoryManager::MemoryManager()
 	{		
-		LogInfo("Initialize MemoryManager!");
+		s_Logger->LogInfo("Initialize MemoryManager!");
 
 		// allocate global memory
 		this->m_GlobalMemory = malloc(MemoryManager::MEMORY_CAPACITY);
 		if (this->m_GlobalMemory != nullptr)
 		{
-			LogInfo("%d bytes of memory allocated.", MemoryManager::MEMORY_CAPACITY);
+			s_Logger->LogInfo("%d bytes of memory allocated.", MemoryManager::MEMORY_CAPACITY);
 		}
 		else
 		{
-			LogFatal("Failed to allocate %d bytes of memory!", MemoryManager::MEMORY_CAPACITY);
+			s_Logger->LogFatal("Failed to allocate %d bytes of memory!", MemoryManager::MEMORY_CAPACITY);
 			assert(this->m_GlobalMemory != nullptr && "Failed to allocate global memory.");
 		}
 
@@ -38,7 +38,7 @@ namespace ECS { namespace Memory { namespace Internal {
 
 	MemoryManager::~MemoryManager()
 	{
-		LogInfo("Releasing MemoryManager!");
+		s_Logger->LogInfo("Releasing MemoryManager!");
 
 		this->m_MemoryAllocator->clear();
 
@@ -47,6 +47,8 @@ namespace ECS { namespace Memory { namespace Internal {
 
 		free(this->m_GlobalMemory);
 		this->m_GlobalMemory = nullptr;
+
+		s_Logger = nullptr;
 	}
 
 }}} // namespace ECS::Memory::Internal

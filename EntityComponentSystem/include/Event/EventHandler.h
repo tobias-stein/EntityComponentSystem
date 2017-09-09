@@ -14,13 +14,9 @@
 
 #define ECS_EVENT_MEMORY_CAPACITY 4096 // 4Mb
 
-#include <assert.h>
-#include <unordered_map>
-#include <vector>
 
-#include "ECS.h"
-#include "Memory/ECSMM.h"
-#include "Log/ILogSubscriber.h"
+#include "API.h"
+
 #include "Memory/Allocator/LinearAllocator.h"
 
 #include "IEvent.h"
@@ -28,11 +24,12 @@
 
 namespace ECS { namespace Event {
 
-	class ECS_API EventHandler : protected Log::ILogSubscriber, protected Memory::Internal::GlobalMemoryUser
+	class ECS_API EventHandler : protected Memory::GlobalMemoryUser
 	{
 		// allow IEventListener access private methods for Add/Remove callbacks
 		friend class IEventListener;
 	
+
 		using EventDispatcherMap = std::unordered_map<EventTypeId, Internal::IEventDispatcher*>;
 	
 		using EventStorage = std::vector<IEvent*>;
@@ -41,7 +38,8 @@ namespace ECS { namespace Event {
 
 		static const size_t EVENT_MEMORY_CAPACITY = ECS_EVENT_MEMORY_CAPACITY;
 	
-	
+		static Log::Logger* s_Logger;
+
 	private:
 	
 		EventHandler();
@@ -134,30 +132,30 @@ namespace ECS { namespace Event {
 			{
 				this->m_EventStorage.push_back(new (pMem)E(std::forward<ARGS>(eventArgs)...));
 
-				LogTrace("New \'%s\' event buffered.", typeid(E).name());
+				s_Logger->LogTrace("New \'%s\' event buffered.", typeid(E).name());
 			}
 			else
 			{
-				LogWarning("Event buffer is full! Call EventHandler::DispatchEvents().");
+				s_Logger->LogWarning("Event buffer is full! Call EventHandler::DispatchEvents().");
 			}
 		}
 	
 		// dispatches all stores events and clears buffer
 		void DispatchEvents()
 		{
-			LogDebug("Dispatching %d event(s) ...", this->m_EventStorage.size());
+			s_Logger->LogDebug("Dispatching %d event(s) ...", this->m_EventStorage.size());
 			for (auto event : this->m_EventStorage)
 			{
 				if (event == nullptr)
 				{
-					LogError("Skip corrupted event.", event->GetEventTypeID());
+					s_Logger->LogError("Skip corrupted event.", event->GetEventTypeID());
 					continue;
 				}
 	
 				Internal::IEventDispatcher* dispatcher = this->m_EventDispatcherMap[event->GetEventTypeID()];
 				if (dispatcher == nullptr)
 				{
-					LogError("EventType %d: No event dispatcher found. Interrupting dispatching.", event->GetEventTypeID());
+					s_Logger->LogError("EventType %d: No event dispatcher found. Interrupting dispatching.", event->GetEventTypeID());
 					continue;
 				}
 	

@@ -11,33 +11,27 @@
 #ifndef __I_EVENT_LISTENER_H__
 #define __I_EVENT_LISTENER_H__
 
-#include "EventDelegate.h"
+#include "API.h"
 
+#include "EventDelegate.h"
 #include "EventHandler.h"
 
 namespace ECS
 {
 	namespace Event
 	{
-		class IEventListener
+		class ECS_API IEventListener
 		{
-
 		public:
 
-			IEventListener()
-			{}
-			 
-			~IEventListener()
-			{}
+			IEventListener();	 
+			virtual ~IEventListener();
 
 			// Subscribe for an event 
 			template<class E, class C>
 			inline void RegisterEventCallback(void(C::*Callback)(const E* const))
 			{
 				Internal::IEventDelegate* eventDelegate = new Internal::EventDelegate<C, E>(static_cast<C*>(this), Callback);
-
-				Log::Logger::GetInstance().LogTrace("\'%s\' subscribes for \'%s\' [%p]", typeid(C).name(), typeid(E).name(), eventDelegate);
-
 				EventHandler::GetInstance().AddEventCallback<E>(eventDelegate);
 			}
 
@@ -47,9 +41,6 @@ namespace ECS
 			inline void UnregisterEventCallback(void(C::*Callback)(const E* const))
 			{
 				Internal::EventDelegateId eventDelegateId = (Internal::EventDelegateId)&(*static_cast<C*>(this));
-
-				Log::Logger::GetInstance().LogTrace("\'%s\' unsubscribes from \'%s\'", typeid(C).name(), typeid(E).name());
-
 				EventHandler::GetInstance().RemoveEventCallback<E>(eventDelegateId);
 			}
 		};

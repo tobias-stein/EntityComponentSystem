@@ -10,25 +10,28 @@
 
 #include "Entity.h"
 #include "IComponent.h"
-#include "util/StaticTypeCounter.h"
+#include "util/FamilyTypeCounter.h"
 
 namespace ECS
 {
+
+	Log::Logger* Entity::s_Logger = GetLogger("EntityManager");
+
 	// first valid entity id
 	EntityId Entity::s_NextValidEntityId{ 0u };
 
 	Entity::Entity() :
 		m_Id(Entity::s_NextValidEntityId++),
-		m_ComponentBitMask(util::StaticTypeCounter<IComponent>::Get()),
-		m_Components(util::StaticTypeCounter<IComponent>::Get()),
+		m_ComponentBitMask(util::Internal::FamilyTypeCounter<IComponent>::Get()),
+		m_Components(util::Internal::FamilyTypeCounter<IComponent>::Get()),
 		m_Active(true)
 	{
-		Log::Logger::GetInstance().LogDebug("Create new Entity [ENTITY-ID: %d]", m_Id);
+		s_Logger->LogDebug("Create new Entity [ENTITY-ID: %d]", m_Id);
 		
 		// At this point all implemented component types will have there id set,
 		// because they are declared static
 
-		for (int i = 0; i < util::StaticTypeCounter<IComponent>::Get(); ++i)
+		for (int i = 0; i < util::Internal::FamilyTypeCounter<IComponent>::Get(); ++i)
 		{
 			this->m_ComponentBitMask[i] = false;
 			this->m_Components[i] = nullptr;
@@ -37,7 +40,7 @@ namespace ECS
 
 	Entity::~Entity()
 	{
-		Log::Logger::GetInstance().LogDebug("Destroy Entity [ENTITY-ID: %d]", m_Id);
+		s_Logger->LogDebug("Destroy Entity [ENTITY-ID: %d]", m_Id);
 
 		this->m_ComponentBitMask.clear();
 		this->m_Components.clear();

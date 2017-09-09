@@ -11,18 +11,21 @@
 #ifndef __EVENT_DISPATCHER_H__
 #define __EVENT_DISPATCHER_H__
 
-#include "Log/ILogSubscriber.h"
+#include "API.h"
 #include "IEventDispatcher.h"
 
 namespace ECS { namespace Event { namespace Internal {
 
 	template<class T>
-	class EventDispatcher : public IEventDispatcher, public Log::ILogSubscriber
+	class EventDispatcher : public IEventDispatcher
 	{
+
+		static Log::Logger* s_Logger;
+
 	public:
 	
 		// never use!
-		EventDispatcher() : ILogSubscriber("EventDispatcher")
+		EventDispatcher()
 		{}
 	
 		~EventDispatcher()
@@ -31,7 +34,7 @@ namespace ECS { namespace Event { namespace Internal {
 		// send event to all listener
 		inline void Dispatch(IEvent* event) override
 		{
-			LogTrace("Dispatch event %s", typeid(T).name());
+			s_Logger->LogTrace("Dispatch event %s", typeid(T).name());
 	
 			// if event is intend for only one listner
 			for (EventDelegateList::iterator it = this->m_EventCallbacks.begin(); it != this->m_EventCallbacks.end(); ++it)
@@ -42,6 +45,9 @@ namespace ECS { namespace Event { namespace Internal {
 			}
 		}
 	};
+
+	template<class T>
+	Log::Logger* EventDispatcher<T>::s_Logger = GetLogger("EventDispatcher");
 
 }}} // namespace ECS::Event::Internal
 

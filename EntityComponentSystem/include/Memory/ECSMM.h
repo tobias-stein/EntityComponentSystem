@@ -15,25 +15,24 @@
 
 #define ECS_GLOBAL_MEMORY_CAPACITY 1073741824 // 1 GB
 
-#include <memory>
+#include "API.h"
 
-#include "ECS.h"
-
-#include "Log/ILogSubscriber.h"
 #include "Memory/Allocator/StackAllocator.h"
 
-namespace ECS { namespace Memory { 
-	
-	using StackAllocator = Allocator::StackAllocator;
+namespace ECS { namespace Memory { namespace Internal {
 
-	namespace Internal {
+	class Allocator::StackAllocator;
 
-
-	class MemoryManager : protected Log::ILogSubscriber
+	class MemoryManager
 	{
-	public:
-
 		friend class GlobalMemoryUser;
+
+		using StackAllocator = Allocator::StackAllocator;
+
+		static Log::Logger* s_Logger;
+
+
+	public:	
 
 		static constexpr size_t MEMORY_CAPACITY = ECS_GLOBAL_MEMORY_CAPACITY;
 
@@ -66,7 +65,7 @@ namespace ECS { namespace Memory {
 
 		inline const void* Allocate(size_t memSize, const char* user = nullptr)
 		{
-			LogDebug("%s allocated %d bytes of global memory.", user != nullptr ? user : "???", memSize);
+			s_Logger->LogDebug("%s allocated %d bytes of global memory.", user != nullptr ? user : "???", memSize);
 			return m_MemoryAllocator->allocate(memSize, alignof(u8));
 		}
 
@@ -75,35 +74,6 @@ namespace ECS { namespace Memory {
 		}
 
 	}; // class MemoryManager
-
-
-	/**
-	* Any class that wants to use global memory for allocations must derive from this class
-	*/
-	class GlobalMemoryUser
-	{
-	private:
-
-		std::shared_ptr<MemoryManager> MEMORY_MANAGER;
-
-	public:
-
-		GlobalMemoryUser() : MEMORY_MANAGER(MemoryManager::GetInstance())
-		{}
-
-		virtual ~GlobalMemoryUser()
-		{}
-
-		inline const void* Allocate(size_t memSize, const char* user = nullptr)
-		{
-			return MEMORY_MANAGER->Allocate(memSize, user);
-		}
-
-		inline void Free(void* pMem)
-		{
-			MEMORY_MANAGER->Free(pMem);
-		}
-	};
 
 }}} // namespace ECS::Memory::Internal
 

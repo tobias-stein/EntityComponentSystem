@@ -29,7 +29,7 @@ namespace ECS
 		friend class Entity;
 
 	protected:
-
+		
 		Entity* m_Owner;
 
 		bool m_Enabled;

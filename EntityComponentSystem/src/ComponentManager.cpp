@@ -13,11 +13,12 @@
 
 namespace ECS {
 
+
 	ComponentManager::ComponentManager() : 
-		ILogSubscriber("ComponentManager"), 
-		m_ComponentContainerRegistry(util::StaticTypeCounter<IComponent>::Get())
+		m_Logger(GetLogger("ComponentManager")),
+		m_ComponentContainerRegistry(util::Internal::FamilyTypeCounter<IComponent>::Get())
 	{
-		LogInfo("Initialize ComponentManager!");
+		m_Logger->LogInfo("Initialize ComponentManager!");
 	}
 
 	ComponentManager::~ComponentManager()
@@ -29,7 +30,7 @@ namespace ECS {
 		}
 
 
-		LogInfo("Realse ComponentManager!");
+		m_Logger->LogInfo("Realse ComponentManager!");
 	}
 
 } // namespace ECS

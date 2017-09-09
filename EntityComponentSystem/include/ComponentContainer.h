@@ -13,9 +13,6 @@
 
 
 
-#include <list>
-
-#include "Log/ILogSubscriber.h"
 #include "Memory/Allocator/PoolAllocator.h"
 
 #include "Component.h"
@@ -38,7 +35,7 @@ namespace ECS {
 	};
 
 	template<class T>
-	class ComponentContainer : public IComponentContainer, Log::ILogSubscriber
+	class ComponentContainer : public IComponentContainer
 	{
 	private:
 
@@ -47,6 +44,8 @@ namespace ECS {
 		using TComponentList = ComponentList<T>;
 
 		const size_t MAX_COMPONENTS;
+
+		static Log::Logger* s_Logger;
 
 		ComponentAllocator* m_ComponentAllocator;
 
@@ -58,7 +57,6 @@ namespace ECS {
 	public:
 
 		ComponentContainer(ComponentAllocator* allocator, const size_t maxComponents) : 
-			ILogSubscriber("ComponentManager"),
 			m_ComponentAllocator(allocator),
 			MAX_COMPONENTS(maxComponents)
 		{
@@ -66,7 +64,7 @@ namespace ECS {
 
 		~ComponentContainer()
 		{
-			LogDebug("Destroy \'%s\' components ...", typeid(T).name());
+			s_Logger->LogDebug("Destroy \'%s\' components ...", typeid(T).name());
 
 			for (auto component : this->m_Components)
 			{
@@ -95,7 +93,7 @@ namespace ECS {
 			}
 			else
 			{
-				LogError("Could not create new component (\'%s\')!", typeid(T).name());
+				s_Logger->LogError("Could not create new component (\'%s\')!", typeid(T).name());
 			}
 			
 			return component;
@@ -118,6 +116,9 @@ namespace ECS {
 			return this->m_Components;
 		}
 	}; // class ComponentContainer
+
+	template<class T>
+	Log::Logger* ComponentContainer<T>::s_Logger = GetLogger("ComponentManager");
 
 }} // namespace ECS::Internal
 

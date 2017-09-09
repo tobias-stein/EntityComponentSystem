@@ -10,12 +10,19 @@
 
 #pragma once
 
-#ifdef ECS_EXPORTS  
-	#define ECS_API __declspec(dllexport)   
-#else  
-	#define ECS_API __declspec(dllimport)   
-#endif  
 
+#include "API.h"
+
+
+#include "Entity.h"
+#include "Component.h"
+#include "System.h"
+
+#include "ComponentManager.h"
+#include "SystemManager.h"
+
+#include "Event/Event.h"
+#include "Event/IEventListener.h"
 
 namespace ECS {
 

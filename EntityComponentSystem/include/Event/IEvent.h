@@ -65,9 +65,8 @@ namespace ECS
 			{
 				return this->m_TimeCreated;
 			}
-		};
+		}; // class IEvent
 
-	} // namespace Event
-} // namespace ECS
+}} // namespace ECS::Event
 
 #endif // __I_EVENT_H__
