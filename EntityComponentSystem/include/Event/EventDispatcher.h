@@ -19,8 +19,7 @@ namespace ECS { namespace Event { namespace Internal {
 	template<class T>
 	class EventDispatcher : public IEventDispatcher
 	{
-
-		static Log::Logger* s_Logger;
+		DECLARE_STATIC_LOGGER
 
 	public:
 	
@@ -34,7 +33,7 @@ namespace ECS { namespace Event { namespace Internal {
 		// send event to all listener
 		inline void Dispatch(IEvent* event) override
 		{
-			s_Logger->LogTrace("Dispatch event %s", typeid(T).name());
+			LogTrace("Dispatch event %s", typeid(T).name());
 	
 			// if event is intend for only one listner
 			for (EventDelegateList::iterator it = this->m_EventCallbacks.begin(); it != this->m_EventCallbacks.end(); ++it)
@@ -46,8 +45,7 @@ namespace ECS { namespace Event { namespace Internal {
 		}
 	};
 
-	template<class T>
-	Log::Logger* EventDispatcher<T>::s_Logger = GetLogger("EventDispatcher");
+	DEFINE_STATIC_LOGGER_TEMPLATE(EventDispatcher, T, "EventDispatcher")
 
 }}} // namespace ECS::Event::Internal
 

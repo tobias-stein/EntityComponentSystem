@@ -167,6 +167,7 @@
     <ClInclude Include="include\IComponent.h" />
     <ClInclude Include="include\ISystem.h" />
     <ClInclude Include="include\Log\Logger.h" />
+    <ClInclude Include="include\Log\LoggerMacro.h" />
     <ClInclude Include="include\Log\LoggerManager.h" />
     <ClInclude Include="include\Memory\Allocator\IAllocator.h" />
     <ClInclude Include="include\Memory\Allocator\LinearAllocator.h" />

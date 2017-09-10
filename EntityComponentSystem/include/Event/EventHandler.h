@@ -38,7 +38,7 @@ namespace ECS { namespace Event {
 
 		static const size_t EVENT_MEMORY_CAPACITY = ECS_EVENT_MEMORY_CAPACITY;
 	
-		static Log::Logger* s_Logger;
+		DECLARE_STATIC_LOGGER
 
 	private:
 	
@@ -132,30 +132,30 @@ namespace ECS { namespace Event {
 			{
 				this->m_EventStorage.push_back(new (pMem)E(std::forward<ARGS>(eventArgs)...));
 
-				s_Logger->LogTrace("New \'%s\' event buffered.", typeid(E).name());
+				LogTrace("New \'%s\' event buffered.", typeid(E).name());
 			}
 			else
 			{
-				s_Logger->LogWarning("Event buffer is full! Call EventHandler::DispatchEvents().");
+				LogWarning("Event buffer is full! Call EventHandler::DispatchEvents().");
 			}
 		}
 	
 		// dispatches all stores events and clears buffer
 		void DispatchEvents()
 		{
-			s_Logger->LogDebug("Dispatching %d event(s) ...", this->m_EventStorage.size());
+			LogDebug("Dispatching %d event(s) ...", this->m_EventStorage.size());
 			for (auto event : this->m_EventStorage)
 			{
 				if (event == nullptr)
 				{
-					s_Logger->LogError("Skip corrupted event.", event->GetEventTypeID());
+					LogError("Skip corrupted event.", event->GetEventTypeID());
 					continue;
 				}
 	
 				Internal::IEventDispatcher* dispatcher = this->m_EventDispatcherMap[event->GetEventTypeID()];
 				if (dispatcher == nullptr)
 				{
-					s_Logger->LogError("EventType %d: No event dispatcher found. Interrupting dispatching.", event->GetEventTypeID());
+					LogError("EventType %d: No event dispatcher found. Interrupting dispatching.", event->GetEventTypeID());
 					continue;
 				}
 	

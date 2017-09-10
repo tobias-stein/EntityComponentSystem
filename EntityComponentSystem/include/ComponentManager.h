@@ -28,7 +28,7 @@ namespace ECS
 
 		using ComponentContainerRegistry = std::vector<Internal::IComponentContainer*>;
 
-		Log::Logger* m_Logger;
+		DECLARE_LOGGER
 
 		ComponentManager();
 		ComponentManager(const ComponentManager&) = delete;
@@ -50,7 +50,7 @@ namespace ECS
 				cc = new Internal::ComponentContainer<T>(allocator, ComponentManager::MAX_T_COMPONENTS);
 				this->m_ComponentContainerRegistry[T::STATIC_COMPONENT_TYPE_ID] = cc;
 
-				//m_Logger->LogDebug("New component container for \'%s\' created.", typeid(T).name()));
+				//LogDebug("New component container for \'%s\' created.", typeid(T).name()));
 			}
 
 			assert(cc != nullptr && "Failed to create ComponentContainer<T>!");

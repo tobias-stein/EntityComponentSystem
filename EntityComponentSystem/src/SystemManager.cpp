@@ -13,11 +13,11 @@
 
 namespace ECS
 {
-	Log::Logger* SystemManager::s_Logger = GetLogger("SystemManager");
-
 	SystemManager::SystemManager()
 	{
-		s_Logger->LogInfo("Initialize SystemManager!");
+		DEFINE_LOGGER("SystemManager")
+
+		LogInfo("Initialize SystemManager!");
 
 		// acquire global memory
 		this->m_SystemAllocator = new SystemAllocator(SystemManager::SYSTEM_MEMORY_CAPACITY, Allocate(SystemManager::SYSTEM_MEMORY_CAPACITY, "SystemManager"));
@@ -43,7 +43,7 @@ namespace ECS
 
 		m_Systems.clear();
 
-		s_Logger->LogInfo("Realse SystemManager!");
+		LogInfo("Realse SystemManager!");
 	}
 
 } // namespace ECS

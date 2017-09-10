@@ -12,22 +12,21 @@
 
 namespace ECS { namespace Memory { namespace Internal {
 
-	Log::Logger* MemoryManager::s_Logger = GetLogger("MemoryManager");
-
+	DEFINE_STATIC_LOGGER(MemoryManager, "MemoryManager")
 
 	MemoryManager::MemoryManager()
 	{		
-		s_Logger->LogInfo("Initialize MemoryManager!");
+		LogInfo("Initialize MemoryManager!");
 
 		// allocate global memory
 		this->m_GlobalMemory = malloc(MemoryManager::MEMORY_CAPACITY);
 		if (this->m_GlobalMemory != nullptr)
 		{
-			s_Logger->LogInfo("%d bytes of memory allocated.", MemoryManager::MEMORY_CAPACITY);
+			LogInfo("%d bytes of memory allocated.", MemoryManager::MEMORY_CAPACITY);
 		}
 		else
 		{
-			s_Logger->LogFatal("Failed to allocate %d bytes of memory!", MemoryManager::MEMORY_CAPACITY);
+			LogFatal("Failed to allocate %d bytes of memory!", MemoryManager::MEMORY_CAPACITY);
 			assert(this->m_GlobalMemory != nullptr && "Failed to allocate global memory.");
 		}
 
@@ -38,7 +37,7 @@ namespace ECS { namespace Memory { namespace Internal {
 
 	MemoryManager::~MemoryManager()
 	{
-		s_Logger->LogInfo("Releasing MemoryManager!");
+		LogInfo("Releasing MemoryManager!");
 
 		this->m_MemoryAllocator->clear();
 
@@ -47,8 +46,6 @@ namespace ECS { namespace Memory { namespace Internal {
 
 		free(this->m_GlobalMemory);
 		this->m_GlobalMemory = nullptr;
-
-		s_Logger = nullptr;
 	}
 
 }}} // namespace ECS::Memory::Internal

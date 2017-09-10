@@ -28,7 +28,7 @@ namespace ECS {
 	{
 	protected:
 
-		static Log::Logger* s_Logger;
+		DECLARE_STATIC_LOGGER
 
 	private:
 

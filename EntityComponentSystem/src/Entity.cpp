@@ -15,7 +15,7 @@
 namespace ECS
 {
 
-	Log::Logger* Entity::s_Logger = GetLogger("EntityManager");
+	DEFINE_STATIC_LOGGER(Entity, "EntityManager")
 
 	// first valid entity id
 	EntityId Entity::s_NextValidEntityId{ 0u };
@@ -26,7 +26,7 @@ namespace ECS
 		m_Components(util::Internal::FamilyTypeCounter<IComponent>::Get()),
 		m_Active(true)
 	{
-		s_Logger->LogDebug("Create new Entity [ENTITY-ID: %d]", m_Id);
+		LogDebug("Create new Entity [ENTITY-ID: %d]", m_Id);
 		
 		// At this point all implemented component types will have there id set,
 		// because they are declared static
@@ -40,7 +40,7 @@ namespace ECS
 
 	Entity::~Entity()
 	{
-		s_Logger->LogDebug("Destroy Entity [ENTITY-ID: %d]", m_Id);
+		LogDebug("Destroy Entity [ENTITY-ID: %d]", m_Id);
 
 		this->m_ComponentBitMask.clear();
 		this->m_Components.clear();

@@ -129,6 +129,9 @@
     <ClInclude Include="include\util\FamilyTypeCounter.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="include\Log\LoggerMacro.h">
+      <Filter>Header Files\Log</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Entity.cpp">

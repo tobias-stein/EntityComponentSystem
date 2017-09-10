@@ -29,8 +29,7 @@ namespace ECS { namespace Memory { namespace Internal {
 
 		using StackAllocator = Allocator::StackAllocator;
 
-		static Log::Logger* s_Logger;
-
+		DECLARE_STATIC_LOGGER
 
 	public:	
 
@@ -65,7 +64,7 @@ namespace ECS { namespace Memory { namespace Internal {
 
 		inline const void* Allocate(size_t memSize, const char* user = nullptr)
 		{
-			s_Logger->LogDebug("%s allocated %d bytes of global memory.", user != nullptr ? user : "???", memSize);
+			LogDebug("%s allocated %d bytes of global memory.", user != nullptr ? user : "???", memSize);
 			return m_MemoryAllocator->allocate(memSize, alignof(u8));
 		}
 

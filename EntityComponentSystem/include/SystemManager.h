@@ -28,7 +28,7 @@ namespace ECS
 
 	class ECS_API SystemManager : protected Memory::GlobalMemoryUser
 	{
-		static Log::Logger* s_Logger;
+		DECLARE_LOGGER
 
 	private:
 
@@ -68,11 +68,11 @@ namespace ECS
 				system = new (pSystemMem)T(std::forward<ARGS>(systemArgs)...);
 				m_Systems[T::STATIC_SYSTEM_TYPE_ID] = system;
 
-				s_Logger->LogInfo("System \'%s\' (%d bytes) created.", typeid(T).name(), sizeof(T));
+				LogInfo("System \'%s\' (%d bytes) created.", typeid(T).name(), sizeof(T));
 			}
 			else
 			{
-				s_Logger->LogError("Unable to create system \'%s\' (%d bytes).", typeid(T).name(), sizeof(T));
+				LogError("Unable to create system \'%s\' (%d bytes).", typeid(T).name(), sizeof(T));
 				assert(true);
 			}
 

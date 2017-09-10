@@ -12,11 +12,11 @@
 
 namespace ECS { namespace Event {
 
-	Log::Logger* EventHandler::s_Logger = GetLogger("EventHandler");
-	
+	DEFINE_STATIC_LOGGER(EventHandler, "EventHandler")
+
 	EventHandler::EventHandler()
 	{
-		s_Logger->LogInfo("Initialize EventHandler!");
+		LogInfo("Initialize EventHandler!");
 	
 		// allocate memory from global memory manager
 		this->m_EventMemoryAllocator = new EventMemoryAllocator(EventHandler::EVENT_MEMORY_CAPACITY, Allocate(EventHandler::EVENT_MEMORY_CAPACITY, "EventHandler"));
@@ -40,7 +40,7 @@ namespace ECS { namespace Event {
 		delete this->m_EventMemoryAllocator;
 		this->m_EventMemoryAllocator = nullptr;
 	
-		s_Logger->LogInfo("Realse EventHandler!");
+		LogInfo("Realse EventHandler!");
 	}
 
 }} // namespace ECS::Event

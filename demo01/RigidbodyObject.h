@@ -28,7 +28,7 @@ public:
 
 	inline void OnEntityBellowSeaLevel(const EntityBellowSeaLevelEvent* const event)
 	{
-		s_Logger->LogTrace("Entity [%d]: received \'EntityBellowSealevel\' event.", this->GetEntityId());
+		LogTrace("Entity [%d]: received \'EntityBellowSealevel\' event.", this->GetEntityId());
 
 		// diable this enity, if bellow sea level
 		this->SetActive(false);

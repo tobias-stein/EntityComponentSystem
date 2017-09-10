@@ -11,11 +11,12 @@
 
 namespace ECS
 {
+#if !ECS_DISABLE_LOGGING
 	Log::Logger* GetLogger(const char* logger)
 	{
 		return Log::Internal::LoggerManager::GetInstance().GetLogger(logger);
 	}
-
+#endif
 
 	namespace Memory
 	{

@@ -24,7 +24,7 @@ namespace ECS
 	{
 	protected:
 
-		Log::Logger* m_Logger;
+		DECLARE_LOGGER
 
 	public:
 
@@ -32,16 +32,17 @@ namespace ECS
 
 	protected:
 
-		System() : m_Logger(GetLogger(typeid(T).name()))
+		System()
 		{
-			m_Logger->LogInfo("System %s created.", typeid(T).name());
+			DEFINE_LOGGER(typeid(T).name())
+			LogInfo("System %s created.", typeid(T).name());
 		}
 
 	public:
 
 		virtual ~System()
 		{
-			m_Logger->LogInfo("System %s released.", typeid(T).name());
+			LogInfo("System %s released.", typeid(T).name());
 		}
 
 		virtual void Tick(float dt)

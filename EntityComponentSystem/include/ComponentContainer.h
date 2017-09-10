@@ -45,7 +45,7 @@ namespace ECS {
 
 		const size_t MAX_COMPONENTS;
 
-		static Log::Logger* s_Logger;
+		DECLARE_STATIC_LOGGER
 
 		ComponentAllocator* m_ComponentAllocator;
 
@@ -64,7 +64,7 @@ namespace ECS {
 
 		~ComponentContainer()
 		{
-			s_Logger->LogDebug("Destroy \'%s\' components ...", typeid(T).name());
+			LogInfo("Destroy \'%s\' components ...", typeid(T).name());
 
 			for (auto component : this->m_Components)
 			{
@@ -76,8 +76,7 @@ namespace ECS {
 		}
 
 
-		// Add component to list
-		//inline void AddComponent(T* const component)
+		// Add component to listinline void AddComponent(T* const component)
 		template<class ...P>
 		T* AddComponent(P&&... param)
 		{
@@ -93,7 +92,7 @@ namespace ECS {
 			}
 			else
 			{
-				s_Logger->LogError("Could not create new component (\'%s\')!", typeid(T).name());
+				LogError("Could not create new component (\'%s\')!", typeid(T).name());
 			}
 			
 			return component;
@@ -117,8 +116,7 @@ namespace ECS {
 		}
 	}; // class ComponentContainer
 
-	template<class T>
-	Log::Logger* ComponentContainer<T>::s_Logger = GetLogger("ComponentManager");
+	DEFINE_STATIC_LOGGER_TEMPLATE(ComponentContainer, T, "ComponentManager")
 
 }} // namespace ECS::Internal
 

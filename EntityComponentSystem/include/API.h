@@ -2,6 +2,20 @@
 /// File:	include\API.h.
 ///
 /// Summary:	API.
+/// 
+
+/*
+Preprocessor defines:
+
+	ECS_DISABLE_LOGGING			- Disable logging feature.
+
+
+
+*/
+
+
+
+
 
 #pragma once
 
@@ -30,8 +44,9 @@ namespace ECS
 	/// logger - 	The logger name.
 	///
 	/// Returns:	The logger.
+#if !ECS_DISABLE_LOGGING
 	ECS_API Log::Logger* GetLogger(const char* logger);
-
+#endif
 
 
 

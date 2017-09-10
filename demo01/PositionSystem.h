@@ -72,8 +72,8 @@ public:
 				// check if entity is bellow sea level
 				if (pos.y < 0.0f)
 				{
-					m_Logger->LogTrace("Entity [%d] is bellow sea level.", posComp->GetOwner()->GetEntityId());
-
+					//m_Logger->LogTrace("Entity [%d] is bellow sea level.", posComp->GetOwner()->GetEntityId());
+					LogTrace("Entity [%d] is bellow sea level.", posComp->GetOwner()->GetEntityId());
 					ECS::Event::EventHandler::GetInstance().Send<EntityBellowSeaLevelEvent>(posComp->GetOwner()->GetEntityId(), pos.y);
 				}
 			}
