@@ -9,27 +9,27 @@
 #include "RigidbodyComponent.h"
 
 class RigidBodyObject : 
-	public ECS::Entity, 
+	public ECS::Entity<RigidBodyObject>,
 	public ECS::Event::IEventListener
 {
 
 public:
-
+	
 	RigidBodyObject(Vec3_t& pos, float mass)
 	{
 		this->AddComponent<PositionComponent>(pos);
 		this->AddComponent<RigidBodyComponent>(mass);
 
 		this->RegisterEventCallback(&RigidBodyObject::OnEntityBellowSeaLevel);
+
 	}
 
 	~RigidBodyObject()
-	{}
+	{
+	}
 
 	inline void OnEntityBellowSeaLevel(const EntityBellowSeaLevelEvent* const event)
 	{
-		LogTrace("Entity [%d]: received \'EntityBellowSealevel\' event.", this->GetEntityId());
-
 		// diable this enity, if bellow sea level
 		this->SetActive(false);
 	}

@@ -32,41 +32,39 @@ namespace ECS
 
 	private:
 
-		using SystemArray		= std::vector<ISystem*>;
+		using SystemRegistry	= std::unordered_map<u64, ISystem*>;
 		using SystemAllocator	= Memory::Allocator::LinearAllocator;
 
 		static const size_t SYSTEM_MEMORY_CAPACITY = ECS_SYSTEM_MEMORY_CAPACITY;
 
 		SystemAllocator*	m_SystemAllocator;
 
-		SystemArray			m_Systems;
+		SystemRegistry		m_Systems;
 
 		// This class is not inteeded to be initialized
-		SystemManager();
 		SystemManager(const SystemManager&) = delete;
 		SystemManager& operator=(SystemManager&) = delete;	
 
 	public:
 
-		static inline SystemManager& GetInstance()
-		{
-			static SystemManager INSTANCE;
-			return INSTANCE;
-		}
-
+		SystemManager();
 		~SystemManager();
 		
 		template<class T, class... ARGS>
 		inline T* AddSystem(ARGS&&... systemArgs)
 		{
-			T* system = nullptr;
+			// avoid multiple registrations of the same system
+			auto it = this->m_Systems.find(T::STATIC_SYSTEM_TYPE_ID);
+			if (this->m_Systems.find(T::STATIC_SYSTEM_TYPE_ID) != this->m_Systems.end())
+				return (T*)it->second;
 
+			T* system = nullptr; 
 			void* pSystemMem = this->m_SystemAllocator->allocate(sizeof(T), alignof(T));
 			if (pSystemMem != nullptr)
 			{
 				// create new system
 				system = new (pSystemMem)T(std::forward<ARGS>(systemArgs)...);
-				m_Systems[T::STATIC_SYSTEM_TYPE_ID] = system;
+				this->m_Systems[T::STATIC_SYSTEM_TYPE_ID] = system;
 
 				LogInfo("System \'%s\' (%d bytes) created.", typeid(T).name(), sizeof(T));
 			}
@@ -82,8 +80,9 @@ namespace ECS
 		template<class T>
 		inline T* GetSystem() const
 		{
-			assert(T::STATIC_SYSTEM_TYPE_ID < util::Internal::FamilyTypeCounter<ISystem>::Get() && "Unknown system!");
-			return reinterpret_cast<T*>(this->m_Systems[T::STATIC_SYSTEM_TYPE_ID]);
+			auto it = this->m_Systems.find(T::STATIC_SYSTEM_TYPE_ID);
+
+			return it != this->m_Systems.end() ? (T*)it->second : nullptr;
 		}
 	};
 

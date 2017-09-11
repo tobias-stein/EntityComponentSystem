@@ -38,11 +38,10 @@ namespace ECS { namespace Event {
 
 		static const size_t EVENT_MEMORY_CAPACITY = ECS_EVENT_MEMORY_CAPACITY;
 	
-		DECLARE_STATIC_LOGGER
+		DECLARE_LOGGER
 
 	private:
-	
-		EventHandler();
+		
 		EventHandler(const EventHandler&);
 		EventHandler& operator=(EventHandler&);
 	
@@ -94,20 +93,12 @@ namespace ECS { namespace Event {
 	
 	public:
 	
+		EventHandler();
 		~EventHandler();
-	
-		
-		static inline EventHandler& GetInstance()
-		{
-			// Singleton
-			static EventHandler INSTANCE;
-			return INSTANCE;
-		}
 	
 		// clear buffer, that is, simply reset index buffer
 		inline void ClearEventBuffer()
 		{
-			//this->m_EventMemoryBufferIndex = this->m_EventMemoryBuffer;
 			this->m_EventMemoryAllocator->clear();
 			this->m_EventStorage.clear();
 		}
@@ -143,7 +134,7 @@ namespace ECS { namespace Event {
 		// dispatches all stores events and clears buffer
 		void DispatchEvents()
 		{
-			LogDebug("Dispatching %d event(s) ...", this->m_EventStorage.size());
+			//LogTrace("Dispatching %d event(s) ...", this->m_EventStorage.size());
 			for (auto event : this->m_EventStorage)
 			{
 				if (event == nullptr)

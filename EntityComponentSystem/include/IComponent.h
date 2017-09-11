@@ -19,18 +19,18 @@ namespace ECS
 	using ComponentTypeId = util::TypeId;
 
 
-	class Entity;
+	class IEntity;
 
 	template<class T>
 	class Component;
 
 	class IComponent : public util::IdManager
 	{
-		friend class Entity;
+		friend class IEntity;
 
 	protected:
 		
-		Entity* m_Owner;
+		IEntity* m_Owner;
 
 		bool m_Enabled;
 
@@ -59,7 +59,7 @@ namespace ECS
 			return this->m_Id;
 		}
 
-		inline Entity* GetOwner() const
+		inline IEntity* GetOwner() const
 		{
 			return this->m_Owner;
 		}

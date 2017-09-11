@@ -14,8 +14,7 @@
 namespace ECS {
 
 
-	ComponentManager::ComponentManager() : 
-		m_ComponentContainerRegistry(util::Internal::FamilyTypeCounter<IComponent>::Get())
+	ComponentManager::ComponentManager()
 	{
 		DEFINE_LOGGER("ComponentManager")
 		LogInfo("Initialize ComponentManager!");
@@ -25,11 +24,11 @@ namespace ECS {
 	{
 		for (auto cc : this->m_ComponentContainerRegistry)
 		{
-			cc->~IComponentContainer();
-			cc = nullptr;
+			cc.second->~IComponentContainer();
+			cc.second = nullptr;
 		}
 
-		LogInfo("Realse ComponentManager!");
+		LogInfo("Release ComponentManager!");
 	}
 
 } // namespace ECS

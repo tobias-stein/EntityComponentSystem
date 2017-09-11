@@ -48,7 +48,7 @@ namespace ECS { namespace Event {
 	
 			virtual inline void invoke(const IEvent* const e) override
 			{
-				if (e->GetReceiver() == INVALID_ENITYID || e->GetReceiver() == this->m_Receiver->GetEntityId())
+				if (e->GetReceiver() == INVALID_ENTITY_ID || e->GetReceiver() == this->m_Receiver->GetEntityId())
 				{
 					(m_Receiver->*m_Callback)(reinterpret_cast<const EventType* const>(e));
 				}

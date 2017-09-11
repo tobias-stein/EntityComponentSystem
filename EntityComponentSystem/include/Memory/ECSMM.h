@@ -29,7 +29,7 @@ namespace ECS { namespace Memory { namespace Internal {
 
 		using StackAllocator = Allocator::StackAllocator;
 
-		DECLARE_STATIC_LOGGER
+		DECLARE_LOGGER
 
 	public:	
 
@@ -44,21 +44,13 @@ namespace ECS { namespace Memory { namespace Internal {
 		StackAllocator*	m_MemoryAllocator;
 
 
-		MemoryManager();
 		MemoryManager(const MemoryManager&) = delete;
 		MemoryManager& operator=(MemoryManager&) = delete;
-
-		static inline std::shared_ptr<MemoryManager> GetInstance()
-		{
-			// Singleton
-			static std::shared_ptr<MemoryManager> INSTANCE{ new MemoryManager };
-			return INSTANCE;
-		}
 
 	public:
 
 		
-
+		MemoryManager();
 		~MemoryManager();
 
 

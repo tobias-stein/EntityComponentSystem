@@ -8,26 +8,21 @@
 	All Rights Reserved. (c) Copyright 2016.
 */
 
-#include "Entity.h"
+#include "IEntity.h"
+#include "EntityManager.h"
 #include "IComponent.h"
 #include "util/FamilyTypeCounter.h"
 
 namespace ECS
 {
-
-	DEFINE_STATIC_LOGGER(Entity, "EntityManager")
-
-	// first valid entity id
-	EntityId Entity::s_NextValidEntityId{ 0u };
-
-	Entity::Entity() :
-		m_Id(Entity::s_NextValidEntityId++),
+	DEFINE_STATIC_LOGGER(IEntity, "Entity")
+		
+	IEntity::IEntity() :
+		m_Id(ECSEntityManager->GetNewEnityId()),
 		m_ComponentBitMask(util::Internal::FamilyTypeCounter<IComponent>::Get()),
 		m_Components(util::Internal::FamilyTypeCounter<IComponent>::Get()),
 		m_Active(true)
-	{
-		LogDebug("Create new Entity [ENTITY-ID: %d]", m_Id);
-		
+	{		
 		// At this point all implemented component types will have there id set,
 		// because they are declared static
 
@@ -38,10 +33,8 @@ namespace ECS
 		}
 	}
 
-	Entity::~Entity()
+	IEntity::~IEntity()
 	{
-		LogDebug("Destroy Entity [ENTITY-ID: %d]", m_Id);
-
 		this->m_ComponentBitMask.clear();
 		this->m_Components.clear();
 	}

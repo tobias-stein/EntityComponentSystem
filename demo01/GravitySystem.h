@@ -21,12 +21,12 @@ public:
 
 	GravitySystem() :
 		m_G(0.0f, -9.81f, 0.0f),
-		m_RigidbodyComponents(ECS::ComponentManager::GetInstance().GetComponentList<RigidBodyComponent>())
+		m_RigidbodyComponents(ECS::ECSComponentManager->GetComponentList<RigidBodyComponent>())
 	{}
 
 	GravitySystem(Vec3_t g) :
 		m_G(g),
-		m_RigidbodyComponents(ECS::ComponentManager::GetInstance().GetComponentList<RigidBodyComponent>())
+		m_RigidbodyComponents(ECS::ECSComponentManager->GetComponentList<RigidBodyComponent>())
 	{}
 
 	virtual ~GravitySystem()

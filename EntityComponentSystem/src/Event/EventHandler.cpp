@@ -10,12 +10,11 @@
 
 #include "Event/EventHandler.h"
 
-namespace ECS { namespace Event {
-
-	DEFINE_STATIC_LOGGER(EventHandler, "EventHandler")
+namespace ECS { namespace Event {	
 
 	EventHandler::EventHandler()
 	{
+		DEFINE_LOGGER("EventHandler")
 		LogInfo("Initialize EventHandler!");
 	
 		// allocate memory from global memory manager
@@ -40,7 +39,7 @@ namespace ECS { namespace Event {
 		delete this->m_EventMemoryAllocator;
 		this->m_EventMemoryAllocator = nullptr;
 	
-		LogInfo("Realse EventHandler!");
+		LogInfo("Relealse EventHandler!");
 	}
 
 }} // namespace ECS::Event

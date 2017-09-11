@@ -12,7 +12,7 @@ public:
 
 
 	EntityBellowSeaLevelEvent(ECS::EntityId id, float level) :
-		Event(ECS::INVALID_ENITYID, id),
+		Event(ECS::INVALID_ENTITY_ID, id),
 		currentHeight(level)
 	{}
 };

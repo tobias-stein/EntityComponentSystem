@@ -17,8 +17,8 @@ const int MAX_ENTITIES = 100;
 int main(const int argc, const char* argv[])
 {
 	// get systems
-	PositionSystem* posSys = SystemManager::GetInstance().AddSystem<PositionSystem>();
-	GravitySystem* gravSys = SystemManager::GetInstance().AddSystem<GravitySystem>(G);
+	PositionSystem* posSys = ECSSystemManager->AddSystem<PositionSystem>();
+	GravitySystem* gravSys = ECSSystemManager->AddSystem<GravitySystem>(G);
 
 	// create entities
 	RigidBodyObject* rbo[MAX_ENTITIES];
@@ -33,15 +33,18 @@ int main(const int argc, const char* argv[])
 
 	for (int i = 0; i < MAX_FRAMES; ++i)
 	{
-		Event::EventHandler::GetInstance().DispatchEvents();
+		ECSEventHandler->DispatchEvents();
 
 		gravSys->Tick(FPS);
 		posSys->Tick(FPS);
 	}
 
 	// destroy entities
-	for (int i = 0; i < MAX_ENTITIES; ++i)
-		delete rbo[i];
+	// actually this step is not necessary since the EntityManager will take care of releasing all entities
+	//for (int i = 0; i < MAX_ENTITIES; ++i)
+	//	delete rbo[i];
+
+	ECS::Terminate();
 
 	return 0;
 }

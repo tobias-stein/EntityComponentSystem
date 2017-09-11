@@ -165,6 +165,7 @@
     <ClInclude Include="include\Event\IEventDispatcher.h" />
     <ClInclude Include="include\Event\IEventListener.h" />
     <ClInclude Include="include\IComponent.h" />
+    <ClInclude Include="include\IEntity.h" />
     <ClInclude Include="include\ISystem.h" />
     <ClInclude Include="include\Log\Logger.h" />
     <ClInclude Include="include\Log\LoggerMacro.h" />
@@ -183,7 +184,8 @@
   <ItemGroup>
     <ClCompile Include="src\API.cpp" />
     <ClCompile Include="src\ComponentManager.cpp" />
-    <ClCompile Include="src\Entity.cpp" />
+    <ClCompile Include="src\IEntity.cpp" />
+    <ClCompile Include="src\EntityManager.cpp" />
     <ClCompile Include="src\Event\EventHandler.cpp" />
     <ClCompile Include="src\Event\IEventListener.cpp" />
     <ClCompile Include="src\Log\Logger.cpp" />

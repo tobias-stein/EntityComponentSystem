@@ -13,11 +13,12 @@ Preprocessor defines:
 
 */
 
-
-
-
-
+#ifndef __ECS_API_H__
+#define __ECS_API_H__
 #pragma once
+
+
+#define ENITY_ALLOCATION_AMOUNT 512
 
 
 #include "Platform.h"
@@ -26,9 +27,62 @@ Preprocessor defines:
 
 
 
-
 namespace ECS 
 {
+	namespace Log {
+
+		namespace Internal
+		{
+
+			class LoggerManager;
+		}
+	}
+
+	namespace Memory
+	{
+		namespace Internal
+		{
+			class MemoryManager;
+		}
+	}
+
+	namespace Event
+	{
+		class EventHandler;
+	}
+
+
+	class EntityManager;
+	class SystemManager;
+	class ComponentManager;
+
+
+
+	extern Log::Internal::LoggerManager*		ECSLoggerManager;
+
+	extern Memory::Internal::MemoryManager*		ECSMemoryManager;
+
+	ECS_API extern EntityManager*				ECSEntityManager;
+
+	ECS_API extern ComponentManager*			ECSComponentManager;
+
+	ECS_API extern SystemManager*				ECSSystemManager;
+
+	ECS_API extern Event::EventHandler*			ECSEventHandler;
+
+
+
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:	ECS_API void Terminate();
+	///
+	/// Summary:	Terminates this ECS framework.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	11/09/2017
+	///-------------------------------------------------------------------------------------------------
+
+	ECS_API void Terminate();
 
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	Log::Logger* ECS_API GetLogger(const char* logger);
@@ -49,14 +103,8 @@ namespace ECS
 #endif
 
 
-
 	namespace Memory
 	{
-		namespace Internal
-		{
-			class MemoryManager;
-		}
-
 		///-------------------------------------------------------------------------------------------------
 		/// Class:	GlobalMemoryUser
 		///
@@ -71,12 +119,11 @@ namespace ECS
 		{
 		private:
 
-			std::shared_ptr<Internal::MemoryManager> ECS_MEMORY_MANAGER;
+			Internal::MemoryManager* ECS_MEMORY_MANAGER;
 
 		public:
 
 			GlobalMemoryUser();
-
 			virtual ~GlobalMemoryUser();
 
 			inline const void* Allocate(size_t memSize, const char* user = nullptr);
@@ -86,3 +133,5 @@ namespace ECS
 	} // namespace ECS::Memory
 
 } // namespace ECS
+
+#endif // __ECS_API_H__

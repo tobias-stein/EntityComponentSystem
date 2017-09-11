@@ -32,7 +32,7 @@ namespace ECS
 			inline void RegisterEventCallback(void(C::*Callback)(const E* const))
 			{
 				Internal::IEventDelegate* eventDelegate = new Internal::EventDelegate<C, E>(static_cast<C*>(this), Callback);
-				EventHandler::GetInstance().AddEventCallback<E>(eventDelegate);
+				ECSEventHandler->AddEventCallback<E>(eventDelegate);
 			}
 
 			// TODO!
@@ -41,7 +41,7 @@ namespace ECS
 			inline void UnregisterEventCallback(void(C::*Callback)(const E* const))
 			{
 				Internal::EventDelegateId eventDelegateId = (Internal::EventDelegateId)&(*static_cast<C*>(this));
-				EventHandler::GetInstance().RemoveEventCallback<E>(eventDelegateId);
+				ECSEventHandler->RemoveEventCallback<E>(eventDelegateId);
 			}
 		};
 

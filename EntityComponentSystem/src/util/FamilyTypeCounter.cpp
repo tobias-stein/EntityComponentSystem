@@ -12,8 +12,10 @@
 
 namespace ECS
 {
-	class ISystem;
+	class IEntity;
 	class IComponent;
+	class ISystem;
+	
 
 	namespace Event
 	{
@@ -22,12 +24,14 @@ namespace ECS
 
 	namespace util { namespace Internal {
 
-		u64 FamilyTypeCounter<IComponent>::s_count = 0u;
-		u64 FamilyTypeCounter<ISystem>::s_count = 0u;
-		u64 FamilyTypeCounter<Event::IEvent> ::s_count = 0u;
-
-		template class FamilyTypeCounter<ISystem>;
+		u64 FamilyTypeCounter<IEntity> ::s_count		= 0u;
+		u64 FamilyTypeCounter<IComponent>::s_count		= 0u;
+		u64 FamilyTypeCounter<ISystem>::s_count			= 0u;
+		u64 FamilyTypeCounter<Event::IEvent> ::s_count	= 0u;
+		
+		template class FamilyTypeCounter<IEntity>;
 		template class FamilyTypeCounter<IComponent>;
+		template class FamilyTypeCounter<ISystem>;		
 		template class FamilyTypeCounter<Event::IEvent>;
 	}}
 

@@ -12,10 +12,10 @@
 
 namespace ECS { namespace Memory { namespace Internal {
 
-	DEFINE_STATIC_LOGGER(MemoryManager, "MemoryManager")
-
+	
 	MemoryManager::MemoryManager()
-	{		
+	{	
+		DEFINE_LOGGER("MemoryManager")
 		LogInfo("Initialize MemoryManager!");
 
 		// allocate global memory

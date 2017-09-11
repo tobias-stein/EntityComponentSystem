@@ -12,142 +12,56 @@
 #define __ENTITY_H__
 
 
-#include "API.h"
-
-#include "util/IdManager.h"
-
-#include "ComponentManager.h"
+#include "IEntity.h"
 
 namespace ECS {
 
-	using EntityId = util::ObjectId;
+	///-------------------------------------------------------------------------------------------------
+	/// Class:	Entity
+	///
+	/// Summary:	Base Entity class.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	11/09/2017
+	///
+	/// Typeparams:
+	/// E - 	Type of the e.
+	///-------------------------------------------------------------------------------------------------
 
-	static const EntityId INVALID_ENTITY_ID = util::INVALID_OBJECT_ID;
-
-	class ECS_API Entity
+	template<class E>
+	class Entity : public IEntity
 	{
-	protected:
+	public:
 
-		DECLARE_STATIC_LOGGER
-
-	private:
-
-		static EntityId s_NextValidEntityId;
-
-	protected:
-
-		// set on create
-		const EntityId				m_Id;
-
-		// Compontent mask, sets a bit for any component type this entity owns
-		std::vector<bool>			m_ComponentBitMask;
-
-		// Component array
-		std::vector<IComponent*>	m_Components;
-
-		// if false, entity won't be updated
-		bool						m_Active;
+		static const EntityTypeId STATIC_ENTITY_TYPE_ID;
 
 	public:
 
-		Entity();
-		virtual ~Entity();
+		Entity()
+		{}
 
+		virtual ~Entity()
+		{}
 
-		// ACCESSOR
-		inline const EntityId GetEntityId() const
+		static const EntityTypeId GetStaticEntityTypeId()
 		{
-			return this->m_Id;
+			return STATIC_ENTITY_TYPE_ID;
 		}
 
-		// Component management: has, get, add, remove methods
-
-		// Check if entity has component of type T. 
-		template<class T>
-		bool HasComponent() const
-		{
-			return this->m_ComponentBitMask[T::STATIC_COMPONENT_TYPE_ID];
+		inline void* operator new(size_t memSize)
+		{	
+			return ECSEntityManager->CreateEntity<E>();
 		}
 
-		template<class T>
-		T* GetComponent() const
+		inline void operator delete(void* memPtr)
 		{
-			return HasComponent<T>() ? reinterpret_cast<T*>(this->m_Components[T::STATIC_COMPONENT_TYPE_ID]) : nullptr;
-		}
-
-		template<class T, class ...P>
-		T* AddComponent(P&&... param)
-		{
-			if (HasComponent<T>())
-			{
-				assert(false && "Entiy already has component of this type.");
-			}
-
-			
-
-			// Alloc and init component of type T
-			//T* c = new T(std::forward<P>(param)...);
-
-			// add component to corresponding system's list
-			//ComponentManager<T>::GetInstance().AddComponent(c);
-			//T* c = ComponentContainer<T>::GetInstance().AddComponent(std::forward<P>(param)...);
-			T* c = ComponentManager::GetInstance().AddComponent<T>(std::forward<P>(param)...);
-
-
-			// add component to entity's component array and set bit mask
-			this->m_ComponentBitMask[T::STATIC_COMPONENT_TYPE_ID] = true;
-			this->m_Components[T::STATIC_COMPONENT_TYPE_ID] = c;
-
-			// set this entity as components owner
-			c->m_Owner = this;
-
-			return c;
-		}
-
-		template<class T>
-		void RemoveComponent()
-		{
-			if (HasComponent<T>())
-			{
-				//// remove component to corresponding system's list
-				//ComponentContainer<T>::GetInstance().RemoveComponent(this->m_Components[T::STATIC_COMPONENT_TYPE_ID]->As<T>());
-
-				//// clear owner
-				//this->m_Components[T::STATIC_COMPONENT_TYPE_ID]->m_Owner = nullptr;
-
-				//// free component
-				//delete this->m_Components[T::STATIC_COMPONENT_TYPE_ID];
-
-				//// remove component from entity's component array and clear bit mask
-				//this->m_ComponentBitMask[T::STATIC_COMPONENT_TYPE_ID] = false;
-				//this->m_Components[T::STATIC_COMPONENT_TYPE_ID] = nullptr;
-			}
-		}
-
-		// COMPARE ENTITIES
-
-		inline bool operator==(const Entity& rhs) const
-		{
-			return this->m_Id == rhs.m_Id;
-		}
-
-		inline bool operator!=(const Entity& rhs) const
-		{
-			return this->m_Id != rhs.m_Id;
-		}			
-
-
-		// ACCESORS
-		inline void SetActive(bool active)
-		{
-			this->m_Active = active;
-		}
-
-		inline bool IsActive() const
-		{
-			return this->m_Active;
+			ECSEntityManager->DestroyEntity<E>(memPtr);
 		}
 	};
+
+	template<class T>
+	const EntityTypeId Entity<T>::STATIC_ENTITY_TYPE_ID = util::Internal::FamilyTypeCounter<IEntity>::Increment();
 }
 
 #endif // __ENTITY_H__

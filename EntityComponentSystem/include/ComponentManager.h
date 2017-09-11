@@ -1,11 +1,11 @@
 /*
-	Author : Tobias Stein
-	Date   : 7th September, 2017
-	File   : ComponentManager.h
-	
-	Manages all component container.
+Author : Tobias Stein
+Date   : 7th September, 2017
+File   : ComponentManager.h
 
-	All Rights Reserved. (c) Copyright 2016.
+Manages all component container.
+
+All Rights Reserved. (c) Copyright 2016.
 */
 
 #ifndef __COMPONENT_MANAGER_H__
@@ -26,11 +26,10 @@ namespace ECS
 
 		using ComponentAllocator = Memory::Allocator::PoolAllocator;
 
-		using ComponentContainerRegistry = std::vector<Internal::IComponentContainer*>;
+		using ComponentContainerRegistry = std::unordered_map<ComponentTypeId, Internal::IComponentContainer*>;
 
 		DECLARE_LOGGER
 
-		ComponentManager();
 		ComponentManager(const ComponentManager&) = delete;
 		ComponentManager& operator=(ComponentManager&) = delete;
 
@@ -40,18 +39,24 @@ namespace ECS
 		template<class T>
 		inline Internal::ComponentContainer<T>* GetComponentContainer()
 		{
-			Internal::ComponentContainer<T>* cc = static_cast<Internal::ComponentContainer<T>*>(this->m_ComponentContainerRegistry[T::STATIC_COMPONENT_TYPE_ID]);
-			if (cc == nullptr)
+			ComponentTypeId CID = T::STATIC_COMPONENT_TYPE_ID;
+
+			auto it = this->m_ComponentContainerRegistry.find(CID);
+			Internal::ComponentContainer<T>* cc = nullptr;
+
+			if (it == this->m_ComponentContainerRegistry.end())
 			{
 				const size_t memSize = sizeof(T) * ComponentManager::MAX_T_COMPONENTS;
 
 				ComponentAllocator* allocator = new ComponentAllocator(memSize, Allocate(memSize, "ComponentManager"), sizeof(T), alignof(T));
 
 				cc = new Internal::ComponentContainer<T>(allocator, ComponentManager::MAX_T_COMPONENTS);
-				this->m_ComponentContainerRegistry[T::STATIC_COMPONENT_TYPE_ID] = cc;
+				this->m_ComponentContainerRegistry[CID] = cc;
 
 				//LogDebug("New component container for \'%s\' created.", typeid(T).name()));
 			}
+			else
+				cc = static_cast<Internal::ComponentContainer<T>*>(it->second);
 
 			assert(cc != nullptr && "Failed to create ComponentContainer<T>!");
 
@@ -60,13 +65,8 @@ namespace ECS
 
 
 	public:
-
-		static inline ComponentManager& GetInstance()
-		{
-			static ComponentManager INSTANCE;
-			return INSTANCE;
-		}
-
+		
+		ComponentManager();
 		~ComponentManager();
 
 		template<class T, class ...P>
@@ -79,9 +79,10 @@ namespace ECS
 		template<class T>
 		inline void RemoveComponent(T* const component)
 		{
-			Internal::ComponentContainer<T>* cc = static_cast<Internal::ComponentContainer<T>*>(this->m_ComponentContainerRegistry[T::STATIC_COMPONENT_TYPE_ID]);
-			if(cc != nullptr)
-				cc->remove(component);
+			// TODO!
+			//Internal::ComponentContainer<T>* cc = static_cast<Internal::ComponentContainer<T>*>(this->m_ComponentContainerRegistry[T::STATIC_COMPONENT_TYPE_ID]);
+			//if(cc != nullptr)
+			//	cc->remove(component);
 		}
 
 		// get component list

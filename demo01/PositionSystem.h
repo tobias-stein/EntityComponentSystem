@@ -35,9 +35,9 @@ private:
 	PositionComponents& m_PositionComponents;
 
 public:
-
-	PositionSystem() :
-		m_PositionComponents(ECS::ComponentManager::GetInstance().GetComponentList<PositionComponent>())
+	
+	PositionSystem() :       
+		m_PositionComponents(ECS::ECSComponentManager->GetComponentList<PositionComponent>())
 	{}
 
 	virtual ~PositionSystem()
@@ -74,7 +74,7 @@ public:
 				{
 					//m_Logger->LogTrace("Entity [%d] is bellow sea level.", posComp->GetOwner()->GetEntityId());
 					LogTrace("Entity [%d] is bellow sea level.", posComp->GetOwner()->GetEntityId());
-					ECS::Event::EventHandler::GetInstance().Send<EntityBellowSeaLevelEvent>(posComp->GetOwner()->GetEntityId(), pos.y);
+					ECS::ECSEventHandler->Send<EntityBellowSeaLevelEvent>(posComp->GetOwner()->GetEntityId(), pos.y);
 				}
 			}
 		}

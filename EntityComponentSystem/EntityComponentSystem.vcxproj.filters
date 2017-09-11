@@ -132,11 +132,11 @@
     <ClInclude Include="include\Log\LoggerMacro.h">
       <Filter>Header Files\Log</Filter>
     </ClInclude>
+    <ClInclude Include="include\IEntity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Entity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Event\EventHandler.cpp">
       <Filter>Source Files\Event</Filter>
     </ClCompile>
@@ -178,6 +178,12 @@
     </ClCompile>
     <ClCompile Include="src\Log\LoggerManager.cpp">
       <Filter>Source Files\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EntityManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IEntity.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

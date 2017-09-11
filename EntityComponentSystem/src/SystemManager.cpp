@@ -21,29 +21,26 @@ namespace ECS
 
 		// acquire global memory
 		this->m_SystemAllocator = new SystemAllocator(SystemManager::SYSTEM_MEMORY_CAPACITY, Allocate(SystemManager::SYSTEM_MEMORY_CAPACITY, "SystemManager"));
-
-		this->m_Systems.resize(util::Internal::FamilyTypeCounter<ISystem>::Get());
-
-		for (auto system : this->m_Systems)
-			system = nullptr;
 	}
 
 	SystemManager::~SystemManager()
 	{
 		for (auto system : this->m_Systems)
 		{
-			system->~ISystem();
-			system = nullptr;
+			system.second->~ISystem();
+			system.second = nullptr;
 		}
+
+		m_Systems.clear();
 
 		// free allocated global memory
 		Free((void*)this->m_SystemAllocator->GetFirstMemoryAddress());
 		delete this->m_SystemAllocator;
 		this->m_SystemAllocator = nullptr;
 
-		m_Systems.clear();
+		
 
-		LogInfo("Realse SystemManager!");
+		LogInfo("Release SystemManager!");
 	}
 
 } // namespace ECS
