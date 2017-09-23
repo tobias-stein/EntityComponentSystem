@@ -48,16 +48,6 @@ namespace ECS {
 		{
 			return STATIC_ENTITY_TYPE_ID;
 		}
-
-		inline void* operator new(size_t memSize)
-		{	
-			return ECSEntityManager->CreateEntity<E>();
-		}
-
-		inline void operator delete(void* memPtr)
-		{
-			ECSEntityManager->DestroyEntity<E>(memPtr);
-		}
 	};
 
 	template<class T>

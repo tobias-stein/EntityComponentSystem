@@ -8,8 +8,8 @@
 	All Rights Reserved. (c) Copyright 2016.
 */
 
-#ifndef __COUNT_BY_TYPE_H__
-#define __COUNT_BY_TYPE_H__
+#ifndef __FAMILY_TYPE_COUNTER_H__
+#define __FAMILY_TYPE_COUNTER_H__
 
 
 #include "API.h"
@@ -36,4 +36,4 @@ namespace ECS { namespace util { namespace Internal {
 
 }}} // namespace ECS::util::Internal
 
-#endif // __COUNT_BY_TYPE_H__
+#endif // __FAMILY_TYPE_COUNTER_H__

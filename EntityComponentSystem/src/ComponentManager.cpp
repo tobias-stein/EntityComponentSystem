@@ -13,7 +13,6 @@
 
 namespace ECS {
 
-
 	ComponentManager::ComponentManager()
 	{
 		DEFINE_LOGGER("ComponentManager")

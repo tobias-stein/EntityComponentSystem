@@ -17,14 +17,14 @@ const int MAX_ENTITIES = 100;
 int main(const int argc, const char* argv[])
 {
 	// get systems
-	PositionSystem* posSys = ECSSystemManager->AddSystem<PositionSystem>();
-	GravitySystem* gravSys = ECSSystemManager->AddSystem<GravitySystem>(G);
+	PositionSystem* posSys = ECS_Engine->GetSystemManager()->AddSystem<PositionSystem>();
+	GravitySystem* gravSys = ECS_Engine->GetSystemManager()->AddSystem<GravitySystem>(G);
 
 	// create entities
 	RigidBodyObject* rbo[MAX_ENTITIES];
 
 	for (int i = 0; i < MAX_ENTITIES; ++i)
-		rbo[i] = new RigidBodyObject(Vec3_t(0.0f, i, 0.0f), 1.0f);
+		rbo[i] = ECS_Engine->GetEntityManager()->CreateEntity<RigidBodyObject>(Vec3_t(0.0f, i, 0.0f), 1.0f);
 
 
 	// Update system 200 frames
@@ -33,16 +33,8 @@ int main(const int argc, const char* argv[])
 
 	for (int i = 0; i < MAX_FRAMES; ++i)
 	{
-		ECSEventHandler->DispatchEvents();
-
-		gravSys->Tick(FPS);
-		posSys->Tick(FPS);
+		ECS_Engine->Update();
 	}
-
-	// destroy entities
-	// actually this step is not necessary since the EntityManager will take care of releasing all entities
-	//for (int i = 0; i < MAX_ENTITIES; ++i)
-	//	delete rbo[i];
 
 	ECS::Terminate();
 

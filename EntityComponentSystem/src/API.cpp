@@ -9,60 +9,37 @@
 #include "Log/LoggerManager.h"
 #include "Memory/ECSMM.h"
 
-#include "Event/EventHandler.h"
-
-#include "EntityManager.h"
-#include "ComponentManager.h"
-#include "SystemManager.h"
+#include "Engine.h"
 
 namespace ECS
 {
+	namespace Log {
 
-	// Create global manager objects.
-	
-	Log::Internal::LoggerManager* ECSLoggerManager		= new Log::Internal::LoggerManager();
-	Memory::Internal::MemoryManager* ECSMemoryManager	= new Memory::Internal::MemoryManager();
-	Event::EventHandler* ECSEventHandler				= new Event::EventHandler();
-	SystemManager* ECSSystemManager						= new SystemManager();
-	ComponentManager* ECSComponentManager				= new ComponentManager();	
-	EntityManager* ECSEntityManager						= new EntityManager();
-	
-	
+		namespace Internal {
 
-	
+			LoggerManager*				ECSLoggerManager		= new LoggerManager();
 
-	void Terminate()
-	{
-		delete ECSEntityManager;
-		ECSEntityManager = nullptr;
-
-		delete ECSComponentManager;
-		ECSComponentManager = nullptr;
-
-		delete ECSSystemManager;
-		ECSSystemManager = nullptr;
-
-		delete ECSEventHandler;
-		ECSEventHandler = nullptr;
-
-		delete ECSMemoryManager;
-		ECSMemoryManager = nullptr;
-
-		delete ECSLoggerManager;
-		ECSLoggerManager = nullptr;
-	}
 
 #if !ECS_DISABLE_LOGGING
-	Log::Logger* GetLogger(const char* logger)
-	{
-		return ECSLoggerManager->GetLogger(logger);
-	}
+			Log::Logger* GetLogger(const char* logger)
+			{
+				return ECSLoggerManager->GetLogger(logger);
+			}
 #endif
+		}
 
-	namespace Memory
-	{
+	} // namespace Log
 
-		GlobalMemoryUser::GlobalMemoryUser() : ECS_MEMORY_MANAGER(ECSMemoryManager)
+
+	namespace Memory { 
+
+		namespace Internal {
+
+			MemoryManager*				ECSMemoryManager		= new Memory::Internal::MemoryManager();
+		}
+
+
+		GlobalMemoryUser::GlobalMemoryUser() : ECS_MEMORY_MANAGER(Internal::ECSMemoryManager)
 		{}
 
 		GlobalMemoryUser::~GlobalMemoryUser()
@@ -77,6 +54,21 @@ namespace ECS
 		{
 			ECS_MEMORY_MANAGER->Free(pMem);
 		}
-	} // namespace ECS::Memory
 
+	} // namespace Memory
+
+	ECSEngine*		ECS_Engine = new ECSEngine();
+
+
+	void Terminate()
+	{
+		delete ECS_Engine;
+		ECS_Engine = nullptr;
+
+		delete Memory::Internal::ECSMemoryManager;
+		Memory::Internal::ECSMemoryManager = nullptr;
+
+		delete Log::Internal::ECSLoggerManager;
+		Log::Internal::ECSLoggerManager = nullptr;
+	}
 } // namespace ECS

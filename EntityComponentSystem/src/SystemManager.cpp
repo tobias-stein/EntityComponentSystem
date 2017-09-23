@@ -37,10 +37,11 @@ namespace ECS
 		Free((void*)this->m_SystemAllocator->GetFirstMemoryAddress());
 		delete this->m_SystemAllocator;
 		this->m_SystemAllocator = nullptr;
-
 		
-
 		LogInfo("Release SystemManager!");
 	}
+
+	void SystemManager::Update()
+	{}
 
 } // namespace ECS

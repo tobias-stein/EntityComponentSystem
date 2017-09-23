@@ -18,21 +18,24 @@
 namespace ECS
 {
 	using EntityTypeId	= util::TypeId;
-	using EntityId		= util::ObjectId;
+
+	using EntityId = util::ObjectId;
 
 	static const EntityId INVALID_ENTITY_ID = util::INVALID_OBJECT_ID;
 
 
 	class ECS_API IEntity
 	{
+	private:
+
+		// set on create
+		EntityId					m_Id;
+
+		friend class EntityManager;
 
 	protected:
 
 		DECLARE_STATIC_LOGGER
-
-
-		// set on create
-		EntityId					m_Id;
 
 		// Compontent mask, sets a bit for any component type this entity owns
 		std::vector<bool>			m_ComponentBitMask;
@@ -78,7 +81,7 @@ namespace ECS
 			}
 
 			// add component
-			T* c = ECSComponentManager->AddComponent<T>(std::forward<P>(param)...);
+			T* c = ECS_Engine->ECS_ComponentManager->AddComponent<T>(std::forward<P>(param)...);
 
 
 			// add component to entity's component array and set bit mask
@@ -97,7 +100,7 @@ namespace ECS
 			if (HasComponent<T>())
 			{
 				// remove component
-				ECSComponentManager->RemoveComponent<T>(this->m_Components[T::STATIC_COMPONENT_TYPE_ID]->As<T>());
+				ECS_Engine->ECS_ComponentManager->RemoveComponent<T>(this->m_Components[T::STATIC_COMPONENT_TYPE_ID]->As<T>());
 
 				// remove component from entity's component array and clear bit mask
 				this->m_ComponentBitMask[T::STATIC_COMPONENT_TYPE_ID] = false;

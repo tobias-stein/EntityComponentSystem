@@ -155,6 +155,7 @@
     <ClInclude Include="include\ComponentContainer.h" />
     <ClInclude Include="include\ComponentManager.h" />
     <ClInclude Include="include\ECS.h" />
+    <ClInclude Include="include\Engine.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\EntityManager.h" />
     <ClInclude Include="include\Event\Event.h" />
@@ -184,6 +185,7 @@
   <ItemGroup>
     <ClCompile Include="src\API.cpp" />
     <ClCompile Include="src\ComponentManager.cpp" />
+    <ClCompile Include="src\Engine.cpp" />
     <ClCompile Include="src\IEntity.cpp" />
     <ClCompile Include="src\EntityManager.cpp" />
     <ClCompile Include="src\Event\EventHandler.cpp" />

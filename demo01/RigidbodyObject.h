@@ -20,7 +20,7 @@ public:
 		this->AddComponent<PositionComponent>(pos);
 		this->AddComponent<RigidBodyComponent>(mass);
 
-		this->RegisterEventCallback(&RigidBodyObject::OnEntityBellowSeaLevel);
+		RegisterEventCallback(&RigidBodyObject::OnEntityBellowSeaLevel);
 
 	}
 

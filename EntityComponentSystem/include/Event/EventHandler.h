@@ -24,10 +24,10 @@
 
 namespace ECS { namespace Event {
 
-	class ECS_API EventHandler : protected Memory::GlobalMemoryUser
+	class ECS_API EventHandler : Memory::GlobalMemoryUser
 	{
 		// allow IEventListener access private methods for Add/Remove callbacks
-		friend class IEventListener;
+		friend class ECSEngine;
 	
 
 		using EventDispatcherMap = std::unordered_map<EventTypeId, Internal::IEventDispatcher*>;

@@ -18,7 +18,7 @@ namespace ECS
 	DEFINE_STATIC_LOGGER(IEntity, "Entity")
 		
 	IEntity::IEntity() :
-		m_Id(ECSEntityManager->GetNewEnityId()),
+		m_Id(INVALID_ENTITY_ID),
 		m_ComponentBitMask(util::Internal::FamilyTypeCounter<IComponent>::Get()),
 		m_Components(util::Internal::FamilyTypeCounter<IComponent>::Get()),
 		m_Active(true)

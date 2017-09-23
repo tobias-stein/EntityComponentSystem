@@ -13,6 +13,7 @@
 
 #include "API.h"
 
+#include "Engine.h"
 
 #include "Entity.h"
 #include "Component.h"

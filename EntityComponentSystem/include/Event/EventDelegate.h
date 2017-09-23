@@ -58,6 +58,7 @@ namespace ECS { namespace Event {
 			{
 				return (EventDelegateId)&(*m_Receiver);
 			}
+
 		}; // class EventDelegate
 	
 	}

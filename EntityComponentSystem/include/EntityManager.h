@@ -24,6 +24,7 @@ namespace ECS
 	{
 		DECLARE_LOGGER
 
+
 		class IEntityContainer : protected Memory::GlobalMemoryUser
 		{
 		public:
@@ -35,11 +36,24 @@ namespace ECS
 
 		}; // class IEntityContainer
 
+		///-------------------------------------------------------------------------------------------------
+		/// Class:	EntityContainer
+		///
+		/// Summary:	An entity container that manages memory chunks of enities T.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	23/09/2017
+		///
+		/// Typeparams:
+		/// T - 	Generic type parameter.
+		///-------------------------------------------------------------------------------------------------
+
 		template<class T>
 		class EntityContainer : public IEntityContainer
 		{
 
-			static const size_t ALLOC_SIZE = sizeof(T) * ENITY_ALLOCATION_AMOUNT;
+			static const size_t ALLOC_SIZE = sizeof(T) * ENITY_T_ALLOCATION_AMOUNT;
 
 			using TEntityList = EntityList<T>;
 	
@@ -100,6 +114,18 @@ namespace ECS
 				return typeid(T).name();
 			}
 
+			///-------------------------------------------------------------------------------------------------
+			/// Fn:	inline void* EntityContainer::CreateEntity()
+			///
+			/// Summary:	Allocates memory for a new entity of type T and returns its memory address.
+			///
+			/// Author:	Tobias Stein
+			///
+			/// Date:	23/09/2017
+			///
+			/// Returns:	Null if it fails, else the new entity.
+			///-------------------------------------------------------------------------------------------------
+
 			inline void* CreateEntity()
 			{
 				void* slot = nullptr;
@@ -107,7 +133,7 @@ namespace ECS
 				// get next free slot
 				for (auto chunk : this->m_Chunks)
 				{
-					if (chunk->entities.size() > ENITY_ALLOCATION_AMOUNT)
+					if (chunk->entities.size() > ENITY_T_ALLOCATION_AMOUNT)
 						continue;
 
 					slot = chunk->allocator->allocate(sizeof(T), alignof(T));
@@ -169,9 +195,26 @@ namespace ECS
 		EntityManager(const EntityManager&) = delete;
 		EntityManager& operator=(EntityManager&) = delete;
 
-		EntityId m_NextValidEntityId;
+		using EntityLookupTable = std::vector<void*>;
 
 
+		/// Summary:	Maps an entity id to object.
+		EntityLookupTable m_EntityLUT;
+
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	template<class T> inline EntityContainer<T>* EntityManager::GetEntityContainer()
+		///
+		/// Summary:	Returns/Creates an entity container for entities of type T.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	23/09/2017
+		///
+		/// Typeparams:
+		/// T - 	Generic type parameter.
+		///
+		/// Returns:	Null if it fails, else the entity container.
+		///-------------------------------------------------------------------------------------------------
 
 		template<class T>
 		inline EntityContainer<T>* GetEntityContainer()
@@ -193,12 +236,36 @@ namespace ECS
 			return ec;
 		}
 
-	public:
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	EntityId EntityManager::AqcuireEntityId();
+		///
+		/// Summary:	Returns an unused entity id.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	23/09/2017
+		///
+		/// Returns:	An EntityId.
+		///-------------------------------------------------------------------------------------------------
 
-		inline EntityId GetNewEnityId()
-		{
-			return this->m_NextValidEntityId++;
-		}
+		EntityId AqcuireEntityId();
+
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	void EntityManager::ReleaseEntityId(EntityId id);
+		///
+		/// Summary:	Releases the entity identifier for reuse.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	23/09/2017
+		///
+		/// Parameters:
+		/// id - 	The identifier.
+		///-------------------------------------------------------------------------------------------------
+
+		void ReleaseEntityId(EntityId id);
+
+	public:
 
 		EntityManager();
 		~EntityManager();
@@ -219,10 +286,22 @@ namespace ECS
 		/// Returns:	Null if it fails, else the new entity.
 		///-------------------------------------------------------------------------------------------------
 
-		template<class T>
-		inline void* CreateEntity()
-		{			
-			return GetEntityContainer<T>()->CreateEntity();
+		template<class T, class... ARGS>
+		inline T* CreateEntity(ARGS&&... args)
+		{		
+			// aqcuire memory for new entity object of type T
+			void* pObjectMemory = GetEntityContainer<T>()->CreateEntity();
+
+			// create entity inplace
+			IEntity* entity = new (pObjectMemory)T(std::forward<ARGS>(args)...);
+
+			// aqcuire unused entity id
+			EntityId id = this->AqcuireEntityId();
+
+			// set id
+			entity->m_Id = id;
+
+			return static_cast<T*>(entity);
 		}
 
 		///-------------------------------------------------------------------------------------------------
@@ -242,9 +321,34 @@ namespace ECS
 		///-------------------------------------------------------------------------------------------------
 
 		template<class T>
-		inline void DestroyEntity(void* entity)
+		inline void DestroyEntity(T* entity)
 		{
+			// free entity id
+			this->ReleaseEntityId(entity->m_Id);
+
+			// release object memory
 			GetEntityContainer<T>()->DestroyEntity(entity);
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	inline void* EntityManager::GetEntity(const EntityId id)
+		///
+		/// Summary:	Get an entity object by its id.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	23/09/2017
+		///
+		/// Parameters:
+		/// id - 	The identifier.
+		///
+		/// Returns:	Null if it fails, else the entity.
+		///-------------------------------------------------------------------------------------------------
+
+		inline void* GetEntity(const EntityId id) 
+		{
+			assert((id != INVALID_ENTITY_ID && id < this->m_EntityLUT.size()) && "Invalid entity id");
+			return this->m_EntityLUT[id];
 		}
 	};
 	 

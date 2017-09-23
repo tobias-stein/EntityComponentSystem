@@ -17,15 +17,14 @@ Preprocessor defines:
 #define __ECS_API_H__
 #pragma once
 
+#define ENITY_LUT_GROW				1024
+#define ENITY_T_ALLOCATION_AMOUNT	512
 
-#define ENITY_ALLOCATION_AMOUNT 512
 
 
 #include "Platform.h"
 
 #include "Log/Logger.h"
-
-
 
 namespace ECS 
 {
@@ -34,7 +33,29 @@ namespace ECS
 		namespace Internal
 		{
 
-			class LoggerManager;
+			class  LoggerManager;
+			extern LoggerManager*				ECSLoggerManager;
+
+
+#if !ECS_DISABLE_LOGGING
+
+			///-------------------------------------------------------------------------------------------------
+			/// Fn:	ECS_API Log::Logger* GetLogger(const char* logger);
+			///
+			/// Summary:	Returns a log4cpp managed logger instance.
+			///
+			/// Author:	Tobias Stein
+			///
+			/// Date:	23/09/2017
+			///
+			/// Parameters:
+			/// logger - 	The logger.
+			///
+			/// Returns:	Null if it fails, else the logger.
+			///-------------------------------------------------------------------------------------------------
+
+			ECS_API Log::Logger* GetLogger(const char* logger);
+#endif
 		}
 	}
 
@@ -42,7 +63,8 @@ namespace ECS
 	{
 		namespace Internal
 		{
-			class MemoryManager;
+			class  MemoryManager;
+			extern MemoryManager*				ECSMemoryManager;
 		}
 	}
 
@@ -56,51 +78,6 @@ namespace ECS
 	class SystemManager;
 	class ComponentManager;
 
-
-
-	extern Log::Internal::LoggerManager*		ECSLoggerManager;
-
-	extern Memory::Internal::MemoryManager*		ECSMemoryManager;
-
-	ECS_API extern EntityManager*				ECSEntityManager;
-
-	ECS_API extern ComponentManager*			ECSComponentManager;
-
-	ECS_API extern SystemManager*				ECSSystemManager;
-
-	ECS_API extern Event::EventHandler*			ECSEventHandler;
-
-
-
-	///-------------------------------------------------------------------------------------------------
-	/// Fn:	ECS_API void Terminate();
-	///
-	/// Summary:	Terminates this ECS framework.
-	///
-	/// Author:	Tobias Stein
-	///
-	/// Date:	11/09/2017
-	///-------------------------------------------------------------------------------------------------
-
-	ECS_API void Terminate();
-
-	///-------------------------------------------------------------------------------------------------
-	/// Fn:	Log::Logger* ECS_API GetLogger(const char* logger);
-	///
-	/// Summary:	Returns a logger instance. Caller must not delete this instance this will be handled
-	/// by intern logger manager.
-	///
-	/// Author:	Tobias Stein
-	///
-	/// Date:	9/09/2017
-	///
-	/// Parameters:
-	/// logger - 	The logger name.
-	///
-	/// Returns:	The logger.
-#if !ECS_DISABLE_LOGGING
-	ECS_API Log::Logger* GetLogger(const char* logger);
-#endif
 
 
 	namespace Memory
@@ -131,6 +108,16 @@ namespace ECS
 		};
 
 	} // namespace ECS::Memory
+
+
+
+	class ECSEngine;
+
+	ECS_API extern ECSEngine*		ECS_Engine;
+
+
+	ECS_API void					Terminate();
+
 
 } // namespace ECS
 

@@ -14,7 +14,6 @@
 #include "API.h"
 
 #include "EventDelegate.h"
-#include "EventHandler.h"
 
 namespace ECS
 {
@@ -22,6 +21,7 @@ namespace ECS
 	{
 		class ECS_API IEventListener
 		{
+		
 		public:
 
 			IEventListener();	 
@@ -32,7 +32,7 @@ namespace ECS
 			inline void RegisterEventCallback(void(C::*Callback)(const E* const))
 			{
 				Internal::IEventDelegate* eventDelegate = new Internal::EventDelegate<C, E>(static_cast<C*>(this), Callback);
-				ECSEventHandler->AddEventCallback<E>(eventDelegate);
+				ECS_Engine->SubscribeEvent<E>(eventDelegate);
 			}
 
 			// TODO!
@@ -41,7 +41,7 @@ namespace ECS
 			inline void UnregisterEventCallback(void(C::*Callback)(const E* const))
 			{
 				Internal::EventDelegateId eventDelegateId = (Internal::EventDelegateId)&(*static_cast<C*>(this));
-				ECSEventHandler->RemoveEventCallback<E>(eventDelegateId);
+				ECS_Engine->UnsubscribeEvent<E>(eventDelegateId);
 			}
 		};
 

@@ -26,8 +26,10 @@ namespace ECS
 	// forward declaration
 	class ISystem;
 
-	class ECS_API SystemManager : protected Memory::GlobalMemoryUser
+	class ECS_API SystemManager : Memory::GlobalMemoryUser
 	{
+		friend ECSEngine;
+
 		DECLARE_LOGGER
 
 	private:
@@ -44,6 +46,8 @@ namespace ECS
 		// This class is not inteeded to be initialized
 		SystemManager(const SystemManager&) = delete;
 		SystemManager& operator=(SystemManager&) = delete;	
+
+		void Update();
 
 	public:
 
