@@ -28,13 +28,16 @@ namespace ECS
 		LogInfo("Release EntityManager!")
 	}
 
-	EntityId EntityManager::AqcuireEntityId()
+	EntityId EntityManager::AqcuireEntityId(IEntity* entity)
 	{
 		int i = 0;
 		for (; i < this->m_EntityLUT.size(); ++i)
 		{
 			if (this->m_EntityLUT[i] == nullptr)
+			{
+				this->m_EntityLUT[i] = entity;
 				return i;
+			}
 		}
 
 		// increase entity LUT size

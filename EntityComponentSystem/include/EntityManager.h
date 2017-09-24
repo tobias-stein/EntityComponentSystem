@@ -124,18 +124,21 @@ namespace ECS
 		}
 
 		///-------------------------------------------------------------------------------------------------
-		/// Fn:	EntityId EntityManager::AqcuireEntityId();
+		/// Fn:	EntityId EntityManager::AqcuireEntityId(IEntity* entity);
 		///
-		/// Summary:	Returns an unused entity id.
+		/// Summary:	Aqcuire entity identifier.
 		///
 		/// Author:	Tobias Stein
 		///
-		/// Date:	23/09/2017
+		/// Date:	24/09/2017
+		///
+		/// Parameters:
+		/// entity - 	[in,out] If non-null, the entity.
 		///
 		/// Returns:	An EntityId.
 		///-------------------------------------------------------------------------------------------------
 
-		EntityId AqcuireEntityId();
+		EntityId AqcuireEntityId(IEntity* entity);
 
 		///-------------------------------------------------------------------------------------------------
 		/// Fn:	void EntityManager::ReleaseEntityId(EntityId id);
@@ -183,10 +186,10 @@ namespace ECS
 			IEntity* entity = new (pObjectMemory)T(std::forward<ARGS>(args)...);
 
 			// aqcuire unused entity id
-			EntityId id = this->AqcuireEntityId();
+			EntityId id = this->AqcuireEntityId(entity);
 
 			// set id
-			entity->m_Id = id;
+			entity->m_Id = id;			
 
 			return static_cast<T*>(entity);
 		}

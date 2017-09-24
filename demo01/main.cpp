@@ -35,8 +35,6 @@ int main(const int argc, const char* argv[])
 	{
 		ECS_Engine->Update();
 	}
-
-	ECS::Terminate();
-
+	
 	return 0;
 }
