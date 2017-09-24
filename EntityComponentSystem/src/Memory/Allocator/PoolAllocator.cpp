@@ -63,7 +63,7 @@ namespace ECS { namespace Memory { namespace Allocator {
 	{
 		u8 adjustment = GetAdjustment(this->m_MemoryFirstAddress, this->OBJECT_ALIGNMENT);
 		
-		size_t numObjects = floor((this->m_MemorySize - adjustment) / this->OBJECT_SIZE);
+		size_t numObjects = (size_t)floor((this->m_MemorySize - adjustment) / this->OBJECT_SIZE);
 
 		union
 		{

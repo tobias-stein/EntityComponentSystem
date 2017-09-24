@@ -241,7 +241,7 @@ namespace ECS { namespace Memory {
 				}
 			}
 
-			assert(false, "Failed to delete object. Memory corruption?!");
+			assert(false && "Failed to delete object. Memory corruption?!");
 		}
 
 

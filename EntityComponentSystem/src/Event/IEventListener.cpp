@@ -6,6 +6,7 @@
 
 #include "Event/IEventListener.h"
 
+#include "Engine.h"
 
 namespace ECS { namespace Event {
 
@@ -13,6 +14,16 @@ namespace ECS { namespace Event {
 	{}
 
 	IEventListener::~IEventListener()
-	{}
+	{
+		// unsubcribe from all subscribed events
+		for (auto cb : this->m_RegisteredCallbacks)
+		{
+			ECS_Engine->UnsubscribeEvent(cb->GetStaticEventTypeId(), cb->GetDelegateId());
+			delete cb;
+			cb = nullptr;
+		}
+
+		this->m_RegisteredCallbacks.clear();
+	}
 
 }} // namespace ECS::Event

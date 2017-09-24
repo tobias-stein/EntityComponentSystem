@@ -15,6 +15,7 @@ namespace ECS
 {
 	namespace Event
 	{
+		class IEventListener;
 		class EventHandler;
 	}
 
@@ -27,6 +28,7 @@ namespace ECS
 	class ECS_API ECSEngine
 	{
 		friend class IEntity;
+		friend class Event::IEventListener;
 
 	private:
 
@@ -42,6 +44,16 @@ namespace ECS
 		ECSEngine(const ECSEngine&) = delete;
 		ECSEngine& operator=(ECSEngine&) = delete;
 
+		// Add event callback
+		template<class E>
+		inline void SubscribeEvent(Event::Internal::IEventDelegate* const eventDelegate)
+		{
+			ECS_EventHandler->AddEventCallback<E>(eventDelegate);
+		}
+
+		// Remove event callback
+		inline void UnsubscribeEvent(u64 typeId, Event::Internal::EventDelegateId eventDelegateId);
+
 	public:
 
 		ECSEngine();
@@ -55,19 +67,7 @@ namespace ECS
 
 		inline SystemManager* GetSystemManager() { return ECS_SystemManager; }
 		
-		// Add event callback
-		template<class E>
-		inline void SubscribeEvent(Event::Internal::IEventDelegate* const eventDelegate)
-		{
-			ECS_EventHandler->AddEventCallback<E>(eventDelegate);
-		}
-
-		// Remove event callback
-		template<class E>
-		static inline void UnsubscribeEvent(Event::Internal::EventDelegateId eventDelegateId)
-		{
-			ECS_EventHandler->RemoveEventCallback<E>(eventDelegateId);
-		}
+		
 
 		template<class E, class... ARGS>
 		void SendEvent(ARGS&&... eventArgs)

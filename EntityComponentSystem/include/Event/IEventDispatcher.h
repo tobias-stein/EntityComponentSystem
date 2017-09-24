@@ -50,7 +50,7 @@ namespace ECS
 
 				inline void AddEventCallback(IEventDelegate* const eventDelegate)
 				{
-					EventDelegateId id = (EventDelegateId)eventDelegate->GetId();
+					EventDelegateId id = (EventDelegateId)eventDelegate->GetDelegateId();
 
 					EventDelegateList::const_iterator it = this->m_EventCallbacks.find(id);
 
@@ -66,7 +66,7 @@ namespace ECS
 					this->m_EventCallbacks.erase(eventDelegateId);
 				}
 
-				inline int GetEventCallbackCount() const
+				inline size_t GetEventCallbackCount() const
 				{
 					return this->m_EventCallbacks.size();
 				}

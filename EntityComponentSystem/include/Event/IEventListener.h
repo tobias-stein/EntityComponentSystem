@@ -19,29 +19,85 @@ namespace ECS
 {
 	namespace Event
 	{
+		///-------------------------------------------------------------------------------------------------
+		/// Class:	ECS_API
+		///
+		/// Summary:	Allows a deriving class to participate in eventing.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	24/09/2017
+		///-------------------------------------------------------------------------------------------------
+
 		class ECS_API IEventListener
-		{
-		
+		{	
+			using RegisteredCallbacks = std::list<Internal::IEventDelegate*>;
+			RegisteredCallbacks m_RegisteredCallbacks;
+
 		public:
 
 			IEventListener();	 
 			virtual ~IEventListener();
 
-			// Subscribe for an event 
+			///-------------------------------------------------------------------------------------------------
+			/// Fn:	template<class E, class C> inline void IEventListener::RegisterEventCallback(void(C::*Callback)(const E* const))
+			///
+			/// Summary:	Registers the event callback described by Callback.
+			///
+			/// Author:	Tobias Stein
+			///
+			/// Date:	24/09/2017
+			///
+			/// Typeparams:
+			/// E - 	   	Type of the e.
+			/// C - 	   	Type of the c.
+			/// Parameters:
+			/// Callback - 	[in,out] If non-null, the callback.
+			///-------------------------------------------------------------------------------------------------
+
 			template<class E, class C>
 			inline void RegisterEventCallback(void(C::*Callback)(const E* const))
 			{
 				Internal::IEventDelegate* eventDelegate = new Internal::EventDelegate<C, E>(static_cast<C*>(this), Callback);
+				m_RegisteredCallbacks.push_back(eventDelegate);
+
 				ECS_Engine->SubscribeEvent<E>(eventDelegate);
 			}
 
-			// TODO!
-			// Unsubscribe for event callbacks
+			///-------------------------------------------------------------------------------------------------
+			/// Fn:	template<class E, class C> inline void IEventListener::UnregisterEventCallback(void(C::*Callback)(const E* const))
+			///
+			/// Summary:	Unregisters the event callback described by Callback.
+			///
+			/// Author:	Tobias Stein
+			///
+			/// Date:	24/09/2017
+			///
+			/// Typeparams:
+			/// E - 	   	Type of the e.
+			/// C - 	   	Type of the c.
+			/// Parameters:
+			/// Callback - 	[in,out] If non-null, the callback.
+			///-------------------------------------------------------------------------------------------------
+
 			template<class E, class C>
 			inline void UnregisterEventCallback(void(C::*Callback)(const E* const))
 			{
 				Internal::EventDelegateId eventDelegateId = (Internal::EventDelegateId)&(*static_cast<C*>(this));
-				ECS_Engine->UnsubscribeEvent<E>(eventDelegateId);
+
+				for (auto cb : this->m_RegisteredCallbacks)
+				{
+					if (cb->GetDelegateId() == eventDelegateId)
+					{
+						ECS_Engine->UnsubscribeEvent(cb->GetStaticEventTypeId(), eventDelegateId);
+
+						this->m_RegisteredCallbacks.remove(cb);
+						delete cb;
+						cb = nullptr;
+
+						break;
+					}
+				}
 			}
 		};
 

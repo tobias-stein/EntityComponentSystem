@@ -28,7 +28,10 @@ namespace ECS { namespace Event {
 	
 			virtual inline void invoke(const IEvent* const e) = 0;
 	
-			virtual inline EventDelegateId GetId() const = 0;
+			virtual inline EventDelegateId GetDelegateId() const = 0;
+
+			virtual inline u64 GetStaticEventTypeId() const = 0;
+
 		}; // class IEventDelegate
 	
 		template<class Class, class EventType>
@@ -54,9 +57,15 @@ namespace ECS { namespace Event {
 				}
 			}
 	
-			virtual inline EventDelegateId GetId() const
+			virtual inline EventDelegateId GetDelegateId() const override
 			{
 				return (EventDelegateId)&(*m_Receiver);
+			}
+
+			virtual inline u64 GetStaticEventTypeId() const override
+			{
+				static const u64 SEID = { EventType::STATIC_EVENT_TYPE_ID };
+				return SEID;
 			}
 
 		}; // class EventDelegate

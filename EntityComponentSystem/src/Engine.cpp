@@ -48,4 +48,9 @@ namespace ECS
 		ECS_SystemManager->Update();
 	}
 
+	void ECSEngine::UnsubscribeEvent(u64 typeId, Event::Internal::EventDelegateId eventDelegateId)
+	{
+		ECS_EventHandler->RemoveEventCallback(typeId, eventDelegateId);
+	}
+
 } // namespace ECS

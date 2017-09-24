@@ -16,8 +16,8 @@ const int MAX_ENTITIES = 100;
 
 int main(const int argc, const char* argv[])
 {
-	for (int i = 0; i < 10; ++i)
-	{
+	//for (int i = 0; i < 2; ++i)
+	//{
 		ECS::Initialize();
 
 		// get systems
@@ -29,7 +29,7 @@ int main(const int argc, const char* argv[])
 		//ECS_Engine->GetSystemManager()->AddSystemDependency<PositionSystem>(gravSys);
 
 		for (int i = 0; i < MAX_ENTITIES; ++i)
-			ECS_Engine->GetEntityManager()->CreateEntity<RigidBodyObject>(Vec3_t(0.0f, i, 0.0f), 1.0f);
+			ECS_Engine->GetEntityManager()->CreateEntity<RigidBodyObject>(Vec3_t(0.0f, (float)i, 0.0f), 1.0f);
 
 
 		// Update system 200 frames
@@ -41,7 +41,7 @@ int main(const int argc, const char* argv[])
 		}
 
 		ECS::Terminate();
-	}
+	//}
 
 	return 0;
 }

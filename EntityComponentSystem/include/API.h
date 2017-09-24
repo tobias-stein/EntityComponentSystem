@@ -23,6 +23,7 @@ Preprocessor defines:
 
 #define COMPONENT_T_CHUNK_SIZE		512
 
+
 #include "Platform.h"
 
 #include "Log/Logger.h"
@@ -33,12 +34,10 @@ namespace ECS
 
 		namespace Internal
 		{
+#if !ECS_DISABLE_LOGGING
 
 			class  LoggerManager;
 			extern LoggerManager*				ECSLoggerManager;
-
-
-#if !ECS_DISABLE_LOGGING
 
 			///-------------------------------------------------------------------------------------------------
 			/// Fn:	ECS_API Log::Logger* GetLogger(const char* logger);
