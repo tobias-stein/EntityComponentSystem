@@ -72,5 +72,8 @@ namespace ECS
 			delete ECS_Engine;
 			ECS_Engine = nullptr;
 		}
+
+		// check for memory leaks
+		Memory::Internal::ECSMemoryManager->CheckMemoryLeaks();
 	}
 } // namespace ECS

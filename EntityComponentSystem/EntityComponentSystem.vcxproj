@@ -152,7 +152,6 @@
   <ItemGroup>
     <ClInclude Include="include\API.h" />
     <ClInclude Include="include\Component.h" />
-    <ClInclude Include="include\ComponentContainer.h" />
     <ClInclude Include="include\ComponentManager.h" />
     <ClInclude Include="include\ECS.h" />
     <ClInclude Include="include\Engine.h" />

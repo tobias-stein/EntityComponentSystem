@@ -46,7 +46,7 @@ namespace ECS
 
 		public:
 		
-			ComponentContainer() : MemoryChunkAllocator("EntityManager")
+			ComponentContainer() : MemoryChunkAllocator("ComponentManager")
 			{}
 
 			virtual ~ComponentContainer()

@@ -111,9 +111,6 @@
     <ClInclude Include="include\Memory\ECSMM.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="include\ComponentContainer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\ComponentManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>

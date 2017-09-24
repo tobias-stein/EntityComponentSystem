@@ -16,29 +16,32 @@ const int MAX_ENTITIES = 100;
 
 int main(const int argc, const char* argv[])
 {
-	ECS::Initialize();
-
-	// get systems
-	PositionSystem* posSys = ECS_Engine->GetSystemManager()->AddSystem<PositionSystem>();
-	GravitySystem* gravSys = ECS_Engine->GetSystemManager()->AddSystem<GravitySystem>(G);
-
-	posSys->AddDependencies(gravSys);
-
-	//ECS_Engine->GetSystemManager()->AddSystemDependency<PositionSystem>(gravSys);
-
-	for (int i = 0; i < MAX_ENTITIES; ++i)
-		ECS_Engine->GetEntityManager()->CreateEntity<RigidBodyObject>(Vec3_t(0.0f, i, 0.0f), 1.0f);
-
-
-	// Update system 200 frames
-	const int MAX_FRAMES = 200;
-
-	for (int i = 0; i < MAX_FRAMES; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
-		ECS_Engine->Update();
+		ECS::Initialize();
+
+		// get systems
+		PositionSystem* posSys = ECS_Engine->GetSystemManager()->AddSystem<PositionSystem>();
+		GravitySystem* gravSys = ECS_Engine->GetSystemManager()->AddSystem<GravitySystem>(G);
+
+		posSys->AddDependencies(gravSys);
+
+		//ECS_Engine->GetSystemManager()->AddSystemDependency<PositionSystem>(gravSys);
+
+		for (int i = 0; i < MAX_ENTITIES; ++i)
+			ECS_Engine->GetEntityManager()->CreateEntity<RigidBodyObject>(Vec3_t(0.0f, i, 0.0f), 1.0f);
+
+
+		// Update system 200 frames
+		const int MAX_FRAMES = 200;
+
+		for (int i = 0; i < MAX_FRAMES; ++i)
+		{
+			ECS_Engine->Update();
+		}
+
+		ECS::Terminate();
 	}
-	
-	ECS::Terminate();
 
 	return 0;
 }
