@@ -13,7 +13,7 @@ namespace ECS
 		m_EntityLUT(ENITY_LUT_GROW, nullptr)
 	{
 		DEFINE_LOGGER("EntityManager")
-			LogInfo("Initialize EntityManager!")
+		LogInfo("Initialize EntityManager!")
 	}
 
 	EntityManager::~EntityManager()

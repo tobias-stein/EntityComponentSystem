@@ -138,6 +138,9 @@
     <ClInclude Include="include\Engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Memory\MemoryChunkAllocator.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Event\EventHandler.cpp">

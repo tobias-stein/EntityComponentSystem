@@ -176,6 +176,7 @@
     <ClInclude Include="include\Memory\Allocator\PoolAllocator.h" />
     <ClInclude Include="include\Memory\Allocator\StackAllocator.h" />
     <ClInclude Include="include\Memory\ECSMM.h" />
+    <ClInclude Include="include\Memory\MemoryChunkAllocator.h" />
     <ClInclude Include="include\Platform.h" />
     <ClInclude Include="include\System.h" />
     <ClInclude Include="include\SystemManager.h" />

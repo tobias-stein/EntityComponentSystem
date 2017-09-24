@@ -76,7 +76,7 @@ namespace ECS { namespace Memory { namespace Allocator {
 			return this->m_MemorySize;
 		}
 	
-		inline const void* GetFirstMemoryAddress() const
+		inline const void* GetMemoryAddress0() const
 		{
 			return this->m_MemoryFirstAddress;
 		}

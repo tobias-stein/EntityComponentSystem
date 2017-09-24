@@ -34,7 +34,7 @@ namespace ECS
 		m_Systems.clear();
 
 		// free allocated global memory
-		Free((void*)this->m_SystemAllocator->GetFirstMemoryAddress());
+		Free((void*)this->m_SystemAllocator->GetMemoryAddress0());
 		delete this->m_SystemAllocator;
 		this->m_SystemAllocator = nullptr;
 		

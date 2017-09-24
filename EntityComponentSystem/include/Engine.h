@@ -51,6 +51,8 @@ namespace ECS
 
 		inline EntityManager* GetEntityManager() { return ECS_EntityManager; }
 
+		inline ComponentManager* GetComponentManager() { return ECS_ComponentManager; }
+
 		inline SystemManager* GetSystemManager() { return ECS_SystemManager; }
 		
 		// Add event callback
@@ -72,6 +74,7 @@ namespace ECS
 		{
 			ECS_EventHandler->Send<E>(std::forward<ARGS>(eventArgs)...);
 		}
+
 
 		void Update();
 	};

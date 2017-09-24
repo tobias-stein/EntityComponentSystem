@@ -34,7 +34,7 @@ namespace ECS { namespace Event {
 		this->m_EventDispatcherMap.clear();
 	
 		// Release allocated memory
-		Free((void*)this->m_EventMemoryAllocator->GetFirstMemoryAddress());
+		Free((void*)this->m_EventMemoryAllocator->GetMemoryAddress0());
 	
 		delete this->m_EventMemoryAllocator;
 		this->m_EventMemoryAllocator = nullptr;

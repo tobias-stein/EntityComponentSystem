@@ -23,10 +23,11 @@ namespace ECS {
 	{
 		for (auto cc : this->m_ComponentContainerRegistry)
 		{
-			cc.second->~IComponentContainer();
+			LogDebug("Releasing remaining entities of type '%s' ...", cc.second->GetComponentContainerTypeName());
+			delete cc.second;
 			cc.second = nullptr;
 		}
-
+	
 		LogInfo("Release ComponentManager!");
 	}
 

@@ -13,7 +13,7 @@
 
 #include "API.h"
 #include "IEntity.h"
-#include "Memory/Allocator/PoolAllocator.h"
+#include "Memory/MemoryChunkAllocator.h"
 
 namespace ECS
 {
@@ -25,7 +25,7 @@ namespace ECS
 		DECLARE_LOGGER
 
 
-		class IEntityContainer : protected Memory::GlobalMemoryUser
+		class IEntityContainer
 		{
 		public:
 
@@ -50,141 +50,28 @@ namespace ECS
 		///-------------------------------------------------------------------------------------------------
 
 		template<class T>
-		class EntityContainer : public IEntityContainer
+		class EntityContainer : public Memory::MemoryChunkAllocator<T, ENITY_T_CHUNK_SIZE>, public IEntityContainer
 		{
 
-			static const size_t ALLOC_SIZE = sizeof(T) * ENITY_T_ALLOCATION_AMOUNT;
-
-			using TEntityList = EntityList<T>;
-	
-			using EnityAllocator = Memory::Allocator::PoolAllocator;
-			
-
-			struct EntityMemoryChunk
-			{
-				EnityAllocator*	allocator;
-				TEntityList		entities;
-
-				uptr			chunkStart;
-				uptr			chunkEnd;
-
-				EntityMemoryChunk(EnityAllocator* allocaor) :
-					allocator(allocaor)
-				{
-					this->chunkStart = reinterpret_cast<uptr>(allocator->GetFirstMemoryAddress());
-					this->chunkEnd = this->chunkStart + ALLOC_SIZE;
-				}
-
-			}; // strcut EntityMemoryChunk
-
-			using EntityMemoryChunks = std::list<EntityMemoryChunk*>;
-
-			EntityMemoryChunks m_Chunks;
+			EntityContainer(const EntityContainer&) = delete;
+			EntityContainer& operator=(EntityContainer&) = delete;
 
 		public:
 
-			EntityContainer()
-			{
-				EnityAllocator* allocator = new EnityAllocator(ALLOC_SIZE, Allocate(ALLOC_SIZE, "EntityManager"), sizeof(T), alignof(T));
-				this->m_Chunks.push_back(new EntityMemoryChunk(allocator));
-			}
+			EntityContainer() : MemoryChunkAllocator("EntityManager")
+			{}
 
 			virtual ~EntityContainer()
-			{
-				// make sure all entities will be released!
-				for (auto chunk : this->m_Chunks)
-				{
-					for (auto ent : chunk->entities)
-						((T*)ent)->~T();
-
-					chunk->entities.clear();
-
-					// free allocated allocator memory
-					Free((void*)chunk->allocator->GetFirstMemoryAddress());
-					delete chunk->allocator;
-					chunk->allocator = nullptr;
-
-					delete chunk;
-					chunk = nullptr;
-				}
-			}
+			{}
 
 			virtual const char* GetEntityContainerTypeName() const override
 			{ 
 				return typeid(T).name();
 			}
 
-			///-------------------------------------------------------------------------------------------------
-			/// Fn:	inline void* EntityContainer::CreateEntity()
-			///
-			/// Summary:	Allocates memory for a new entity of type T and returns its memory address.
-			///
-			/// Author:	Tobias Stein
-			///
-			/// Date:	23/09/2017
-			///
-			/// Returns:	Null if it fails, else the new entity.
-			///-------------------------------------------------------------------------------------------------
-
-			inline void* CreateEntity()
-			{
-				void* slot = nullptr;
-
-				// get next free slot
-				for (auto chunk : this->m_Chunks)
-				{
-					if (chunk->entities.size() > ENITY_T_ALLOCATION_AMOUNT)
-						continue;
-
-					slot = chunk->allocator->allocate(sizeof(T), alignof(T));
-					if (slot != nullptr)
-					{
-						chunk->entities.push_back((T*)slot);
-						break;
-					}
-				}
-
-				// all chunks are full... allocate a new one
-				if (slot == nullptr)
-				{
-					EnityAllocator* allocator = new EnityAllocator(ALLOC_SIZE, Allocate(ALLOC_SIZE, "EntityManager"), sizeof(T), alignof(T));
-					EntityMemoryChunk* newChunk = new EntityMemoryChunk(allocator);
-
-					// put new chunk in front
-					this->m_Chunks.push_front(newChunk);
-
-					slot = newChunk->allocator->allocate(sizeof(T), alignof(T));
-					
-					assert(slot != nullptr && "Unable to create new entity. Out of memory?!");
-					newChunk->entities.push_back((T*)slot);
-				}
-
-				return slot;
-			}
-
-			inline void DestroyEntity(void* entity)
-			{
-				uptr adr = reinterpret_cast<uptr>(entity);
-
-				for (auto chunk : this->m_Chunks)
-				{
-					if (chunk->chunkStart <= adr && chunk->chunkEnd > adr)
-					{
-						// note: no need to call d'tor since it was called already by 'delete'
-
-						chunk->entities.remove((T*)entity);
-						chunk->allocator->free(entity);
-						return;
-					}
-				}
-
-				assert(false, "Failed to delete entity. Memory corruption?!");
-			}
-
 		}; // EntityContainer
 
 		using EntityRegistry = std::unordered_map<EntityTypeId, IEntityContainer*>;
-
 
 		EntityRegistry m_EntityRegistry;
 
@@ -290,7 +177,7 @@ namespace ECS
 		inline T* CreateEntity(ARGS&&... args)
 		{		
 			// aqcuire memory for new entity object of type T
-			void* pObjectMemory = GetEntityContainer<T>()->CreateEntity();
+			void* pObjectMemory = GetEntityContainer<T>()->CreateObject();
 
 			// create entity inplace
 			IEntity* entity = new (pObjectMemory)T(std::forward<ARGS>(args)...);
@@ -327,7 +214,7 @@ namespace ECS
 			this->ReleaseEntityId(entity->m_Id);
 
 			// release object memory
-			GetEntityContainer<T>()->DestroyEntity(entity);
+			GetEntityContainer<T>()->DestroyObject(entity);
 		}
 
 		///-------------------------------------------------------------------------------------------------

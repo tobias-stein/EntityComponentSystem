@@ -18,8 +18,10 @@ Preprocessor defines:
 #pragma once
 
 #define ENITY_LUT_GROW				1024
-#define ENITY_T_ALLOCATION_AMOUNT	512
 
+#define ENITY_T_CHUNK_SIZE			512
+
+#define COMPONENT_T_CHUNK_SIZE		512
 
 
 #include "Platform.h"
@@ -117,7 +119,6 @@ namespace ECS
 
 
 	ECS_API void					Terminate();
-
 
 } // namespace ECS
 

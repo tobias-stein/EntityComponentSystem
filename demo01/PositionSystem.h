@@ -27,56 +27,47 @@
 class PositionSystem : public ECS::System<PositionSystem>
 {
 
-private:
-
-	//using PositionComponents = ECS::ComponentList<PositionComponent>;
-
-	// access to all position components
-	//PositionComponents m_PositionComponents;
-
 public:
 	
-	PositionSystem() //:       
-		//m_PositionComponents(ECS::ECSComponentManager->GetComponentList<PositionComponent>())
+	PositionSystem()
 	{}
 
 	virtual ~PositionSystem()
-	{
-	}
+	{}
 
 	virtual void Tick(float dt) override
 	{
-		//for (auto posComp : this->m_PositionComponents)
-		//{
+		for (auto it = ECS::ECS_Engine->GetComponentManager()->begin<PositionComponent>(); it != ECS::ECS_Engine->GetComponentManager()->end<PositionComponent>(); ++it)
+		{
 
-		//	assert(posComp != nullptr && "Entity has an invalid PositionComponent.");
+			//assert(*it != nullptr && "Entity has an invalid PositionComponent.");
 
-		//	// ignore inactive entities
-		//	if (posComp->GetOwner()->IsActive() == false)
-		//		continue;
+			// ignore inactive entities
+			if (it->GetOwner()->IsActive() == false)
+				continue;
 
-		//	// Check if entity has RigidBodyComponent
-		//	RigidBodyComponent* rbComp = posComp->GetOwner()->GetComponent<RigidBodyComponent>();
-		//	if (rbComp != nullptr)
-		//	{
-		//		Position3d pos = posComp->GetPosition();
-		//		
-		//		Vec3_t vel = rbComp->GetVelocity();
+			// Check if entity has RigidBodyComponent
+			RigidBodyComponent* rbComp = it->GetOwner()->GetComponent<RigidBodyComponent>();
+			if (rbComp != nullptr)
+			{
+				Position3d pos = it->GetPosition();
+				
+				Vec3_t vel = rbComp->GetVelocity();
 
-		//		pos.x += vel.x * dt;
-		//		pos.y += vel.y * dt;
-		//		pos.z += vel.z * dt;
+				pos.x += vel.x * dt;
+				pos.y += vel.y * dt;
+				pos.z += vel.z * dt;
 
-		//		posComp->SetPosition(pos);
+				it->SetPosition(pos);
 
-		//		// check if entity is bellow sea level
-		//		if (pos.y < 0.0f)
-		//		{
-		//			LogTrace("Entity [%d] is bellow sea level.", posComp->GetOwner()->GetEntityId());
-		//			ECS::ECS_Engine->SendEvent<EntityBellowSeaLevelEvent>(posComp->GetOwner()->GetEntityId(), pos.y);
-		//		}
-		//	}
-		//}
+				// check if entity is bellow sea level
+				if (pos.y < 0.0f)
+				{
+					LogTrace("Entity [%d] is bellow sea level.", it->GetOwner()->GetEntityId());
+					ECS::ECS_Engine->SendEvent<EntityBellowSeaLevelEvent>(it->GetOwner()->GetEntityId(), pos.y);
+				}
+			}
+		}
 	}
 };
 

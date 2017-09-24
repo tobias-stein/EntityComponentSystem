@@ -30,6 +30,8 @@ public:
 
 	inline void OnEntityBellowSeaLevel(const EntityBellowSeaLevelEvent* const event)
 	{
+	//	printf("Entity [%d] bellow sea level.\n", this->GetEntityId());
+
 		// diable this enity, if bellow sea level
 		this->SetActive(false);
 	}
