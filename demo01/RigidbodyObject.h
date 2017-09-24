@@ -22,10 +22,12 @@ public:
 
 		RegisterEventCallback(&RigidBodyObject::OnEntityBellowSeaLevel);
 
+		LogTrace("RigidBodyObject created!");
 	}
 
 	~RigidBodyObject()
 	{
+		LogTrace("RigidBodyObject destroyed!");
 	}
 
 	inline void OnEntityBellowSeaLevel(const EntityBellowSeaLevelEvent* const event)

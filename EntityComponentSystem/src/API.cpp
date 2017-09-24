@@ -17,7 +17,7 @@ namespace ECS
 
 		namespace Internal {
 
-			LoggerManager*				ECSLoggerManager		= new LoggerManager();
+			LoggerManager*				ECSLoggerManager = new LoggerManager();
 
 
 #if !ECS_DISABLE_LOGGING
@@ -35,7 +35,7 @@ namespace ECS
 
 		namespace Internal {
 
-			MemoryManager*				ECSMemoryManager		= new Memory::Internal::MemoryManager();
+			MemoryManager*				ECSMemoryManager = new Memory::Internal::MemoryManager();
 		}
 
 
@@ -57,18 +57,20 @@ namespace ECS
 
 	} // namespace Memory
 
-	ECSEngine*		ECS_Engine = new ECSEngine();
+	ECSEngine*		ECS_Engine = nullptr;// new ECSEngine();
 
+	void Initialize()
+	{
+		if(ECS_Engine == nullptr)
+		ECS_Engine = new ECSEngine();
+	}
 
 	void Terminate()
 	{
-		delete ECS_Engine;
-		ECS_Engine = nullptr;
-
-		delete Memory::Internal::ECSMemoryManager;
-		Memory::Internal::ECSMemoryManager = nullptr;
-
-		delete Log::Internal::ECSLoggerManager;
-		Log::Internal::ECSLoggerManager = nullptr;
+		if (ECS_Engine != nullptr)
+		{
+			delete ECS_Engine;
+			ECS_Engine = nullptr;
+		}
 	}
 } // namespace ECS

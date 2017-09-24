@@ -15,14 +15,20 @@ public:
 
 	GravitySystem() :
 		m_G(0.0f, -9.81f, 0.0f)
-	{}
+	{
+		LogTrace("GravitySystem created!");
+	}
 
 	GravitySystem(Vec3_t g) :
 		m_G(g)
-	{}
+	{
+		LogTrace("GravitySystem created!");
+	}
 
 	virtual ~GravitySystem()
-	{}
+	{
+		LogTrace("GravitySystem destroyed!");
+	}
 
 	virtual void Tick(float dt) override
 	{

@@ -23,7 +23,6 @@ Preprocessor defines:
 
 #define COMPONENT_T_CHUNK_SIZE		512
 
-
 #include "Platform.h"
 
 #include "Log/Logger.h"
@@ -117,8 +116,11 @@ namespace ECS
 
 	ECS_API extern ECSEngine*		ECS_Engine;
 
-
+	ECS_API void					Initialize();
 	ECS_API void					Terminate();
+
+
+	constexpr float TIME_STEP = 1.0f / 60.0f;
 
 } // namespace ECS
 

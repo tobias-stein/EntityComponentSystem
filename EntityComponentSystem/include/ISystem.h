@@ -39,8 +39,11 @@ namespace ECS
 		virtual ~ISystem()
 		{}
 
+		virtual const char* GetSystemTypeName() const = 0;
+
 		virtual void Tick(float dt)
 		{}
+		
 
 		// ACCESSOR & MUTATOR
 

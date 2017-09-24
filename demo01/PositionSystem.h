@@ -30,10 +30,14 @@ class PositionSystem : public ECS::System<PositionSystem>
 public:
 	
 	PositionSystem()
-	{}
+	{
+		LogTrace("PositionSystem created!");
+	}
 
 	virtual ~PositionSystem()
-	{}
+	{
+		LogTrace("PositionSystem destroyed!");
+	}
 
 	virtual void Tick(float dt) override
 	{

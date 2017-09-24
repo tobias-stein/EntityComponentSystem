@@ -32,6 +32,10 @@ namespace ECS {
 	template<class E>
 	class Entity : public IEntity
 	{
+		// Entity destruction always happens through EntityManager !!!
+		void operator delete(void*) = delete;
+		void operator delete[](void*) = delete;
+
 	public:
 
 		static const EntityTypeId STATIC_ENTITY_TYPE_ID;

@@ -24,7 +24,7 @@ namespace ECS
 	{
 	protected:
 
-		DECLARE_LOGGER
+		DECLARE_LOGGER		
 
 	public:
 
@@ -45,12 +45,24 @@ namespace ECS
 			LogInfo("System %s released.", typeid(T).name());
 		}
 
+		virtual const char* GetSystemTypeName() const override
+		{
+			static const char* SYSTEM_TYPE_NAME = { typeid(T).name() };
+			return SYSTEM_TYPE_NAME;
+		}
+
 		virtual void Tick(float dt)
 		{}
 
 		inline SystemTypeId GetStaticSystemTypeID() const
 		{
 			return STATIC_SYSTEM_TYPE_ID;
+		}
+
+		template<class... Dependencies>
+		void AddDependencies(Dependencies&&... dependencies)
+		{
+			ECS_Engine->GetSystemManager()->AddSystemDependency(this, std::forward<Dependencies>(dependencies)...);
 		}
 
 	}; // class System<T>
