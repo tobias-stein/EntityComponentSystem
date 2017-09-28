@@ -52,7 +52,7 @@ namespace ECS
 	void SystemManager::UpdateSystemWorkOrder()
 	{
 		// depth-first-search function
-		static std::function<void(int, std::vector<int>&, const std::vector<std::vector<bool>>&, std::vector<SystemTypeId>&)> DFS = [&](int vertex, std::vector<int>& VERTEX_STATE, const std::vector<std::vector<bool>>& EDGES, std::vector<SystemTypeId>& output)
+		static const std::function<void(int, std::vector<int>&, const std::vector<std::vector<bool>>&, std::vector<SystemTypeId>&)> DFS = [&](int vertex, std::vector<int>& VERTEX_STATE, const std::vector<std::vector<bool>>& EDGES, std::vector<SystemTypeId>& output)
 		{
 			VERTEX_STATE[vertex] = 1; // visited
 
@@ -152,6 +152,28 @@ namespace ECS
 				this->m_SystemWorkOrder.push_back(this->m_Systems[m]);
 				LogInfo("\t%s", this->m_Systems[m]->GetSystemTypeName())
 			}
+		}
+	}
+
+	SystemWorkStateMask SystemManager::GetSystemWorkState() const
+	{
+		SystemWorkStateMask mask(this->m_SystemWorkOrder.size());
+
+		for (int i = 0; i < this->m_SystemWorkOrder.size(); ++i)
+		{
+			mask[i] = this->m_SystemWorkOrder[i]->IsActive();
+		}
+
+		return mask;
+	}
+
+	void SystemManager::SetSystemWorkState(SystemWorkStateMask mask) 
+	{
+		assert(mask.size() == this->m_SystemWorkOrder.size() && "Provided mask does not match size of current system array.");
+
+		for (int i = 0; i < this->m_SystemWorkOrder.size(); ++i)
+		{
+			this->m_SystemWorkOrder[i]->SetActive(mask[i]);
 		}
 	}
 

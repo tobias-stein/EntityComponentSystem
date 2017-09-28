@@ -25,6 +25,8 @@ int main(const int argc, const char* argv[])
 		GravitySystem* gravSys = ECS_Engine->GetSystemManager()->AddSystem<GravitySystem>(G);
 
 		posSys->AddDependencies(gravSys);
+		posSys->AddDependencies(gravSys);
+		posSys->AddDependencies(gravSys);
 
 		//ECS_Engine->GetSystemManager()->AddSystemDependency<PositionSystem>(gravSys);
 

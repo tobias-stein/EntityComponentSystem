@@ -59,6 +59,21 @@ namespace ECS
 			return STATIC_SYSTEM_TYPE_ID;
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	template<class... Dependencies> void System::AddDependencies(Dependencies&&... dependencies)
+		///
+		/// Summary:	Adds a new dependencies for this system.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	28/09/2017
+		///
+		/// Typeparams:
+		/// Dependencies - 	Type of the dependencies.
+		/// Parameters:
+		/// dependencies - 	Variable arguments providing [in,out] The dependencies.
+		///-------------------------------------------------------------------------------------------------
+
 		template<class... Dependencies>
 		void AddDependencies(Dependencies&&... dependencies)
 		{

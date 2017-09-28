@@ -26,6 +26,10 @@ namespace ECS
 	// forward declaration
 	class ISystem;
 
+
+	using SystemWorkStateMask	= std::vector<bool>;
+
+
 	class ECS_API SystemManager : Memory::GlobalMemoryUser
 	{
 		friend ECSEngine;
@@ -147,15 +151,23 @@ namespace ECS
 
 			auto D = { dependencies... };
 
+			bool changed = false;
+
 			LogInfo("Add new %d dependencies for \'%s\':", sizeof...(dependencies), target->GetSystemTypeName())
 			for (auto d : D)
 			{
+				if (this->m_SystemDependencyMatrix[TARGET_ID][d->GetStaticSystemTypeID()] == true)
+					continue;
+
 				this->m_SystemDependencyMatrix[TARGET_ID][d->GetStaticSystemTypeID()] = true;
 				LogInfo("\tadd '%s' as dependency", d->GetSystemTypeName())
+				
+				changed = true;
 			}
 
 			// update work order
-			this->UpdateSystemWorkOrder();
+			if(changed == true)
+				this->UpdateSystemWorkOrder();
 		}
 
 		///-------------------------------------------------------------------------------------------------
@@ -180,6 +192,36 @@ namespace ECS
 
 			return it != this->m_Systems.end() ? (T*)it->second : nullptr;
 		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	SystemWorkStateMask SystemManager::GetSystemWorkState() const;
+		///
+		/// Summary:	Returns the current work state of all systems. The returned state mask can be stored
+		/// in local context and reset a later changed working state of systems.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	28/09/2017
+		///
+		/// Returns:	The system work state.
+		///-------------------------------------------------------------------------------------------------
+
+		SystemWorkStateMask GetSystemWorkState() const;
+
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	void SystemManager::SetSystemWorkState(SystemWorkStateMask mask);
+		///
+		/// Summary:	Resets the current working state of systems by the provided state mask.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	28/09/2017
+		///
+		/// Parameters:
+		/// mask - 	The mask.
+		///-------------------------------------------------------------------------------------------------
+
+		void SetSystemWorkState(SystemWorkStateMask mask);
 	};
 
 } // namespace ECS
