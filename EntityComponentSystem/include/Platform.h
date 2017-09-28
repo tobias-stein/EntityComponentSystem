@@ -20,6 +20,8 @@
 #include <stdarg.h>
 #include <stdint.h>
 
+#include <limits>
+
 #include <math.h>
 
 #include <assert.h>
@@ -35,6 +37,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include <algorithm>
+#include <functional>
 
 namespace ECS
 {

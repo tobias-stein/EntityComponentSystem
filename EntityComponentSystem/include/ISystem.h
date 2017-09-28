@@ -20,17 +20,39 @@ namespace ECS
 
 	using SystemTypeId = util::TypeId;
 
+	using SystemPriority = u16;
+
+
 	static const SystemTypeId INVALID_SYSTEMID = util::INVALID_TYPE_ID;
 
+	
 
+	static const SystemPriority LOWEST_SYSTEM_PRIORITY		= 0;
+
+	static const SystemPriority VERY_LOW_SYSTEM_PRIORITY	= 99;
+	static const SystemPriority LOW_SYSTEM_PRIORITY			= 100;
+
+	static const SystemPriority NORMAL_SYSTEM_PRIORITY		= 200;
+
+	static const SystemPriority MEDIUM_SYSTEM_PRIORITY		= 300;
+
+	static const SystemPriority HIGH_SYSTEM_PRIORITY		= 400;
+	static const SystemPriority VERY_HIGH_SYSTEM_PRIORITY	= 401;
+
+	static const SystemPriority HIGHEST_SYSTEM_PRIORITY		= 65535;
 
 	class ISystem
 	{
 	protected:
 
-		bool m_Enabled;
+		const SystemPriority	m_Priority;
 
-		ISystem() :
+		bool					m_Enabled;
+
+
+
+		ISystem(SystemPriority priority = NORMAL_SYSTEM_PRIORITY) :
+			m_Priority(priority),
 			m_Enabled(true)
 		{}
 
@@ -55,6 +77,11 @@ namespace ECS
 		inline bool IsActive() const
 		{
 			return this->m_Enabled;
+		}
+
+		inline const SystemPriority GetSystemPriority() const
+		{
+			return this->m_Priority;
 		}
 	};
 }

@@ -39,7 +39,7 @@ namespace ECS
 		using SystemRegistry	= std::unordered_map<u64, ISystem*>;
 		using SystemAllocator	= Memory::Allocator::LinearAllocator;
 
-		using SystemWorkOrder = std::vector<ISystem*>;
+		using SystemWorkOrder	= std::vector<ISystem*>;
 
 		static const size_t SYSTEM_MEMORY_CAPACITY = ECS_SYSTEM_MEMORY_CAPACITY;
 
@@ -125,7 +125,8 @@ namespace ECS
 		/// Fn:	template<class System_, class... Dependencies> void SystemManager::AddSystemDependency(System_ target,
 		/// Dependencies&&... dependencies)
 		///
-		/// Summary:	Adds a system dependenc. This will result in an update of the dependency matrix.
+		/// Summary:	Adds a system dependency. This will result in an update of the dependency matrix and re-creation
+		/// of the systems working order. This method can be quite costly so use it sparsely.
 		///
 		/// Author:	Tobias Stein
 		///
