@@ -36,10 +36,10 @@ public:
 
 		for (auto it = ECS::ECS_Engine->GetComponentManager()->begin<RigidBodyComponent>(); it != ECS::ECS_Engine->GetComponentManager()->end<RigidBodyComponent>(); ++it)
 		{
-			//assert(it != nullptr && "Entity has an invalid RigidbodyComponent.");
+			ECS::IEntity* entity = ECS::ECS_Engine->GetEntityManager()->GetEntity(it->GetOwner());
 
 			// ignore inactive entities
-			if (it->GetOwner()->IsActive() == false)
+			if (entity->IsActive() == false)
 				continue;
 
 			Vec3_t vel = it->GetVelocity();

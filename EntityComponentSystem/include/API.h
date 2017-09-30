@@ -21,6 +21,8 @@ Preprocessor defines:
 
 #define ENITY_T_CHUNK_SIZE			512
 
+#define COMPONENT_LUT_GROW			1024
+
 #define COMPONENT_T_CHUNK_SIZE		512
 
 

@@ -136,6 +136,7 @@ namespace ECS
 
 			std::reverse(order.begin(), order.end());
 			
+			// note: MAX - PRIORITY will frce the correct sorting behaviour in multimap (by default a multimap sorts int values from low to high)
 			VERTEX_GROUPS_SORTED.insert(std::pair<SystemPriority, std::vector<SystemTypeId>>(std::numeric_limits<SystemPriority>::max() - GROUP_PRIORITY[i], order));
 		}
 

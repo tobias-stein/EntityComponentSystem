@@ -19,14 +19,14 @@ namespace testEntityComponentSystem
 		int   m_var1;
 
 		DummyEvent() :
-			Event(ECS::INVALID_ENITYID, ECS::INVALID_ENITYID),
+			Event(ECS::INVALID_ENTITY_ID, ECS::INVALID_ENTITY_ID),
 			m_var1(123)
 		{}
 	};
 
 
 	class Dummy :
-		public ECS::Entity,
+		public ECS::Entity<Dummy>,
 		public ECS::Event::IEventListener
 	{
 	public:

@@ -1,11 +1,11 @@
 /*
-Author : Tobias Stein
-Date   : 7th September, 2017
-File   : ComponentManager.h
+	Author : Tobias Stein
+	Date   : 7th September, 2017
+	File   : ComponentManager.h
 
-Manages all component container.
+	Manages all component container.
 
-All Rights Reserved. (c) Copyright 2016.
+	All Rights Reserved. (c) Copyright 2016.
 */
 
 #ifndef __COMPONENT_MANAGER_H__
@@ -23,6 +23,8 @@ namespace ECS
 {
 	class ECS_API ComponentManager : Memory::GlobalMemoryUser
 	{
+		friend class IComponent;
+
 		DECLARE_LOGGER
 		
 		
@@ -35,6 +37,8 @@ namespace ECS
 			{}
 
 			virtual const char* GetComponentContainerTypeName() const = 0;
+
+			virtual void DestroyComponent(IComponent* object) = 0;
 		};
 		
 		template<class T>
@@ -56,6 +60,14 @@ namespace ECS
 			{
 				return typeid(T).name();
 			}		
+
+			virtual void DestroyComponent(IComponent* object) override
+			{		
+				// call d'tor
+				object->~IComponent();
+
+				this->DestroyObject(object);
+			}
 
 		}; // class ComponentContainer
 
@@ -89,6 +101,18 @@ namespace ECS
 			return cc;
 		}
 
+		using ComponentLookupTable = std::vector<IComponent*>;
+		ComponentLookupTable	m_ComponentLUT;
+
+		using EntityComponentMap = std::vector<std::vector<ComponentId>>;
+		EntityComponentMap		m_EntityComponentMap;
+
+
+		ComponentId	AqcuireComponentId(IComponent* component);
+		void		ReleaseComponentId(ComponentId id);
+
+		void		MapEntityComponent(EntityId entityId, ComponentId componentId, ComponentTypeId componentTypeId);
+		void		UnmapEntityComponent(EntityId entityId, ComponentId componentId, ComponentTypeId componentTypeId);
 
 	public:
 		
@@ -99,55 +123,137 @@ namespace ECS
 		~ComponentManager();
 
 		///-------------------------------------------------------------------------------------------------
-		/// Fn:	template<class T, class ...ARGS> inline T* ComponentManager::AddComponent(ARGS&&... args)
+		/// Fn:	template<class T, class ...ARGS> T* ComponentManager::AddComponent(const EntityId entityId,
+		/// ARGS&&... args)
 		///
-		/// Summary:	Creates a new component with provided parameters.
+		/// Summary:	Adds a component of type T to entity described by entityId.
 		///
 		/// Author:	Tobias Stein
 		///
-		/// Date:	24/09/2017
+		/// Date:	30/09/2017
 		///
 		/// Typeparams:
 		/// T - 	   	Generic type parameter.
 		/// ...ARGS -  	Type of the ...args.
 		/// Parameters:
-		/// args - 	Variable arguments providing [in,out] The arguments.
+		/// entityId - 	Identifier for the entity.
+		/// args - 	   	Variable arguments providing [in,out] The arguments.
 		///
 		/// Returns:	Null if it fails, else a pointer to a T.
 		///-------------------------------------------------------------------------------------------------
 
 		template<class T, class ...ARGS>
-		inline T* AddComponent(ARGS&&... args)
+		T* AddComponent(const EntityId entityId, ARGS&&... args)
 		{
+			// hash operator for hashing entity and component ids
+			static constexpr std::hash<ComponentId> ENTITY_COMPONENT_ID_HASHER { std::hash<ComponentId>() };
+
+			const ComponentTypeId CTID	= T::STATIC_COMPONENT_TYPE_ID;
+
 			// aqcuire memory for new component object of type T
-			void* pObjectMemory = GetComponentContainer<T>()->CreateObject();
+			void* pObjectMemory			= GetComponentContainer<T>()->CreateObject();
 
 			// create component inplace
-			void* component = new (pObjectMemory)T(std::forward<ARGS>(args)...);
+			IComponent* component		= new (pObjectMemory)T(std::forward<ARGS>(args)...);
+			
+			ComponentId componentId		= component->m_ComponentID;
+
+			component->m_Owner			= entityId;
+			component->m_HashValue		= ENTITY_COMPONENT_ID_HASHER(entityId) ^ (ENTITY_COMPONENT_ID_HASHER(componentId) << 1);
+
+			// create mapping from entity id its component id
+			MapEntityComponent(entityId, componentId, CTID);
 
 			return static_cast<T*>(component);
 		}
 
 		///-------------------------------------------------------------------------------------------------
-		/// Fn:	template<class T> inline void ComponentManager::RemoveComponent(T* component)
+		/// Fn:	template<class T> void ComponentManager::RemoveComponent(const EntityId entityId)
 		///
-		/// Summary:	Removes the component described by component.
+		/// Summary:	Removes the component of type T from an entity described by entityId.
 		///
 		/// Author:	Tobias Stein
 		///
-		/// Date:	24/09/2017
+		/// Date:	30/09/2017
 		///
 		/// Typeparams:
 		/// T - 	Generic type parameter.
 		/// Parameters:
-		/// component - 	[in,out] If non-null, the component.
+		/// entityId - 	Identifier for the entity.
 		///-------------------------------------------------------------------------------------------------
 
 		template<class T>
-		inline void RemoveComponent(T* component)
+		void RemoveComponent(const EntityId entityId)
 		{
+			const ComponentTypeId CTID = T::STATIC_COMPONENT_TYPE_ID;
+
+			const ComponentId componentId = this->m_EntityComponentMap[entityId][CTID];
+
+			IComponent* component = this->m_ComponentLUT[componentId];
+
+			assert(component != nullptr && "FATAL: Trying to remove a component which is not used by this entity!");
+
 			// release object memory
 			GetComponentContainer<T>()->DestroyObject(component);
+
+			// unmap entity id to component id
+			UnmapEntityComponent(entityId, componentId, CTID);
+		}
+
+		void RemoveAllComponents(const EntityId entityId)
+		{
+			static const size_t NUM_COMPONENTS = this->m_EntityComponentMap[0].size();
+
+			for (ComponentTypeId componentTypeId = 0; componentTypeId < NUM_COMPONENTS; ++componentTypeId)
+			{
+				const ComponentId componentId = this->m_EntityComponentMap[entityId][componentTypeId];
+
+				IComponent* component = this->m_ComponentLUT[componentId];
+				if (component != nullptr)
+				{
+					// get appropriate component container
+					auto it = this->m_ComponentContainerRegistry.find(componentTypeId);
+					if (it != this->m_ComponentContainerRegistry.end())
+						it->second->DestroyComponent(component);
+					else
+						assert(false && "Trying to release a component that wasn't created by ComponentManager!");
+
+					// unmap entity id to component id
+					UnmapEntityComponent(entityId, componentId, componentTypeId);
+				}
+			}
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	template<class T> T* ComponentManager::GetComponent(const EntityId entityId)
+		///
+		/// Summary:	Get the component of type T of an entity. If component has no such component
+		/// nullptr is returned.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	30/09/2017
+		///
+		/// Typeparams:
+		/// T - 	Generic type parameter.
+		/// Parameters:
+		/// entityId - 	Identifier for the entity.
+		///
+		/// Returns:	Null if it fails, else the component.
+		///-------------------------------------------------------------------------------------------------
+
+		template<class T>
+		T* GetComponent(const EntityId entityId) 
+		{
+			const ComponentTypeId CTID = T::STATIC_COMPONENT_TYPE_ID;
+
+			const ComponentId componentId = this->m_EntityComponentMap[entityId][CTID];
+
+			// entity has no component of type T
+			if (componentId == INVALID_COMPONENT_ID)
+				return nullptr;
+
+			return static_cast<T*>(this->m_ComponentLUT[componentId]);
 		}
 
 		///-------------------------------------------------------------------------------------------------

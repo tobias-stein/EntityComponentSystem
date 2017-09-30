@@ -186,6 +186,7 @@
     <ClCompile Include="src\API.cpp" />
     <ClCompile Include="src\ComponentManager.cpp" />
     <ClCompile Include="src\Engine.cpp" />
+    <ClCompile Include="src\IComponent.cpp" />
     <ClCompile Include="src\IEntity.cpp" />
     <ClCompile Include="src\EntityManager.cpp" />
     <ClCompile Include="src\Event\EventHandler.cpp" />

@@ -175,7 +175,7 @@ namespace ECS { namespace Memory {
 		/// Returns:	Null if it fails, else the new object.
 		///-------------------------------------------------------------------------------------------------
 
-		inline void* CreateObject()
+		void* CreateObject()
 		{
 			void* slot = nullptr;
 
@@ -225,7 +225,7 @@ namespace ECS { namespace Memory {
 		/// object - 	[in,out] If non-null, the object.
 		///-------------------------------------------------------------------------------------------------
 
-		inline void DestroyObject(void* object)
+		void DestroyObject(void* object)
 		{
 			uptr adr = reinterpret_cast<uptr>(object);
 

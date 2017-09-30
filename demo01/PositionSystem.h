@@ -43,15 +43,14 @@ public:
 	{
 		for (auto it = ECS::ECS_Engine->GetComponentManager()->begin<PositionComponent>(); it != ECS::ECS_Engine->GetComponentManager()->end<PositionComponent>(); ++it)
 		{
-
-			//assert(*it != nullptr && "Entity has an invalid PositionComponent.");
+			ECS::IEntity* entity = ECS::ECS_Engine->GetEntityManager()->GetEntity(it->GetOwner());
 
 			// ignore inactive entities
-			if (it->GetOwner()->IsActive() == false)
+			if (entity->IsActive() == false)
 				continue;
 
 			// Check if entity has RigidBodyComponent
-			RigidBodyComponent* rbComp = it->GetOwner()->GetComponent<RigidBodyComponent>();
+			RigidBodyComponent* rbComp = entity->GetComponent<RigidBodyComponent>();
 			if (rbComp != nullptr)
 			{
 				Position3d pos = it->GetPosition();
@@ -67,8 +66,8 @@ public:
 				// check if entity is bellow sea level
 				if (pos.y < 0.0f)
 				{
-					LogTrace("Entity [%d] is bellow sea level.", it->GetOwner()->GetEntityId());
-					ECS::ECS_Engine->SendEvent<EntityBellowSeaLevelEvent>(it->GetOwner()->GetEntityId(), pos.y);
+					LogTrace("Entity [%d] is bellow sea level.", entity->GetEntityID());
+					ECS::ECS_Engine->SendEvent<EntityBellowSeaLevelEvent>(entity->GetEntityID(), pos.y);
 				}
 			}
 		}

@@ -42,6 +42,9 @@ int main(const int argc, const char* argv[])
 			ECS_Engine->Update();
 		}
 
+		
+		ECS_Engine->GetEntityManager()->DestroyEntity(0);
+
 		ECS::Terminate();
 	//}
 

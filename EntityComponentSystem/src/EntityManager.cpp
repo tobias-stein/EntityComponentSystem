@@ -43,6 +43,7 @@ namespace ECS
 		// increase entity LUT size
 		this->m_EntityLUT.resize(this->m_EntityLUT.size() + ENITY_LUT_GROW, nullptr);
 
+		this->m_EntityLUT[i] = entity;
 		return i;
 	}
 

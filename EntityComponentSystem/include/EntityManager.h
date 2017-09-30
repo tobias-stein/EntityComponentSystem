@@ -12,8 +12,12 @@
 #define __ENTITY_MANAGER_H__
 
 #include "API.h"
+#include "Engine.h"
 #include "IEntity.h"
+#include "ComponentManager.h"
 #include "Memory/MemoryChunkAllocator.h"
+
+
 
 namespace ECS
 {
@@ -22,6 +26,8 @@ namespace ECS
 
 	class ECS_API EntityManager
 	{
+		friend class IEntity;
+
 		DECLARE_LOGGER
 
 
@@ -33,6 +39,8 @@ namespace ECS
 			{}
 
 			virtual const char* GetEntityContainerTypeName() const = 0;
+
+			virtual void DestroyEntity(IEntity* object) = 0;
 
 		}; // class IEntityContainer
 
@@ -69,6 +77,14 @@ namespace ECS
 				return typeid(T).name();
 			}
 
+			virtual void DestroyEntity(IEntity* object) override
+			{
+				// call d'tor
+				object->~IEntity();
+
+				this->DestroyObject(object);
+			}
+
 		}; // EntityContainer
 
 		using EntityRegistry = std::unordered_map<EntityTypeId, IEntityContainer*>;
@@ -77,12 +93,10 @@ namespace ECS
 
 	private:	
 
-		friend class IEntity;
-
 		EntityManager(const EntityManager&) = delete;
 		EntityManager& operator=(EntityManager&) = delete;
 
-		using EntityLookupTable = std::vector<void*>;
+		using EntityLookupTable = std::vector<IEntity*>;
 
 
 		/// Summary:	Maps an entity id to object.
@@ -126,7 +140,8 @@ namespace ECS
 		///-------------------------------------------------------------------------------------------------
 		/// Fn:	EntityId EntityManager::AqcuireEntityId(IEntity* entity);
 		///
-		/// Summary:	Aqcuire entity identifier.
+		/// Summary:	Aqcuire entity identifier. This method will be used be IEntity class c'tor to set
+		/// the entity id on creation.
 		///
 		/// Author:	Tobias Stein
 		///
@@ -161,63 +176,51 @@ namespace ECS
 		~EntityManager();
 
 		///-------------------------------------------------------------------------------------------------
-		/// Fn:	template<class T> inline void* EntiyManager::CreateEntity()
+		/// Fn:	template<class T, class... ARGS> EntityId EntityManager::CreateEntity(ARGS&&... args)
 		///
-		/// Summary:	Creates a new entity. 
-		/// DO NOT USE THAT METHOD DIRECTLY. ALWAYS USE Entity<T> class's new operator.
+		/// Summary:	Creates an entity of type T and returns its id.
 		///
 		/// Author:	Tobias Stein
 		///
-		/// Date:	11/09/2017
+		/// Date:	30/09/2017
 		///
 		/// Typeparams:
-		/// T - 	Generic type parameter.
+		/// T - 	   	Generic type parameter.
+		/// ARGS - 	   	Type of the arguments.
+		/// Parameters:
+		/// args - 	Variable arguments providing [in,out] The arguments.
 		///
-		/// Returns:	Null if it fails, else the new entity.
+		/// Returns:	The new entity.
 		///-------------------------------------------------------------------------------------------------
 
 		template<class T, class... ARGS>
-		inline T* CreateEntity(ARGS&&... args)
+		EntityId CreateEntity(ARGS&&... args)
 		{		
 			// aqcuire memory for new entity object of type T
 			void* pObjectMemory = GetEntityContainer<T>()->CreateObject();
 
 			// create entity inplace
-			IEntity* entity = new (pObjectMemory)T(std::forward<ARGS>(args)...);
+			IEntity* entity = new (pObjectMemory)T(std::forward<ARGS>(args)...);	
 
-			// aqcuire unused entity id
-			EntityId id = this->AqcuireEntityId(entity);
-
-			// set id
-			entity->m_Id = id;			
-
-			return static_cast<T*>(entity);
+			return entity->GetEntityID();
 		}
 
-		///-------------------------------------------------------------------------------------------------
-		/// Fn:	template<class T> inline void EntiyManager::DestroyEntity(void* entity)
-		///
-		/// Summary:	Destroies an entity.
-		/// DO NOT USE THAT METHOD DIRECTLY. ALWAYS USE Entity<T> class's delete operator.
-		///
-		/// Author:	Tobias Stein
-		///
-		/// Date:	11/09/2017
-		///
-		/// Typeparams:
-		/// T - 	Generic type parameter.
-		/// Parameters:
-		/// entity - 	[in,out] If non-null, the entity.
-		///-------------------------------------------------------------------------------------------------
 
-		template<class T>
-		inline void DestroyEntity(T* entity)
+		void DestroyEntity(EntityId entityId)
 		{
-			// free entity id
-			this->ReleaseEntityId(entity->m_Id);
+			assert(entityId < this->m_EntityLUT.size() && "Trying to destroy an entity with an invalid entity id!");
 
-			// release object memory
-			GetEntityContainer<T>()->DestroyObject(entity);
+			IEntity* entity = this->m_EntityLUT[entityId];
+
+			// get appropriate entity container and destroy entity
+			auto it = this->m_EntityRegistry.find(entity->GetStaticEntityTypeID());
+			if (it != this->m_EntityRegistry.end())
+			{
+				it->second->DestroyEntity(entity);
+			}
+
+			// release entity's components as well
+			ECS_Engine->ECS_ComponentManager->RemoveAllComponents(entityId);
 		}
 
 		///-------------------------------------------------------------------------------------------------
@@ -235,7 +238,7 @@ namespace ECS
 		/// Returns:	Null if it fails, else the entity.
 		///-------------------------------------------------------------------------------------------------
 
-		inline void* GetEntity(const EntityId id) 
+		inline IEntity* GetEntity(const EntityId id)
 		{
 			assert((id != INVALID_ENTITY_ID && id < this->m_EntityLUT.size()) && "Invalid entity id");
 			return this->m_EntityLUT[id];

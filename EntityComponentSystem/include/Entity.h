@@ -19,11 +19,12 @@ namespace ECS {
 	///-------------------------------------------------------------------------------------------------
 	/// Class:	Entity
 	///
-	/// Summary:	Base Entity class.
+	/// Summary:	CRTP class. Any entity object should derive form the Entity class and passes itself
+	/// as template parameter to the Entity class.
 	///
 	/// Author:	Tobias Stein
 	///
-	/// Date:	11/09/2017
+	/// Date:	30/09/2017
 	///
 	/// Typeparams:
 	/// E - 	Type of the e.
@@ -42,18 +43,16 @@ namespace ECS {
 
 	public:
 
-		Entity()
+		virtual const EntityTypeId GetStaticEntityTypeID() const override { return STATIC_ENTITY_TYPE_ID; }
+
+		Entity() 
 		{}
 
 		virtual ~Entity()
 		{}
-
-		static const EntityTypeId GetStaticEntityTypeId()
-		{
-			return STATIC_ENTITY_TYPE_ID;
-		}
 	};
 
+	// set unique type id for this Entity<T>
 	template<class T>
 	const EntityTypeId Entity<T>::STATIC_ENTITY_TYPE_ID = util::Internal::FamilyTypeCounter<IEntity>::Increment();
 }
