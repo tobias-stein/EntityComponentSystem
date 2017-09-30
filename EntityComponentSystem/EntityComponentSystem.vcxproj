@@ -191,6 +191,7 @@
     <ClCompile Include="src\EntityManager.cpp" />
     <ClCompile Include="src\Event\EventHandler.cpp" />
     <ClCompile Include="src\Event\IEventListener.cpp" />
+    <ClCompile Include="src\ISystem.cpp" />
     <ClCompile Include="src\Log\Logger.cpp" />
     <ClCompile Include="src\Log\LoggerManager.cpp" />
     <ClCompile Include="src\Memory\Allocator\IAllocator.cpp" />

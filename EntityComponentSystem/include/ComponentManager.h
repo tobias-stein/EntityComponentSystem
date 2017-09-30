@@ -13,14 +13,70 @@
 
 
 #include "API.h"
+#include "Engine.h"
+
+#include "IComponent.h"
+
+#include "Event/Event.h"
+#include "Event/EventHandler.h"
 
 #include "Memory/MemoryChunkAllocator.h"
 
-#include "Component.h"
 
 
 namespace ECS
 {
+	///-------------------------------------------------------------------------------------------------
+	/// Struct:	ComponentCreated
+	///
+	/// Summary:	Sent when new component was created.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	30/09/2017
+	///-------------------------------------------------------------------------------------------------
+
+	struct ComponentCreated : public Event::Event<ComponentCreated>
+	{
+		ComponentId		m_ComponentID;
+		ComponentTypeId	m_ComponentTypeID;
+
+		EntityId		m_OwnerID;
+
+		ComponentCreated(ComponentId componentId, ComponentTypeId componentTypeId, EntityId ownerId) :
+			m_ComponentID(componentId),
+			m_ComponentTypeID(componentTypeId),
+			m_OwnerID(ownerId)
+		{}
+
+	}; // struct ComponentCreated 
+
+	///-------------------------------------------------------------------------------------------------
+	/// Struct:	ComponentDestroyed
+	///
+	/// Summary:	Sent when component was destroyed.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	30/09/2017
+	///-------------------------------------------------------------------------------------------------
+
+	struct ComponentDestroyed : public Event::Event<ComponentDestroyed>
+	{
+		ComponentId		m_ComponentID;
+		ComponentTypeId	m_ComponentTypeID;
+
+		EntityId		m_OwnerID;
+
+		ComponentDestroyed(EntityId componentId, EntityTypeId componentTypeId, EntityId ownerId) :
+			m_ComponentID(componentId),
+			m_ComponentTypeID(componentTypeId),
+			m_OwnerID(ownerId)
+		{}
+
+	}; // struct ComponentDestroyed
+
+
 	class ECS_API ComponentManager : Memory::GlobalMemoryUser
 	{
 		friend class IComponent;
@@ -164,6 +220,10 @@ namespace ECS
 			// create mapping from entity id its component id
 			MapEntityComponent(entityId, componentId, CTID);
 
+
+			// Broadcast ComponentCreated event
+			ECS_Engine->ECS_EventHandler->Send<ComponentCreated>(componentId, CTID, entityId);
+
 			return static_cast<T*>(component);
 		}
 
@@ -198,6 +258,9 @@ namespace ECS
 
 			// unmap entity id to component id
 			UnmapEntityComponent(entityId, componentId, CTID);
+
+			// Broadcast ComponentDestroyed event
+			ECS_Engine->ECS_EventHandler->Send<ComponentDestroyed>(componentId, CTID, entityId);
 		}
 
 		void RemoveAllComponents(const EntityId entityId)
@@ -220,6 +283,9 @@ namespace ECS
 
 					// unmap entity id to component id
 					UnmapEntityComponent(entityId, componentId, componentTypeId);
+
+					// Broadcast ComponentDestroyed event
+					ECS_Engine->ECS_EventHandler->Send<ComponentDestroyed>(componentId, componentTypeId, entityId);
 				}
 			}
 		}

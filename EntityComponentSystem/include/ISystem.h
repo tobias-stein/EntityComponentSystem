@@ -11,7 +11,12 @@
 #ifndef __I_SYSTEM_H__
 #define __I_SYSTEM_H__
 
+#include "API.h"
+
 #include "util/IdManager.h"
+
+#include "Event/Event.h"
+#include "Event/EventHandler.h"
 
 namespace ECS
 {
@@ -41,7 +46,31 @@ namespace ECS
 
 	static const SystemPriority HIGHEST_SYSTEM_PRIORITY		= 65535;
 
-	class ISystem
+
+
+	struct SystemEnabled : public Event::Event<SystemEnabled>
+	{
+		SystemTypeId m_SystemTypeID;
+
+		SystemEnabled(SystemTypeId systemTypeId) :
+			m_SystemTypeID(systemTypeId)
+		{}
+
+	}; // struct SystemEnabled
+
+
+	struct SystemDisabled : public Event::Event<SystemDisabled>
+	{
+		SystemTypeId m_SystemTypeID;
+
+		SystemDisabled(SystemTypeId systemTypeId) :
+			m_SystemTypeID(systemTypeId)
+		{}
+
+	}; // struct SystemDisabled
+
+
+	class ECS_API ISystem
 	{
 	protected:
 
@@ -51,17 +80,14 @@ namespace ECS
 
 
 
-		ISystem(SystemPriority priority = NORMAL_SYSTEM_PRIORITY) :
-			m_Priority(priority),
-			m_Enabled(true)
-		{}
+		ISystem(SystemPriority priority = NORMAL_SYSTEM_PRIORITY);
 
 	public:
 
-		virtual ~ISystem()
-		{}
+		virtual ~ISystem();
 
-		virtual const char* GetSystemTypeName() const = 0;
+		virtual inline const SystemTypeId GetStaticSystemTypeID() const = 0;
+		virtual inline const char* GetSystemTypeName() const = 0;
 
 		virtual void Tick(float dt)
 		{}
@@ -69,20 +95,11 @@ namespace ECS
 
 		// ACCESSOR & MUTATOR
 
-		inline void SetActive(bool state)
-		{
-			this->m_Enabled = state;
-		}
+		void SetActive(bool state);
 
-		inline bool IsActive() const
-		{
-			return this->m_Enabled;
-		}
+		inline bool IsActive() const { return this->m_Enabled; }
 
-		inline const SystemPriority GetSystemPriority() const
-		{
-			return this->m_Priority;
-		}
+		inline const SystemPriority GetSystemPriority() const { return this->m_Priority; }
 	};
 }
 

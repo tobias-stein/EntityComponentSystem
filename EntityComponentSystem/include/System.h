@@ -45,19 +45,19 @@ namespace ECS
 			LogInfo("System %s released.", typeid(T).name());
 		}
 
-		virtual const char* GetSystemTypeName() const override
+		virtual inline const SystemTypeId GetStaticSystemTypeID() const
 		{
-			static const char* SYSTEM_TYPE_NAME = { typeid(T).name() };
+			return STATIC_SYSTEM_TYPE_ID;
+		}
+
+		virtual inline const char* GetSystemTypeName() const override
+		{
+			static const char* SYSTEM_TYPE_NAME { typeid(T).name() };
 			return SYSTEM_TYPE_NAME;
 		}
 
 		virtual void Tick(float dt)
 		{}
-
-		inline SystemTypeId GetStaticSystemTypeID() const
-		{
-			return STATIC_SYSTEM_TYPE_ID;
-		}
 
 		///-------------------------------------------------------------------------------------------------
 		/// Fn:	template<class... Dependencies> void System::AddDependencies(Dependencies&&... dependencies)

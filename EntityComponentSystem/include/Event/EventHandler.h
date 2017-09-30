@@ -12,9 +12,6 @@
 #define __EVENT_HANDLER_H__
 
 
-#define ECS_EVENT_MEMORY_CAPACITY 4096 // 4Mb
-
-
 #include "API.h"
 
 #include "Memory/Allocator/LinearAllocator.h"
@@ -36,7 +33,7 @@ namespace ECS { namespace Event {
 	
 		using EventMemoryAllocator = Memory::Allocator::LinearAllocator;
 
-		static const size_t EVENT_MEMORY_CAPACITY = ECS_EVENT_MEMORY_CAPACITY;
+		static const size_t EVENT_MEMORY_CAPACITY = ECS_EVENT_MEMORY_BUFFER_SIZE;
 	
 		DECLARE_LOGGER
 
@@ -124,7 +121,7 @@ namespace ECS { namespace Event {
 			}
 			else
 			{
-				LogWarning("Event buffer is full! Call EventHandler::DispatchEvents().");
+				LogWarning("Event buffer is full! Call EventHandler::DispatchEvents() !!!");
 			}
 		}
 	
@@ -142,10 +139,7 @@ namespace ECS { namespace Event {
 	
 				Internal::IEventDispatcher* dispatcher = this->m_EventDispatcherMap[event->GetEventTypeID()];
 				if (dispatcher == nullptr)
-				{
-					LogError("EventType %d: No event dispatcher found. Interrupting dispatching.", event->GetEventTypeID());
 					continue;
-				}
 	
 				dispatcher->Dispatch(event);
 			}

@@ -19,6 +19,7 @@
 #include "Component.h"
 #include "System.h"
 
+#include "EntityManager.h"
 #include "ComponentManager.h"
 #include "SystemManager.h"
 

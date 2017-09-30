@@ -11,10 +11,7 @@
 #ifndef __EVENT_H__
 #define __EVENT_H__
 
-#include "API.h"
-
-#include "IEvent.h"
-#include "EventHandler.h"
+#include "Event/IEvent.h"
 
 #include "util/FamilyTypeCounter.h"
 
@@ -23,16 +20,13 @@ namespace ECS { namespace Event {
 	template<class T>
 	class Event : public IEvent
 	{
-	protected:
 
 	public:
 	
 		// note: wont be part of stored event memory DATA
 		static const EventTypeId STATIC_EVENT_TYPE_ID;
 	
-	public:
-	
-		Event(EntityId sender = INVALID_ENITYID, EntityId receiver = INVALID_ENITYID) :
+		Event(EntityId sender = ECS::INVALID_ENTITY_ID, EntityId receiver = ECS::INVALID_ENTITY_ID) :
 			IEvent(STATIC_EVENT_TYPE_ID, 0u, sender, receiver) // todo: set timestamp
 		{}
 

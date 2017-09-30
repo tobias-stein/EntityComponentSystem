@@ -71,7 +71,7 @@ namespace ECS
 		
 		inline void SetActive(bool active) { this->m_Active = active; }
 		inline bool IsActive() const { return this->m_Active; }
-	};
+	};	
 
 } // namespace ECS
 

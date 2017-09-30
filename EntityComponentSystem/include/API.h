@@ -17,17 +17,20 @@ Preprocessor defines:
 #define __ECS_API_H__
 #pragma once
 
-#define ENITY_LUT_GROW				1024
+#define ENITY_LUT_GROW						1024
 
-#define ENITY_T_CHUNK_SIZE			512
+#define ENITY_T_CHUNK_SIZE					512
 
-#define COMPONENT_LUT_GROW			1024
+#define COMPONENT_LUT_GROW					1024
 
-#define COMPONENT_T_CHUNK_SIZE		512
+#define COMPONENT_T_CHUNK_SIZE				512
+
+// 4MB 
+#define ECS_EVENT_MEMORY_BUFFER_SIZE		4194304
+
 
 
 #include "Platform.h"
-
 #include "Log/Logger.h"
 
 namespace ECS 

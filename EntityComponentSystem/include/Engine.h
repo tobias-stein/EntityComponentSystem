@@ -28,9 +28,14 @@ namespace ECS
 	class ECS_API ECSEngine
 	{
 		friend class IEntity;
-		friend class EntityManager;
 		friend class IComponent;
+		friend class ISystem;
+
 		friend class Event::IEventListener;
+
+		friend class EntityManager;
+		friend class ComponentManager;
+		friend class SystemManager;
 
 	private:
 

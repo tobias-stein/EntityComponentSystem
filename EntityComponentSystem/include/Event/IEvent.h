@@ -12,14 +12,10 @@
 #define __I_EVENT_H__
 
 
-#include "util/IdManager.h"
+#include "IEntity.h"
 
-#include "EntityManager.h"
+namespace ECS { namespace Event {
 
-namespace ECS
-{
-	namespace Event
-	{
 		using EventTypeId = util::TypeId;
 
 		static const EventTypeId INVALID_EVENTTYPE = util::INVALID_TYPE_ID;
@@ -46,25 +42,13 @@ namespace ECS
 			{}
 
 			// ACCESSOR
-			inline const EventTypeId GetEventTypeID() const
-			{
-				return this->m_TypeId;
-			}
+			inline const EventTypeId	GetEventTypeID() const { return this->m_TypeId; }
 
-			inline const EntityId GetSender() const
-			{
-				return this->m_Sender;
-			}
+			inline const EntityId		GetSender() const { return this->m_Sender; }
+			inline const EntityId		GetReceiver() const { return this->m_Receiver; }
 
-			inline const EntityId GetReceiver() const
-			{
-				return this->m_Receiver;
-			}
+			inline const EventTimestamp GetTimeCreated() const { return this->m_TimeCreated; }
 
-			inline const EventTimestamp GetTimeCreated() const
-			{
-				return this->m_TimeCreated;
-			}
 		}; // class IEvent
 
 }} // namespace ECS::Event

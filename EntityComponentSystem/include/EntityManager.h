@@ -13,14 +13,64 @@
 
 #include "API.h"
 #include "Engine.h"
+
 #include "IEntity.h"
 #include "ComponentManager.h"
+
+#include "Event/Event.h"
+#include "Event/EventHandler.h"
+
 #include "Memory/MemoryChunkAllocator.h"
 
 
 
 namespace ECS
 {
+	///-------------------------------------------------------------------------------------------------
+	/// Struct:	ECS_API
+	///
+	/// Summary:	Sent when new entity object was created.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	30/09/2017
+	///-------------------------------------------------------------------------------------------------
+
+	struct EntityCreated : public Event::Event<EntityCreated>
+	{
+		EntityId		m_EntityID;
+		EntityTypeId	m_EntityTypeID;
+
+		EntityCreated(EntityId entityId, EntityTypeId entityTypeId) :
+			m_EntityID(entityId),
+			m_EntityTypeID(entityTypeId)
+		{}
+
+	}; // struct EntityCreated 
+
+	   ///-------------------------------------------------------------------------------------------------
+	   /// Struct:	ECS_API
+	   ///
+	   /// Summary:	Sent when entity object was destroyed.
+	   ///
+	   /// Author:	Tobias Stein
+	   ///
+	   /// Date:	30/09/2017
+	   ///-------------------------------------------------------------------------------------------------
+
+	struct EntityDestroyed : public Event::Event<EntityDestroyed>
+	{
+		EntityId		m_EntityID;
+		EntityTypeId	m_EntityTypeID;
+
+		EntityDestroyed(EntityId entityId, EntityTypeId entityTypeId) :
+			m_EntityID(entityId),
+			m_EntityTypeID(entityTypeId)
+		{}
+
+	}; // struct EntityDestroyed
+
+
 	template<class T>
 	using EntityList = std::list<T*>;
 
@@ -202,6 +252,9 @@ namespace ECS
 			// create entity inplace
 			IEntity* entity = new (pObjectMemory)T(std::forward<ARGS>(args)...);	
 
+			// Broadcast CreateEntity event
+			ECS_Engine->ECS_EventHandler->Send<EntityCreated>(entity->GetEntityID(), entity->GetStaticEntityTypeID());
+
 			return entity->GetEntityID();
 		}
 
@@ -212,12 +265,17 @@ namespace ECS
 
 			IEntity* entity = this->m_EntityLUT[entityId];
 
+			const EntityTypeId ETID = entity->GetStaticEntityTypeID();
+
 			// get appropriate entity container and destroy entity
-			auto it = this->m_EntityRegistry.find(entity->GetStaticEntityTypeID());
+			auto it = this->m_EntityRegistry.find(ETID);
 			if (it != this->m_EntityRegistry.end())
 			{
 				it->second->DestroyEntity(entity);
 			}
+
+			// Broadcast EntityDestroyed event
+			ECS_Engine->ECS_EventHandler->Send<EntityDestroyed>(entityId, ETID);
 
 			// release entity's components as well
 			ECS_Engine->ECS_ComponentManager->RemoveAllComponents(entityId);

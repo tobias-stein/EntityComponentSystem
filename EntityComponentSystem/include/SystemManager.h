@@ -14,6 +14,9 @@
 #define ECS_SYSTEM_MEMORY_CAPACITY	8192 // 8Mb
 
 #include "API.h"
+#include "Engine.h"
+
+#include "ISystem.h"
 
 #include "Memory/Allocator/LinearAllocator.h"
 #include "util/FamilyTypeCounter.h"
@@ -22,10 +25,25 @@
 
 namespace ECS
 {
+	///-------------------------------------------------------------------------------------------------
+	/// Struct:	SystemCreated
+	///
+	/// Summary:	Sent when new system was created.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	30/09/2017
+	///-------------------------------------------------------------------------------------------------
 
-	// forward declaration
-	class ISystem;
+	struct SystemCreated : public Event::Event<SystemCreated>
+	{
+		SystemTypeId m_SystemTypeID;
 
+		SystemCreated(SystemTypeId systemTypeId) :
+			m_SystemTypeID(systemTypeId)
+		{}
+
+	}; // struct SystemCreated 
 
 	using SystemWorkStateMask	= std::vector<bool>;
 
@@ -121,6 +139,8 @@ namespace ECS
 					this->m_SystemDependencyMatrix[i].resize(STID + 1);
 			}
 
+			// Broadcast SystemCreated event
+			ECS_Engine->ECS_EventHandler->Send<SystemCreated>(STID);
 
 			return system;
 		}
@@ -153,14 +173,13 @@ namespace ECS
 
 			bool changed = false;
 
-			LogInfo("Add new %d dependencies for \'%s\':", sizeof...(dependencies), target->GetSystemTypeName())
 			for (auto d : D)
 			{
 				if (this->m_SystemDependencyMatrix[TARGET_ID][d->GetStaticSystemTypeID()] == true)
 					continue;
 
 				this->m_SystemDependencyMatrix[TARGET_ID][d->GetStaticSystemTypeID()] = true;
-				LogInfo("\tadd '%s' as dependency", d->GetSystemTypeName())
+				LogInfo("added '%s' as dependency to '%s'", d->GetSystemTypeName(), target->GetSystemTypeName())
 				
 				changed = true;
 			}
