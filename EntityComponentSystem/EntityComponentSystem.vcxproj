@@ -181,7 +181,6 @@
     <ClInclude Include="include\SystemManager.h" />
     <ClInclude Include="include\util\FamilyTypeCounter.h" />
     <ClInclude Include="include\util\Handle.h" />
-    <ClInclude Include="include\util\IdManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\API.cpp" />
@@ -201,7 +200,6 @@
     <ClCompile Include="src\Memory\Allocator\StackAllocator.cpp" />
     <ClCompile Include="src\Memory\ECSMM.cpp" />
     <ClCompile Include="src\SystemManager.cpp" />
-    <ClCompile Include="src\util\IdManager.cpp" />
     <ClCompile Include="src\util\FamilyTypeCounter.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

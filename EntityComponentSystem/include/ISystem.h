@@ -13,8 +13,6 @@
 
 #include "API.h"
 
-#include "util/IdManager.h"
-
 #include "Event/Event.h"
 #include "Event/EventHandler.h"
 
@@ -23,12 +21,12 @@ namespace ECS
 	template<class T>
 	class System;
 
-	using SystemTypeId = util::TypeId;
+	using SystemTypeId   = TypeID;
 
 	using SystemPriority = u16;
 
 
-	static const SystemTypeId INVALID_SYSTEMID = util::INVALID_TYPE_ID;
+	static const SystemTypeId INVALID_SYSTEMID				= INVALID_TYPE_ID;
 
 	
 

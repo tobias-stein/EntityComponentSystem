@@ -10,13 +10,11 @@
 #pragma once
 
 #include "API.h"
-
-#include "util/IdManager.h"
 #include "util/Handle.h"
 
 namespace ECS
 {
-	using EntityTypeId						= util::TypeId;
+	using EntityTypeId						= TypeID;
 
 	using EntityId							= util::Handle64;
 

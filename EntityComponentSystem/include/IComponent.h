@@ -15,10 +15,10 @@
 
 namespace ECS
 {
-	using ComponentId		= util::ObjectId;
-	using ComponentTypeId	= util::TypeId;
+	using ComponentId		= ObjectID;
+	using ComponentTypeId	= TypeID;
 
-	static const ComponentId INVALID_COMPONENT_ID = util::INVALID_OBJECT_ID;
+	static const ComponentId INVALID_COMPONENT_ID = INVALID_OBJECT_ID;
 
 	template<class T>
 	class Component;

@@ -16,9 +16,9 @@
 
 namespace ECS { namespace Event {
 
-		using EventTypeId = util::TypeId;
+		using EventTypeId = TypeID;
 
-		static const EventTypeId INVALID_EVENTTYPE = util::INVALID_TYPE_ID;
+		static const EventTypeId INVALID_EVENTTYPE = INVALID_TYPE_ID;
 
 		using EventTimestamp = u64;
 

@@ -84,9 +84,6 @@
     <ClInclude Include="include\SystemManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\util\IdManager.h">
-      <Filter>Header Files\util</Filter>
-    </ClInclude>
     <ClInclude Include="include\Event\EventDelegate.h">
       <Filter>Header Files\Event</Filter>
     </ClInclude>
@@ -148,9 +145,6 @@
     </ClCompile>
     <ClCompile Include="src\SystemManager.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\IdManager.cpp">
-      <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="src\Log\Logger.cpp">
       <Filter>Source Files\Log</Filter>

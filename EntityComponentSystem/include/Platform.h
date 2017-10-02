@@ -44,22 +44,28 @@ namespace ECS
 {
 
 	// signed integer type
-	using i8	= int8_t;
-	using i16	= int16_t;
-	using i32	= int32_t;
-	using i64	= int64_t;
+	using i8			= int8_t;
+	using i16			= int16_t;
+	using i32			= int32_t;
+	using i64			= int64_t;
 
 	// unsigned integer type
-	using u8	= uint8_t;
-	using u16	= uint16_t;
-	using u32	= uint32_t;
-	using u64	= uint64_t;
+	using u8			= uint8_t;
+	using u16			= uint16_t;
+	using u32			= uint32_t;
+	using u64			= uint64_t;
 
 	// pointer
-	using iptr  = intptr_t;
-	using uptr	= uintptr_t;
+	using iptr			= intptr_t;
+	using uptr			= uintptr_t;
+
+	using ObjectID		= u64;
+	using TypeID		= u64;
+
+	static const ObjectID	INVALID_OBJECT_ID	= std::numeric_limits<ObjectID>::max();
+	static const TypeID		INVALID_TYPE_ID		= std::numeric_limits<TypeID>::max();
 
 } // namespace ECS
-
+	
 
 #endif // __PLATFORM_H__
