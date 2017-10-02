@@ -52,7 +52,7 @@ namespace ECS
 	void SystemManager::UpdateSystemWorkOrder()
 	{
 		// depth-first-search function
-		static const std::function<void(int, std::vector<int>&, const std::vector<std::vector<bool>>&, std::vector<SystemTypeId>&)> DFS = [&](int vertex, std::vector<int>& VERTEX_STATE, const std::vector<std::vector<bool>>& EDGES, std::vector<SystemTypeId>& output)
+		static const std::function<void(SystemTypeId, std::vector<int>&, const std::vector<std::vector<bool>>&, std::vector<SystemTypeId>&)> DFS = [&](SystemTypeId vertex, std::vector<int>& VERTEX_STATE, const std::vector<std::vector<bool>>& EDGES, std::vector<SystemTypeId>& output)
 		{
 			VERTEX_STATE[vertex] = 1; // visited
 
@@ -80,7 +80,7 @@ namespace ECS
 
 		while (INDICES.empty() == false)
 		{
-			int index = INDICES.back();
+			SystemTypeId index = INDICES.back();
 			INDICES.pop_back();
 
 			if (index == -1)
@@ -114,7 +114,7 @@ namespace ECS
 			GROUP_PRIORITY.push_back(groupPriority);
 		}
 
-		const int NUM_VERTEX_GROUPS = VERTEX_GROUPS.size();
+		const size_t NUM_VERTEX_GROUPS = VERTEX_GROUPS.size();
 
 		// do a topological sort on groups w.r.t. to groups priority!
 		std::vector<int> vertex_states(NUM_SYSTEMS, 0);
@@ -122,7 +122,7 @@ namespace ECS
 		std::multimap<SystemPriority, std::vector<SystemTypeId>> VERTEX_GROUPS_SORTED;
 
 
-		for (int i = 0; i < VERTEX_GROUPS.size(); ++i)
+		for (int i = 0; i < NUM_VERTEX_GROUPS; ++i)
 		{
 			auto g = VERTEX_GROUPS[i];
 

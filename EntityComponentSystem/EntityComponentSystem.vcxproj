@@ -180,6 +180,7 @@
     <ClInclude Include="include\System.h" />
     <ClInclude Include="include\SystemManager.h" />
     <ClInclude Include="include\util\FamilyTypeCounter.h" />
+    <ClInclude Include="include\util\Handle.h" />
     <ClInclude Include="include\util\IdManager.h" />
   </ItemGroup>
   <ItemGroup>

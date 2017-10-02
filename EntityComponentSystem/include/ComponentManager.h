@@ -114,7 +114,8 @@ namespace ECS
 
 			virtual const char* GetComponentContainerTypeName() const override
 			{
-				return typeid(T).name();
+				static const char* COMPONENT_TYPE_NAME{ typeid(T).name() };
+				return COMPONENT_TYPE_NAME;
 			}		
 
 			virtual void DestroyComponent(IComponent* object) override
@@ -247,7 +248,7 @@ namespace ECS
 		{
 			const ComponentTypeId CTID = T::STATIC_COMPONENT_TYPE_ID;
 
-			const ComponentId componentId = this->m_EntityComponentMap[entityId][CTID];
+			const ComponentId componentId = this->m_EntityComponentMap[entityId.index][CTID];
 
 			IComponent* component = this->m_ComponentLUT[componentId];
 
@@ -269,7 +270,7 @@ namespace ECS
 
 			for (ComponentTypeId componentTypeId = 0; componentTypeId < NUM_COMPONENTS; ++componentTypeId)
 			{
-				const ComponentId componentId = this->m_EntityComponentMap[entityId][componentTypeId];
+				const ComponentId componentId = this->m_EntityComponentMap[entityId.index][componentTypeId];
 
 				IComponent* component = this->m_ComponentLUT[componentId];
 				if (component != nullptr)
@@ -313,7 +314,7 @@ namespace ECS
 		{
 			const ComponentTypeId CTID = T::STATIC_COMPONENT_TYPE_ID;
 
-			const ComponentId componentId = this->m_EntityComponentMap[entityId][CTID];
+			const ComponentId componentId = this->m_EntityComponentMap[entityId.index][CTID];
 
 			// entity has no component of type T
 			if (componentId == INVALID_COMPONENT_ID)

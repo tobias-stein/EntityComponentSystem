@@ -42,8 +42,10 @@ int main(const int argc, const char* argv[])
 			ECS_Engine->Update();
 		}
 
-		
-		ECS_Engine->GetEntityManager()->DestroyEntity(0);
+
+		ECS::EntityId id = ECS_Engine->GetEntityManager()->GetEntityId(0);
+
+		ECS_Engine->GetEntityManager()->DestroyEntity(id);
 
 		ECS::Terminate();
 	//}

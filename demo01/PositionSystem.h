@@ -66,7 +66,7 @@ public:
 				// check if entity is bellow sea level
 				if (pos.y < 0.0f)
 				{
-					LogTrace("Entity [%d] is bellow sea level.", entity->GetEntityID());
+					LogTrace("Entity [%llu] is bellow sea level.", entity->GetEntityID());
 					ECS::ECS_Engine->SendEvent<EntityBellowSeaLevelEvent>(entity->GetEntityID(), pos.y);
 				}
 			}

@@ -12,14 +12,15 @@
 #include "API.h"
 
 #include "util/IdManager.h"
+#include "util/Handle.h"
 
 namespace ECS
 {
-	using EntityTypeId	= util::TypeId;
+	using EntityTypeId						= util::TypeId;
 
-	using EntityId		= util::ObjectId;
+	using EntityId							= util::Handle64;
 
-	static const EntityId INVALID_ENTITY_ID = util::INVALID_OBJECT_ID;
+	static const EntityId INVALID_ENTITY_ID = util::Handle64::INVALID_HANDLE;
 
 	class ECS_API IEntity
 	{

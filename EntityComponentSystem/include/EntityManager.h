@@ -22,7 +22,13 @@
 
 #include "Memory/MemoryChunkAllocator.h"
 
+#include "util/Handle.h"
 
+#pragma warning(push)
+
+// warning C4291: 'void *operator new(::size_t,void *) throw()': no matching operator delete found; memory will not be freed if initialization throws an exception
+// note we are using custom memory allocator no need for delete
+#pragma warning(disable: 4291)
 
 namespace ECS
 {
@@ -70,9 +76,9 @@ namespace ECS
 
 	}; // struct EntityDestroyed
 
+	
+	using EntityHandleTable = util::HandleTable<IEntity, EntityId>;
 
-	template<class T>
-	using EntityList = std::list<T*>;
 
 	class ECS_API EntityManager
 	{
@@ -124,7 +130,8 @@ namespace ECS
 
 			virtual const char* GetEntityContainerTypeName() const override
 			{ 
-				return typeid(T).name();
+				static const char* ENTITY_TYPE_NAME{ typeid(T).name() };
+				return ENTITY_TYPE_NAME;
 			}
 
 			virtual void DestroyEntity(IEntity* object) override
@@ -146,11 +153,7 @@ namespace ECS
 		EntityManager(const EntityManager&) = delete;
 		EntityManager& operator=(EntityManager&) = delete;
 
-		using EntityLookupTable = std::vector<IEntity*>;
-
-
-		/// Summary:	Maps an entity id to object.
-		EntityLookupTable m_EntityLUT;
+		EntityHandleTable m_EntityHandleTable;
 
 		///-------------------------------------------------------------------------------------------------
 		/// Fn:	template<class T> inline EntityContainer<T>* EntityManager::GetEntityContainer()
@@ -261,9 +264,7 @@ namespace ECS
 
 		void DestroyEntity(EntityId entityId)
 		{
-			assert(entityId < this->m_EntityLUT.size() && "Trying to destroy an entity with an invalid entity id!");
-
-			IEntity* entity = this->m_EntityLUT[entityId];
+			IEntity* entity = this->m_EntityHandleTable[entityId];
 
 			const EntityTypeId ETID = entity->GetStaticEntityTypeID();
 
@@ -296,13 +297,35 @@ namespace ECS
 		/// Returns:	Null if it fails, else the entity.
 		///-------------------------------------------------------------------------------------------------
 
-		inline IEntity* GetEntity(const EntityId id)
+		inline IEntity* GetEntity(EntityId entityId)
 		{
-			assert((id != INVALID_ENTITY_ID && id < this->m_EntityLUT.size()) && "Invalid entity id");
-			return this->m_EntityLUT[id];
+			return this->m_EntityHandleTable[entityId];
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	inline EntityId EntityManager::GetEntityId(EntityId::index_type index)
+		///
+		/// Summary:	Gets the currently stored entity identifier at the given index.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	2/10/2017
+		///
+		/// Parameters:
+		/// index - 	Zero-based index of the.
+		///
+		/// Returns:	The entity identifier.
+		///-------------------------------------------------------------------------------------------------
+
+		inline EntityId GetEntityId(EntityId::index_type index) const
+		{
+			return this->m_EntityHandleTable[index];
 		}
 	};
+
 	 
 } // namespace ECS
+
+#pragma warning(pop)
 
 #endif // __ENTITY_MANAGER_H__

@@ -66,7 +66,7 @@ namespace ECS {
 	{
 		static const size_t NUM_COMPONENTS { util::Internal::FamilyTypeCounter<IComponent>::Get() };
 
-		if (this->m_EntityComponentMap.size() < entityId)
+		if (this->m_EntityComponentMap.size() < entityId.index)
 		{
 			size_t oldSize = this->m_EntityComponentMap.size();
 
@@ -80,15 +80,15 @@ namespace ECS {
 		}
 
 		// create mapping
-		this->m_EntityComponentMap[entityId][componentTypeId] = componentId;
+		this->m_EntityComponentMap[entityId.index][componentTypeId] = componentId;
 	}
 
 	void ComponentManager::UnmapEntityComponent(EntityId entityId, ComponentId componentId, ComponentTypeId componentTypeId)
 	{
-		assert(this->m_EntityComponentMap[entityId][componentTypeId] == componentId && "FATAL: Entity Component ID mapping corruption!");
+		assert(this->m_EntityComponentMap[entityId.index][componentTypeId] == componentId && "FATAL: Entity Component ID mapping corruption!");
 
 		// free mapping
-		this->m_EntityComponentMap[entityId][componentTypeId] = INVALID_COMPONENT_ID;
+		this->m_EntityComponentMap[entityId.index][componentTypeId] = INVALID_COMPONENT_ID;
 	}
 
 } // namespace ECS

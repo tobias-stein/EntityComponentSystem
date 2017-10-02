@@ -9,8 +9,7 @@
 
 namespace ECS
 {
-	EntityManager::EntityManager() :
-		m_EntityLUT(ENITY_LUT_GROW, nullptr)
+	EntityManager::EntityManager()
 	{
 		DEFINE_LOGGER("EntityManager")
 		LogInfo("Initialize EntityManager!")
@@ -30,27 +29,12 @@ namespace ECS
 
 	EntityId EntityManager::AqcuireEntityId(IEntity* entity)
 	{
-		int i = 0;
-		for (; i < this->m_EntityLUT.size(); ++i)
-		{
-			if (this->m_EntityLUT[i] == nullptr)
-			{
-				this->m_EntityLUT[i] = entity;
-				return i;
-			}
-		}
-
-		// increase entity LUT size
-		this->m_EntityLUT.resize(this->m_EntityLUT.size() + ENITY_LUT_GROW, nullptr);
-
-		this->m_EntityLUT[i] = entity;
-		return i;
+		return this->m_EntityHandleTable.AqcuireHandle(entity);
 	}
 
 	void EntityManager::ReleaseEntityId(EntityId id)
 	{
-		assert((id != INVALID_ENTITY_ID && id < this->m_EntityLUT.size()) && "Invalid entity id");
-		this->m_EntityLUT[id] = nullptr;
+		this->m_EntityHandleTable.ReleaseHandle(id);
 	}
 
 } // namespace ECS
