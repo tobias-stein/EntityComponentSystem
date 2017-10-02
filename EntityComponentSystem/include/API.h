@@ -28,6 +28,8 @@ Preprocessor defines:
 // 4MB 
 #define ECS_EVENT_MEMORY_BUFFER_SIZE		4194304
 
+// 8MB
+#define ECS_SYSTEM_MEMORY_BUFFER_SIZE		8388608
 
 
 #include "Platform.h"

@@ -11,15 +11,13 @@
 #ifndef __SYSTEM_MANAGER_H__
 #define __SYSTEM_MANAGER_H__
 
-#define ECS_SYSTEM_MEMORY_CAPACITY	8192 // 8Mb
-
 #include "API.h"
 #include "Engine.h"
 
 #include "ISystem.h"
 
 #include "Memory/Allocator/LinearAllocator.h"
-#include "util/FamilyTypeCounter.h"
+#include "util/FamilyTypeID.h"
 
 
 
@@ -62,8 +60,6 @@ namespace ECS
 		using SystemAllocator	= Memory::Allocator::LinearAllocator;
 
 		using SystemWorkOrder	= std::vector<ISystem*>;
-
-		static const size_t SYSTEM_MEMORY_CAPACITY = ECS_SYSTEM_MEMORY_CAPACITY;
 
 		SystemAllocator*		m_SystemAllocator;
 

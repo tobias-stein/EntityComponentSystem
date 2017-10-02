@@ -20,7 +20,7 @@ namespace ECS
 		LogInfo("Initialize SystemManager!");
 
 		// acquire global memory
-		this->m_SystemAllocator = new SystemAllocator(SystemManager::SYSTEM_MEMORY_CAPACITY, Allocate(SystemManager::SYSTEM_MEMORY_CAPACITY, "SystemManager"));
+		this->m_SystemAllocator = new SystemAllocator(ECS_SYSTEM_MEMORY_BUFFER_SIZE, Allocate(ECS_SYSTEM_MEMORY_BUFFER_SIZE, "SystemManager"));
 	}
 	
 	SystemManager::~SystemManager()

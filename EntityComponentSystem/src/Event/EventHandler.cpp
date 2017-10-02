@@ -18,7 +18,7 @@ namespace ECS { namespace Event {
 		LogInfo("Initialize EventHandler!");
 	
 		// allocate memory from global memory manager
-		this->m_EventMemoryAllocator = new EventMemoryAllocator(EventHandler::EVENT_MEMORY_CAPACITY, Allocate(EventHandler::EVENT_MEMORY_CAPACITY, "EventHandler"));
+		this->m_EventMemoryAllocator = new EventMemoryAllocator(ECS_EVENT_MEMORY_BUFFER_SIZE, Allocate(ECS_EVENT_MEMORY_BUFFER_SIZE, "EventHandler"));
 	
 		this->m_EventStorage.reserve(1024);
 	}

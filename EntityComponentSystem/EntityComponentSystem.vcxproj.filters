@@ -120,9 +120,6 @@
     <ClInclude Include="include\Log\LoggerManager.h">
       <Filter>Header Files\Log</Filter>
     </ClInclude>
-    <ClInclude Include="include\util\FamilyTypeCounter.h">
-      <Filter>Header Files\util</Filter>
-    </ClInclude>
     <ClInclude Include="include\Log\LoggerMacro.h">
       <Filter>Header Files\Log</Filter>
     </ClInclude>
@@ -136,6 +133,9 @@
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
     <ClInclude Include="include\util\Handle.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\FamilyTypeID.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
   </ItemGroup>
@@ -173,9 +173,6 @@
     <ClCompile Include="src\Event\IEventListener.cpp">
       <Filter>Source Files\Event</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\FamilyTypeCounter.cpp">
-      <Filter>Source Files\util</Filter>
-    </ClCompile>
     <ClCompile Include="src\Log\LoggerManager.cpp">
       <Filter>Source Files\Log</Filter>
     </ClCompile>
@@ -193,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="src\ISystem.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\FamilyTypeID.cpp">
+      <Filter>Source Files\util</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

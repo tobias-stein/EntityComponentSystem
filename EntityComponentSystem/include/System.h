@@ -14,7 +14,7 @@
 #include "API.h"
 
 #include "ISystem.h"
-#include "util/FamilyTypeCounter.h"
+#include "util/FamilyTypeID.h"
 
 
 namespace ECS
@@ -83,7 +83,7 @@ namespace ECS
 	}; // class System<T>
 
 	template<class T>
-	const SystemTypeId System<T>::STATIC_SYSTEM_TYPE_ID = util::Internal::FamilyTypeCounter<ISystem>::Increment();
+	const SystemTypeId System<T>::STATIC_SYSTEM_TYPE_ID = util::Internal::FamilyTypeID<ISystem>::Increment();
 
 } // namespace ECS
 

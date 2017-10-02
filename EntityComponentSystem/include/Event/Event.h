@@ -13,7 +13,7 @@
 
 #include "Event/IEvent.h"
 
-#include "util/FamilyTypeCounter.h"
+#include "util/FamilyTypeID.h"
 
 namespace ECS { namespace Event {
 
@@ -33,7 +33,7 @@ namespace ECS { namespace Event {
 	}; // class Event<T>
 	
 	template<class T>
-	const EventTypeId Event<T>::STATIC_EVENT_TYPE_ID = util::Internal::FamilyTypeCounter<IEvent>::Increment();
+	const EventTypeId Event<T>::STATIC_EVENT_TYPE_ID = util::Internal::FamilyTypeID<IEvent>::Increment();
 
 }} // namespace ECS::Event
 

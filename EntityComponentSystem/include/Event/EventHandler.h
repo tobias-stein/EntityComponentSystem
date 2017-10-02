@@ -32,8 +32,6 @@ namespace ECS { namespace Event {
 		using EventStorage = std::vector<IEvent*>;
 	
 		using EventMemoryAllocator = Memory::Allocator::LinearAllocator;
-
-		static const size_t EVENT_MEMORY_CAPACITY = ECS_EVENT_MEMORY_BUFFER_SIZE;
 	
 		DECLARE_LOGGER
 

@@ -18,7 +18,7 @@ namespace ECS {
 		DEFINE_LOGGER("ComponentManager")
 		LogInfo("Initialize ComponentManager!");
 
-		const size_t NUM_COMPONENTS{ util::Internal::FamilyTypeCounter<IComponent>::Get() };
+		const size_t NUM_COMPONENTS{ util::Internal::FamilyTypeID<IComponent>::Get() };
 
 		this->m_EntityComponentMap.resize(ENITY_LUT_GROW);
 		for (auto i = 0; i < ENITY_LUT_GROW; ++i)
@@ -64,7 +64,7 @@ namespace ECS {
 
 	void ComponentManager::MapEntityComponent(EntityId entityId, ComponentId componentId, ComponentTypeId componentTypeId)
 	{
-		static const size_t NUM_COMPONENTS { util::Internal::FamilyTypeCounter<IComponent>::Get() };
+		static const size_t NUM_COMPONENTS { util::Internal::FamilyTypeID<IComponent>::Get() };
 
 		if (this->m_EntityComponentMap.size() < entityId.index)
 		{

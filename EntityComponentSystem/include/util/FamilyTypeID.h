@@ -8,8 +8,8 @@
 	All Rights Reserved. (c) Copyright 2016.
 */
 
-#ifndef __FAMILY_TYPE_COUNTER_H__
-#define __FAMILY_TYPE_COUNTER_H__
+#ifndef __FAMILY_TYPE_ID_H__
+#define __FAMILY_TYPE_ID_H__
 
 
 #include "API.h"
@@ -17,18 +17,18 @@
 namespace ECS { namespace util { namespace Internal {
 
 	template<class T>
-	class ECS_API FamilyTypeCounter
+	class ECS_API FamilyTypeID
 	{
-		static u64 s_count;
+		static TypeID s_count;
 	
 	public:
 	
-		static inline u64 Increment()
+		static inline TypeID Increment()
 		{
 			return s_count++;
 		}
 	
-		static inline const u64 Get()
+		static inline const TypeID Get()
 		{
 			return s_count;
 		}
@@ -36,4 +36,4 @@ namespace ECS { namespace util { namespace Internal {
 
 }}} // namespace ECS::util::Internal
 
-#endif // __FAMILY_TYPE_COUNTER_H__
+#endif // __FAMILY_TYPE_ID_H__
