@@ -107,7 +107,7 @@ namespace ECS
 		}
 
 		///-------------------------------------------------------------------------------------------------
-		/// Fn:	void ECSEngine::Update(f64 tick_ms);
+		/// Fn:	void ECSEngine::Update(f32 tick_ms);
 		///
 		/// Summary:	Updates the entire ECS with a given delta time in milliseconds.
 		///
@@ -119,7 +119,7 @@ namespace ECS
 		/// tick_ms - 	The tick in milliseconds.
 		///-------------------------------------------------------------------------------------------------
 
-		void Update(f64 tick_ms);
+		void Update(f32 tick_ms);
 	};
 
 } // namespace ECS

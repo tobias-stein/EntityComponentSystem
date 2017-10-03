@@ -41,7 +41,7 @@ namespace ECS
 		LogInfo("Release SystemManager!");
 	}
 
-	void SystemManager::Update(f64 dt_ms)
+	void SystemManager::Update(f32 dt_ms)
 	{
 		for (ISystem* system : this->m_SystemWorkOrder)
 		{

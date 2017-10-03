@@ -13,13 +13,7 @@ namespace ECS { namespace util {
 
 	class ECS_API Timer
 	{
-#ifdef ECS_64BIT	
-		using DurationRep = f64;
-#else
-		using DurationRep = f32;
-#endif
-
-		using Elapsed = std::chrono::duration<DurationRep, std::milli>;
+		using Elapsed = std::chrono::duration<f32, std::milli>;
 
 	private:
 
@@ -43,7 +37,7 @@ namespace ECS { namespace util {
 		/// ms - 	milliseconds (can be fractions).
 		///-------------------------------------------------------------------------------------------------
 
-		void Tick(DurationRep ms);
+		void Tick(f32 ms);
 
 		///-------------------------------------------------------------------------------------------------
 		/// Fn:	void Timer::Reset();
@@ -71,8 +65,7 @@ namespace ECS { namespace util {
 
 		inline TimeStamp GetTimeStamp() const
 		{
-			DurationRep tickCount = this->m_Elapsed.count();
-			return *((TimeStamp*)(&tickCount));
+			return TimeStamp(this->m_Elapsed.count());
 		}
 
 	}; // class Timer

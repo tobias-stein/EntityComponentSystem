@@ -15,9 +15,9 @@ namespace ECS { namespace util {
 	Timer::~Timer()
 	{}
 
-	void Timer::Tick(DurationRep ms)
+	void Timer::Tick(float ms)
 	{
-		this->m_Elapsed += std::chrono::duration<DurationRep>(ms);
+		this->m_Elapsed += std::chrono::duration<float, std::ratio<1, 1000>>(ms);
 	}
 
 	void Timer::Reset()

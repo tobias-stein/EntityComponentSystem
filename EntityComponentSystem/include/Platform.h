@@ -86,10 +86,30 @@ namespace ECS
 	using ObjectID		= u64;
 	using TypeID		= u64;
 
-	using TimeStamp		= u64;
-
 	static const ObjectID	INVALID_OBJECT_ID	= std::numeric_limits<ObjectID>::max();
 	static const TypeID		INVALID_TYPE_ID		= std::numeric_limits<TypeID>::max();
+
+
+	union TimeStamp
+	{
+		f32 asFloat;
+		u32 asUInt;
+
+		TimeStamp() : asUInt(0U)
+		{}
+
+		TimeStamp(f32 floatValue) : asFloat(floatValue)
+		{}
+
+		operator u32() const { return this->asUInt; }
+
+		inline const bool operator==(const TimeStamp& other) const { return this->asUInt == other.asUInt; }
+		inline const bool operator!=(const TimeStamp& other) const { return this->asUInt != other.asUInt; }
+
+		inline const bool operator<(const TimeStamp& other) const { return this->asFloat < other.asFloat; }
+		inline const bool operator>(const TimeStamp& other) const { return this->asFloat > other.asFloat; }
+
+	}; // union TimeStamp
 
 } // namespace ECS
 	

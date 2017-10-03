@@ -90,7 +90,7 @@ namespace ECS
 		void UpdateSystemWorkOrder();
 
 		///-------------------------------------------------------------------------------------------------
-		/// Fn:	void SystemManager::Update(f64 dt_ms);
+		/// Fn:	void SystemManager::Update(f32 dt_ms);
 		///
 		/// Summary:	Main update cycle.
 		///
@@ -102,7 +102,7 @@ namespace ECS
 		/// dt_ms - 	The dt in milliseconds.
 		///-------------------------------------------------------------------------------------------------
 
-		void Update(f64 dt_ms);
+		void Update(f32 dt_ms);
 
 	public:
 

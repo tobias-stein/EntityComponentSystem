@@ -42,7 +42,7 @@ namespace ECS
 		ECS_EventHandler = nullptr;
 	}
 
-	void ECSEngine::Update(f64 tick_ms)
+	void ECSEngine::Update(f32 tick_ms)
 	{
 		// Advance engine time
 		ECS_EngineTime->Tick(tick_ms);
