@@ -28,7 +28,9 @@ int main(const int argc, const char* argv[])
 		posSys->AddDependencies(gravSys);
 		posSys->AddDependencies(gravSys);
 
-		//ECS_Engine->GetSystemManager()->AddSystemDependency<PositionSystem>(gravSys);
+
+		ECS_Engine->GetSystemManager()->SetSystemPriority<PositionSystem>(ECS::HIGH_SYSTEM_PRIORITY);
+		ECS_Engine->GetSystemManager()->SetSystemPriority<PositionSystem>(ECS::LOW_SYSTEM_PRIORITY);
 
 		for (int i = 0; i < MAX_ENTITIES; ++i)
 			ECS_Engine->GetEntityManager()->CreateEntity<RigidBodyObject>(Vec3_t(0.0f, (float)i, 0.0f), 1.0f);

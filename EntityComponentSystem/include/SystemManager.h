@@ -43,6 +43,20 @@ namespace ECS
 
 	}; // struct SystemCreated 
 
+	struct SystemPriorityChanged : public Event::Event<SystemPriorityChanged>
+	{
+		SystemTypeId	m_SystemTypeID;
+		SystemPriority	m_oldPriority;
+		SystemPriority	m_newPriority;
+
+		SystemPriorityChanged(SystemTypeId systemTypeId, SystemPriority oldPriority, SystemPriority newPriority) :
+			m_SystemTypeID(systemTypeId),
+			m_oldPriority(oldPriority),
+			m_newPriority(newPriority)
+		{}
+
+	}; // struct SystemPriorityChanged 
+
 	using SystemWorkStateMask	= std::vector<bool>;
 
 
@@ -76,21 +90,6 @@ namespace ECS
 		void UpdateSystemWorkOrder();
 
 		///-------------------------------------------------------------------------------------------------
-		/// Fn:	void SystemManager::PreUpdate(f64 dt_ms);
-		///
-		/// Summary:	Pre update cycle.
-		///
-		/// Author:	Tobias Stein
-		///
-		/// Date:	3/10/2017
-		///
-		/// Parameters:
-		/// dt_ms - 	The dt in milliseconds.
-		///-------------------------------------------------------------------------------------------------
-
-		void PreUpdate(f64 dt_ms);
-
-		///-------------------------------------------------------------------------------------------------
 		/// Fn:	void SystemManager::Update(f64 dt_ms);
 		///
 		/// Summary:	Main update cycle.
@@ -104,21 +103,6 @@ namespace ECS
 		///-------------------------------------------------------------------------------------------------
 
 		void Update(f64 dt_ms);
-
-		///-------------------------------------------------------------------------------------------------
-		/// Fn:	void SystemManager::PostUpdate(f64 dt_ms);
-		///
-		/// Summary:	Post update cycle.
-		///
-		/// Author:	Tobias Stein
-		///
-		/// Date:	3/10/2017
-		///
-		/// Parameters:
-		/// dt_ms - 	The dt in milliseconds.
-		///-------------------------------------------------------------------------------------------------
-
-		void PostUpdate(f64 dt_ms);
 
 	public:
 
@@ -249,6 +233,101 @@ namespace ECS
 			auto it = this->m_Systems.find(T::STATIC_SYSTEM_TYPE_ID);
 
 			return it != this->m_Systems.end() ? (T*)it->second : nullptr;
+		}
+
+
+		template<class T>
+		void EnableSystem()
+		{
+			const SystemTypeId STID = T::STATIC_SYSTEM_TYPE_ID;
+
+			// get system
+			auto it = this->m_Systems.find(STID);
+			if (it != this->m_Systems.end())
+			{	
+				if (it->second->m_Enabled == true)
+					return;
+
+				// enable system
+				it->second->m_Enabled = true;
+
+				// broadcast event
+				ECS_Engine->ECS_EventHandler->Send<SystemEnabled>(STID);
+			}
+			else
+			{
+				LogWarning("Trying to enable system [%d], but system is not registered yet.", STID);
+			}
+		}
+
+
+		template<class T>
+		void DisableSystem()
+		{
+			const SystemTypeId STID = T::STATIC_SYSTEM_TYPE_ID;
+
+			// get system
+			auto it = this->m_Systems.find(STID);
+			if (it != this->m_Systems.end())
+			{
+				if (it->second->m_Enabled == false)
+					return;
+
+				// enable system
+				it->second->m_Enabled = false;
+
+				// broadcast event
+				ECS_Engine->ECS_EventHandler->Send<SystemDisabled>(STID);
+			}
+			else
+			{
+				LogWarning("Trying to disable system [%d], but system is not registered yet.", STID);
+			}
+		}
+
+		template<class T>
+		void SetSystemUpdateInterval(f32 interval_ms)
+		{
+			const SystemTypeId STID = T::STATIC_SYSTEM_TYPE_ID;
+
+			// get system
+			auto it = this->m_Systems.find(STID);
+			if (it != this->m_Systems.end())
+			{
+				it->second->m_UpdateInterval = interval_ms;
+			}
+			else
+			{
+				LogWarning("Trying to change system's [%d] update interval, but system is not registered yet.", STID);
+			}
+		}
+
+		template<class T>
+		void SetSystemPriority(SystemPriority newPriority)
+		{
+			const SystemTypeId STID = T::STATIC_SYSTEM_TYPE_ID;
+
+			// get system
+			auto it = this->m_Systems.find(STID);
+			if (it != this->m_Systems.end())
+			{
+				SystemPriority oldPriority = it->second->m_Priority;
+
+				if (oldPriority == newPriority)
+					return;
+				
+				it->second->m_Priority = newPriority;
+
+				// broadcast event
+				ECS_Engine->ECS_EventHandler->Send<SystemPriorityChanged>(STID, oldPriority, newPriority);
+
+				// re-build system work order
+				this->UpdateSystemWorkOrder();
+			}
+			else
+			{
+				LogWarning("Trying to change system's [%d] priority, but system is not registered yet.", STID);
+			}
 		}
 
 		///-------------------------------------------------------------------------------------------------

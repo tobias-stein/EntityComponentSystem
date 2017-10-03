@@ -30,7 +30,7 @@ namespace ECS
 
 	
 
-	static const SystemPriority LOWEST_SYSTEM_PRIORITY		= 0;
+	static const SystemPriority LOWEST_SYSTEM_PRIORITY		= std::numeric_limits<SystemPriority>::min();
 
 	static const SystemPriority VERY_LOW_SYSTEM_PRIORITY	= 99;
 	static const SystemPriority LOW_SYSTEM_PRIORITY			= 100;
@@ -42,7 +42,7 @@ namespace ECS
 	static const SystemPriority HIGH_SYSTEM_PRIORITY		= 400;
 	static const SystemPriority VERY_HIGH_SYSTEM_PRIORITY	= 401;
 
-	static const SystemPriority HIGHEST_SYSTEM_PRIORITY		= 65535;
+	static const SystemPriority HIGHEST_SYSTEM_PRIORITY		= std::numeric_limits<SystemPriority>::max();
 
 
 
@@ -70,15 +70,26 @@ namespace ECS
 
 	class ECS_API ISystem
 	{
+		friend class SystemManager;
+
+	private:
+
+		/// Summary:	Duration since last system update in milliseconds.
+		f32						m_TimeSinceLastUpdate;
+
+		SystemPriority			m_Priority;
+
+		/// Summary:	The system update interval.
+		/// A negative value means system should update each time the engine receives an update.
+		f32						m_UpdateInterval;
+
+		u8						m_Enabled		: 1;
+		u8						m_NeedsUpdate	: 1;
+		u8						m_Reserved		: 6;
+
 	protected:
 
-		const SystemPriority	m_Priority;
-
-		bool					m_Enabled;
-
-
-
-		ISystem(SystemPriority priority = NORMAL_SYSTEM_PRIORITY);
+		ISystem(SystemPriority priority = NORMAL_SYSTEM_PRIORITY, f32 updateInterval_ms = -1.0f);
 
 	public:
 
@@ -87,17 +98,9 @@ namespace ECS
 		virtual inline const SystemTypeId GetStaticSystemTypeID() const = 0;
 		virtual inline const char* GetSystemTypeName() const = 0;
 
-		virtual void PreUpdate(f32 dt) = 0;
-		virtual void Update(f32 dt) = 0;
+		virtual void PreUpdate(f32 dt)	= 0;
+		virtual void Update(f32 dt)		= 0;
 		virtual void PostUpdate(f32 dt) = 0;
-
-		// ACCESSOR & MUTATOR
-
-		void SetActive(bool state);
-
-		inline bool IsActive() const { return this->m_Enabled; }
-
-		inline const SystemPriority GetSystemPriority() const { return this->m_Priority; }
 	};
 }
 

@@ -51,13 +51,7 @@ namespace ECS
 		ECS_EventHandler->DispatchEvents();
 
 		// Update all running systems
-		ECS_SystemManager->PreUpdate(tick_ms);
-
-		// Update all running systems
 		ECS_SystemManager->Update(tick_ms);
-
-		// Update all running systems
-		ECS_SystemManager->PostUpdate(tick_ms);
 	}
 
 	void ECSEngine::UnsubscribeEvent(u64 typeId, Event::Internal::EventDelegateId eventDelegateId)

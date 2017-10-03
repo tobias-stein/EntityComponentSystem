@@ -41,30 +41,39 @@ namespace ECS
 		LogInfo("Release SystemManager!");
 	}
 
-	void SystemManager::PreUpdate(f64 dt_ms)
-	{
-		for (ISystem* system : this->m_SystemWorkOrder)
-		{
-			if (system->IsActive() == true)
-				system->PreUpdate(dt_ms);
-		}
-	}
-
 	void SystemManager::Update(f64 dt_ms)
 	{
 		for (ISystem* system : this->m_SystemWorkOrder)
 		{
-			if(system->IsActive() == true)
-				system->Update(dt_ms);
-		}
-	}
+			// increase interval since last update
+			system->m_TimeSinceLastUpdate = dt_ms;
 
-	void SystemManager::PostUpdate(f64 dt_ms)
-	{
+			// check systems update state
+			system->m_NeedsUpdate = (system->m_UpdateInterval < 0.0f) || ((system->m_UpdateInterval > 0.0f) && (system->m_TimeSinceLastUpdate > system->m_UpdateInterval));
+
+			if (system->m_Enabled == true && system->m_NeedsUpdate == true)
+			{			
+				system->PreUpdate(dt_ms);	
+			}
+		}
+
 		for (ISystem* system : this->m_SystemWorkOrder)
 		{
-			if (system->IsActive() == true)
+			if (system->m_Enabled == true && system->m_NeedsUpdate == true)
+			{
+				system->Update(dt_ms);
+
+				// reset interval
+				system->m_TimeSinceLastUpdate = 0.0f;
+			}
+		}
+
+		for (ISystem* system : this->m_SystemWorkOrder)
+		{
+			if (system->m_Enabled == true && system->m_NeedsUpdate == true)
+			{
 				system->PostUpdate(dt_ms);
+			}
 		}
 	}
 
@@ -126,7 +135,7 @@ namespace ECS
 				}
 
 				group.push_back(index);
-				groupPriority = std::max(this->m_Systems[index]->GetSystemPriority(), groupPriority);
+				groupPriority = std::max(this->m_Systems[index]->m_Priority, groupPriority);
 			}
 
 			VERTEX_GROUPS.push_back(group);
@@ -181,7 +190,7 @@ namespace ECS
 
 		for (int i = 0; i < this->m_SystemWorkOrder.size(); ++i)
 		{
-			mask[i] = this->m_SystemWorkOrder[i]->IsActive();
+			mask[i] = this->m_SystemWorkOrder[i]->m_Enabled;
 		}
 
 		return mask;
@@ -193,7 +202,7 @@ namespace ECS
 
 		for (int i = 0; i < this->m_SystemWorkOrder.size(); ++i)
 		{
-			this->m_SystemWorkOrder[i]->SetActive(mask[i]);
+			this->m_SystemWorkOrder[i]->m_Enabled = mask[i];
 		}
 	}
 
