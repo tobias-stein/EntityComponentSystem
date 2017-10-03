@@ -1,10 +1,10 @@
-// BountyHunterDemo.cpp : Defines the entry point for the console application.
-//
+///-------------------------------------------------------------------------------------------------
+/// File:	BountyHunterDemo.cpp.
+///
+/// Summary:	Application entry point.
+///-------------------------------------------------------------------------------------------------
 
-#include "stdafx.h"
-
-
-int main()
+int main(int argc, const char* args[])
 {
     return 0;
 }
