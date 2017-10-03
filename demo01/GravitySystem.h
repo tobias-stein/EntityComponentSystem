@@ -30,7 +30,7 @@ public:
 		LogTrace("GravitySystem destroyed!");
 	}
 
-	virtual void Tick(float dt) override
+	virtual void Update(float dt) override
 	{
 		Vec3_t dtAcceleration(this->m_G.x * dt, this->m_G.y * dt, this->m_G.z * dt);
 

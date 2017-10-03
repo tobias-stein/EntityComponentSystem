@@ -138,6 +138,9 @@
     <ClInclude Include="include\util\FamilyTypeID.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="include\util\Timer.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Event\EventHandler.cpp">
@@ -193,6 +196,12 @@
     </ClCompile>
     <ClCompile Include="src\util\FamilyTypeID.cpp">
       <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\Timer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Event\IEvent.cpp">
+      <Filter>Source Files\Event</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -39,7 +39,7 @@ public:
 		LogTrace("PositionSystem destroyed!");
 	}
 
-	virtual void Tick(float dt) override
+	virtual void Update(float dt) override
 	{
 		for (auto it = ECS::ECS_Engine->GetComponentManager()->begin<PositionComponent>(); it != ECS::ECS_Engine->GetComponentManager()->end<PositionComponent>(); ++it)
 		{

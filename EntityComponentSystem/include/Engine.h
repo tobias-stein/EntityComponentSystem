@@ -13,8 +13,14 @@
 
 namespace ECS
 {
+	namespace util
+	{
+		class Timer;
+	}
+
 	namespace Event
 	{
+		class IEvent;
 		class IEventListener;
 		class EventHandler;
 	}
@@ -31,6 +37,8 @@ namespace ECS
 		friend class IComponent;
 		friend class ISystem;
 
+		friend class Event::IEvent;
+
 		friend class Event::IEventListener;
 
 		friend class EntityManager;
@@ -38,6 +46,8 @@ namespace ECS
 		friend class SystemManager;
 
 	private:
+
+		util::Timer*				ECS_EngineTime;
 
 		EntityManager*				ECS_EntityManager;
 
@@ -73,8 +83,22 @@ namespace ECS
 		inline ComponentManager* GetComponentManager() { return ECS_ComponentManager; }
 
 		inline SystemManager* GetSystemManager() { return ECS_SystemManager; }
-		
-		
+
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	template<class E, class... ARGS> void ECSEngine::SendEvent(ARGS&&... eventArgs)
+		///
+		/// Summary:	Broadcasts an event.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	3/10/2017
+		///
+		/// Typeparams:
+		/// E - 	   	Type of the e.
+		/// ARGS - 	   	Type of the arguments.
+		/// Parameters:
+		/// eventArgs - 	Variable arguments providing [in,out] The event arguments.
+		///-------------------------------------------------------------------------------------------------
 
 		template<class E, class... ARGS>
 		void SendEvent(ARGS&&... eventArgs)
@@ -82,8 +106,20 @@ namespace ECS
 			ECS_EventHandler->Send<E>(std::forward<ARGS>(eventArgs)...);
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	void ECSEngine::Update(f64 tick_ms);
+		///
+		/// Summary:	Updates the entire ECS with a given delta time in milliseconds.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	3/10/2017
+		///
+		/// Parameters:
+		/// tick_ms - 	The tick in milliseconds.
+		///-------------------------------------------------------------------------------------------------
 
-		void Update();
+		void Update(f64 tick_ms);
 	};
 
 } // namespace ECS

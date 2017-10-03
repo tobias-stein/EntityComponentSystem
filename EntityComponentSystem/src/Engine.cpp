@@ -13,11 +13,14 @@
 #include "ComponentManager.h"
 #include "SystemManager.h"
 
+#include "util/Timer.h"
+
 namespace ECS
 {
 
 	ECSEngine::ECSEngine()
 	{
+		ECS_EngineTime			= new util::Timer();
 		ECS_EventHandler		= new Event::EventHandler();
 		ECS_SystemManager		= new SystemManager();
 		ECS_ComponentManager	= new ComponentManager();
@@ -39,13 +42,22 @@ namespace ECS
 		ECS_EventHandler = nullptr;
 	}
 
-	void ECSEngine::Update()
+	void ECSEngine::Update(f64 tick_ms)
 	{
+		// Advance engine time
+		ECS_EngineTime->Tick(tick_ms);
+
 		// Dispatch all events accumulated last frame
 		ECS_EventHandler->DispatchEvents();
 
 		// Update all running systems
-		ECS_SystemManager->Update();
+		ECS_SystemManager->PreUpdate(tick_ms);
+
+		// Update all running systems
+		ECS_SystemManager->Update(tick_ms);
+
+		// Update all running systems
+		ECS_SystemManager->PostUpdate(tick_ms);
 	}
 
 	void ECSEngine::UnsubscribeEvent(u64 typeId, Event::Internal::EventDelegateId eventDelegateId)

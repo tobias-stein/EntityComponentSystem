@@ -27,7 +27,7 @@ namespace ECS { namespace Event {
 		static const EventTypeId STATIC_EVENT_TYPE_ID;
 	
 		Event(EntityId sender = ECS::INVALID_ENTITY_ID, EntityId receiver = ECS::INVALID_ENTITY_ID) :
-			IEvent(STATIC_EVENT_TYPE_ID, 0u, sender, receiver) // todo: set timestamp
+			IEvent(STATIC_EVENT_TYPE_ID, sender, receiver)
 		{}
 
 	}; // class Event<T>

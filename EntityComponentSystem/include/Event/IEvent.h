@@ -16,16 +16,16 @@
 
 namespace ECS { namespace Event {
 
-		using EventTypeId = TypeID;
+		using EventTypeId		= TypeID;
+		using EventTimestamp	= TimeStamp;
 
 		static const EventTypeId INVALID_EVENTTYPE = INVALID_TYPE_ID;
 
-		using EventTimestamp = u64;
+		
 
-		class IEvent
+		class ECS_API IEvent
 		{
-
-		public:
+		private:
 
 			EventTypeId		m_TypeId;
 			EntityId		m_Sender;
@@ -34,20 +34,13 @@ namespace ECS { namespace Event {
 
 		public:
 
-			IEvent(EventTypeId typeId, EventTimestamp created, EntityId sender, EntityId receiver) :
-				m_TypeId(typeId),
-				m_Sender(sender),
-				m_Receiver(receiver),
-				m_TimeCreated(created)
-			{}
-
+			IEvent(EventTypeId typeId, EntityId sender, EntityId receiver);
+			 
 			// ACCESSOR
-			inline const EventTypeId	GetEventTypeID() const { return this->m_TypeId; }
-
-			inline const EntityId		GetSender() const { return this->m_Sender; }
-			inline const EntityId		GetReceiver() const { return this->m_Receiver; }
-
-			inline const EventTimestamp GetTimeCreated() const { return this->m_TimeCreated; }
+			inline const EventTypeId	GetEventTypeID()	const { return this->m_TypeId; }
+			inline const EntityId		GetSender()			const { return this->m_Sender; }
+			inline const EntityId		GetReceiver()		const { return this->m_Receiver; }
+			inline const EventTimestamp GetTimeCreated()	const { return this->m_TimeCreated; }
 
 		}; // class IEvent
 

@@ -75,7 +75,50 @@ namespace ECS
 
 		void UpdateSystemWorkOrder();
 
-		void Update();
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	void SystemManager::PreUpdate(f64 dt_ms);
+		///
+		/// Summary:	Pre update cycle.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	3/10/2017
+		///
+		/// Parameters:
+		/// dt_ms - 	The dt in milliseconds.
+		///-------------------------------------------------------------------------------------------------
+
+		void PreUpdate(f64 dt_ms);
+
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	void SystemManager::Update(f64 dt_ms);
+		///
+		/// Summary:	Main update cycle.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	3/10/2017
+		///
+		/// Parameters:
+		/// dt_ms - 	The dt in milliseconds.
+		///-------------------------------------------------------------------------------------------------
+
+		void Update(f64 dt_ms);
+
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	void SystemManager::PostUpdate(f64 dt_ms);
+		///
+		/// Summary:	Post update cycle.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	3/10/2017
+		///
+		/// Parameters:
+		/// dt_ms - 	The dt in milliseconds.
+		///-------------------------------------------------------------------------------------------------
+
+		void PostUpdate(f64 dt_ms);
 
 	public:
 

@@ -125,9 +125,6 @@ namespace ECS
 	ECS_API void					Initialize();
 	ECS_API void					Terminate();
 
-
-	constexpr float TIME_STEP = 1.0f / 60.0f;
-
 } // namespace ECS
 
 #endif // __ECS_API_H__

@@ -41,11 +41,30 @@ namespace ECS
 		LogInfo("Release SystemManager!");
 	}
 
-	void SystemManager::Update()
+	void SystemManager::PreUpdate(f64 dt_ms)
 	{
 		for (ISystem* system : this->m_SystemWorkOrder)
 		{
-			system->Tick(TIME_STEP);
+			if (system->IsActive() == true)
+				system->PreUpdate(dt_ms);
+		}
+	}
+
+	void SystemManager::Update(f64 dt_ms)
+	{
+		for (ISystem* system : this->m_SystemWorkOrder)
+		{
+			if(system->IsActive() == true)
+				system->Update(dt_ms);
+		}
+	}
+
+	void SystemManager::PostUpdate(f64 dt_ms)
+	{
+		for (ISystem* system : this->m_SystemWorkOrder)
+		{
+			if (system->IsActive() == true)
+				system->PostUpdate(dt_ms);
 		}
 	}
 

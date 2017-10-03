@@ -33,13 +33,14 @@ int main(const int argc, const char* argv[])
 		for (int i = 0; i < MAX_ENTITIES; ++i)
 			ECS_Engine->GetEntityManager()->CreateEntity<RigidBodyObject>(Vec3_t(0.0f, (float)i, 0.0f), 1.0f);
 
+		const float DT = 1.0f / 60.0f;
 
 		// Update system 200 frames
 		const int MAX_FRAMES = 200;
 
 		for (int i = 0; i < MAX_FRAMES; ++i)
 		{
-			ECS_Engine->Update();
+			ECS_Engine->Update(DT);
 		}
 
 

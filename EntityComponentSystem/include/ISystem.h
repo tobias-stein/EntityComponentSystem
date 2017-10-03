@@ -87,9 +87,9 @@ namespace ECS
 		virtual inline const SystemTypeId GetStaticSystemTypeID() const = 0;
 		virtual inline const char* GetSystemTypeName() const = 0;
 
-		virtual void Tick(float dt)
-		{}
-		
+		virtual void PreUpdate(f32 dt) = 0;
+		virtual void Update(f32 dt) = 0;
+		virtual void PostUpdate(f32 dt) = 0;
 
 		// ACCESSOR & MUTATOR
 

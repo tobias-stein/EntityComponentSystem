@@ -56,9 +56,6 @@ namespace ECS
 			return SYSTEM_TYPE_NAME;
 		}
 
-		virtual void Tick(float dt)
-		{}
-
 		///-------------------------------------------------------------------------------------------------
 		/// Fn:	template<class... Dependencies> void System::AddDependencies(Dependencies&&... dependencies)
 		///
@@ -79,6 +76,15 @@ namespace ECS
 		{
 			ECS_Engine->GetSystemManager()->AddSystemDependency(this, std::forward<Dependencies>(dependencies)...);
 		}
+
+		virtual void PreUpdate(f32 dt) override
+		{}
+
+		virtual void Update(f32 dt) override
+		{}
+
+		virtual void PostUpdate(f32 dt) override
+		{}
 
 	}; // class System<T>
 

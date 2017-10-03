@@ -88,7 +88,11 @@ namespace ECS { namespace util {
 	/// Summary:	Defines a 64 bit handle
 	/// Max. possible handles							: 1099511627776
 	/// Max. possible versions until loop per handle	: 16777216
+#ifdef ECS_64BIT
 	using Handle64 = Internal::Handle<u32, u64, 24, 40>;
+#else
+	using Handle64 = Handle32;
+#endif
 
 
 	template<class T, class handle_version, size_t grow = 1024>
