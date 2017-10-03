@@ -9,6 +9,12 @@
 
 #include "API.h"
 
+#pragma warning(push)
+
+// warning C4293: '<<': shift count negative or too big, undefined behavior
+// note we are using a static_assert to ensure this won't be the case.
+#pragma warning(disable: 4293)
+
 namespace ECS { namespace util {
 	
 	namespace Internal
@@ -32,6 +38,7 @@ namespace ECS { namespace util {
 		>
 		union Handle
 		{
+			static_assert(sizeof(handle_value_type) * CHAR_BIT >= (version_bits + index_bits), "Invalid handle layout. More bits used than base value type can hold!");
 
 			using value_type = handle_value_type;
 
@@ -223,5 +230,7 @@ namespace ECS { namespace util {
 	}; // class HandleTable	
 
 }} // namespace ECS::util
+
+#pragma warning(pop)
 
 #endif // ! __HANDLE_H__
