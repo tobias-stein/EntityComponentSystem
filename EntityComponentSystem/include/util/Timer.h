@@ -46,6 +46,18 @@ namespace ECS { namespace util {
 		void Tick(DurationRep ms);
 
 		///-------------------------------------------------------------------------------------------------
+		/// Fn:	void Timer::Reset();
+		///
+		/// Summary:	Resets this timer to zero.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	3/10/2017
+		///-------------------------------------------------------------------------------------------------
+
+		void Reset();
+
+		///-------------------------------------------------------------------------------------------------
 		/// Fn:	inline TimeStamp Timer::GetTimeStamp() const
 		///
 		/// Summary:	Gets a TimeStamp from current timer value.

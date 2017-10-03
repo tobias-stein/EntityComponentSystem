@@ -20,4 +20,9 @@ namespace ECS { namespace util {
 		this->m_Elapsed += std::chrono::duration<DurationRep>(ms);
 	}
 
+	void Timer::Reset()
+	{
+		this->m_Elapsed = Elapsed::zero();
+	}
+
 }} // namespace ECS::util

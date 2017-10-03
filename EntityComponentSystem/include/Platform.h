@@ -17,11 +17,11 @@
 
 
 // Check if using 64-Bit architecture
-#ifdef _WIN64 || __x86_64__ || __ppc64__ || _M_AMD64 || _M_ARM64 || _M_X64
+#if (defined(_WIN64) || defined(__x86_64__) || defined(__ppc64__) || defined(_M_AMD64) || defined(_M_ARM64) || defined(_M_X64))
 	#define ECS_64BIT 1
 
 // Check if using 32-Bit architecture
-#elif (_WIN32 && !_WIN64) || _M_IX86 
+#elif (defined(_WIN32) && !defined(_WIN64)) || defined(_M_IX86)
 	#define ECS_32BIT 1
 #endif
 

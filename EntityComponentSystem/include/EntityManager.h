@@ -317,7 +317,7 @@ namespace ECS
 		/// Returns:	The entity identifier.
 		///-------------------------------------------------------------------------------------------------
 
-		inline EntityId GetEntityId(EntityId::index_type index) const
+		inline EntityId GetEntityId(EntityId::value_type index) const
 		{
 			return this->m_EntityHandleTable[index];
 		}

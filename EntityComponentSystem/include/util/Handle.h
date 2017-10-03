@@ -26,37 +26,35 @@ namespace ECS { namespace util {
 		///-------------------------------------------------------------------------------------------------
 
 		template<
-			typename handle_version_type,
-			typename handle_index_type,
+			typename handle_value_type,
 			size_t version_bits,
 			size_t index_bits
 		>
 		union Handle
 		{
 
-			using version_type				= handle_version_type;
-			using index_type				= handle_index_type;
+			using value_type = handle_value_type;
 
 			static constexpr size_t			NUM_VERSION_BITS	{ version_bits };
 			static constexpr size_t			NUM_INDEX_BITS		{ index_bits };
 
 
-			static constexpr version_type	MIN_VERISON			{ 0 };
-			static constexpr version_type	MAX_VERSION			{ (1U << NUM_VERSION_BITS) - 1U };
-			static constexpr index_type		MAX_INDICES			{ (1U << NUM_INDEX_BITS)   - 1U };
+			static constexpr value_type		MIN_VERISON			{ 0 };
+			static constexpr value_type		MAX_VERSION			{ (1U << NUM_VERSION_BITS) - 2U };
+			static constexpr value_type		MAX_INDICES			{ (1U << NUM_INDEX_BITS)   - 2U };
 
-			static constexpr index_type		INVALID_HANDLE		{ std::numeric_limits<index_type>::max() };
+			static constexpr value_type		INVALID_HANDLE		{ std::numeric_limits<value_type>::max() };
 
 		private:
 
-			index_type value;
+			value_type						value;
 
 		public:
 
 			struct
 			{
-				index_type					index	: NUM_INDEX_BITS;
-				version_type				version : NUM_VERSION_BITS;
+				value_type					index	: NUM_INDEX_BITS;
+				value_type					version : NUM_VERSION_BITS;
 			};
 
 
@@ -64,16 +62,16 @@ namespace ECS { namespace util {
 				value(-1)
 			{}
 
-			Handle(index_type value) :
+			Handle(value_type value) :
 				value(value)
 			{}
 
-			Handle(index_type index, version_type version) :
+			Handle(value_type index, value_type version) :
 				index(index),
 				version(version)
 			{}
 
-			inline operator index_type() const { return value; }
+			inline operator value_type() const { return value; }
 		};
 	} // namespace Internal
 
@@ -82,27 +80,27 @@ namespace ECS { namespace util {
 	/// Summary:	Defines a 32 bit handle
 	/// Max. possible handles							: 1048576
 	/// Max. possible versions until loop per handle	: 4096
-	using Handle32 = Internal::Handle<u16, u32, 12, 20>;
+	using Handle32 = Internal::Handle<u32, 12, 20>;
 
 
 	/// Summary:	Defines a 64 bit handle
 	/// Max. possible handles							: 1099511627776
 	/// Max. possible versions until loop per handle	: 16777216
 #ifdef ECS_64BIT
-	using Handle64 = Internal::Handle<u32, u64, 24, 40>;
+	using Handle64 = Internal::Handle<u64, 24, 40>;
 #else
 	using Handle64 = Handle32;
 #endif
 
 
-	template<class T, class handle_version, size_t grow = 1024>
+	template<class T, class handle_type, size_t grow = 1024>
 	class HandleTable
 	{
-		using Handle = handle_version;
+		using Handle = handle_type;
 
 	private:
 
-		using TableEntry = std::pair<typename Handle::version_type, T*>;
+		using TableEntry = std::pair<typename Handle::value_type, T*>;
 
 		std::vector<TableEntry> m_Table;
 
@@ -117,7 +115,7 @@ namespace ECS { namespace util {
 
 			this->m_Table.resize(newSize);
 
-			for (typename Handle::index_type i = oldSize; i < newSize; ++i)
+			for (typename Handle::value_type i = oldSize; i < newSize; ++i)
 				this->m_Table[i] = TableEntry(Handle::MIN_VERISON, nullptr);
 		}
 
@@ -133,7 +131,7 @@ namespace ECS { namespace util {
 
 		Handle AqcuireHandle(T* rawObject)
 		{
-			typename Handle::index_type i = 0;
+			typename Handle::value_type i = 0;
 			for (; i < this->m_Table.size(); ++i)
 			{
 				if (this->m_Table[i].second == nullptr)
@@ -195,7 +193,7 @@ namespace ECS { namespace util {
 		/// Returns:	The indexed value.
 		///-------------------------------------------------------------------------------------------------
 
-		inline Handle operator[](typename Handle::index_type index) const
+		inline Handle operator[](typename Handle::value_type index) const
 		{
 			assert(index < this->m_Table.size() && "Invalid handle!");
 			return Handle(index, this->m_Table[index].first);
