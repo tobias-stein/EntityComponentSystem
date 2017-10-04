@@ -115,20 +115,23 @@ namespace ECS { namespace Event {
 			{
 				this->m_EventStorage.push_back(new (pMem)E(std::forward<ARGS>(eventArgs)...));
 
-				LogTrace("New \'%s\' event buffered.", typeid(E).name());
+				LogTrace("\'%s\' event buffered.", typeid(E).name());
 			}
 			else
 			{
-				LogWarning("Event buffer is full! Call EventHandler::DispatchEvents() !!!");
+				LogWarning("Event buffer is full! Cut off new incoming events !!!");
 			}
 		}
 	
 		// dispatches all stores events and clears buffer
 		void DispatchEvents()
 		{
-			//LogTrace("Dispatching %d event(s) ...", this->m_EventStorage.size());
-			for (auto event : this->m_EventStorage)
+			size_t lastIndex = this->m_EventStorage.size();
+			size_t thisIndex = 0;
+
+			while (thisIndex < lastIndex)
 			{
+				auto event = this->m_EventStorage[thisIndex++];
 				if (event == nullptr)
 				{
 					LogError("Skip corrupted event.", event->GetEventTypeID());
@@ -140,6 +143,9 @@ namespace ECS { namespace Event {
 					continue;
 	
 				dispatcher->Dispatch(event);
+
+				// update last index, after dispatch operation there could be new events
+				lastIndex = this->m_EventStorage.size();
 			}
 			
 			// reset
