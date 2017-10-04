@@ -104,7 +104,7 @@ namespace ECS { namespace Event {
 		void Send(ARGS&&... eventArgs)
 		{
 			// check if type of object is trivially copyable
-			static_assert(std::is_trivially_copyable<E>::value, "Event T is not trivially copyable.");
+			static_assert(std::is_trivially_copyable<E>::value, "Event is not trivially copyable.");
 	
 	
 			// allocate memory to store event data

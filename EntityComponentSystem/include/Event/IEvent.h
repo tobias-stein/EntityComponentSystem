@@ -11,8 +11,7 @@
 #ifndef __I_EVENT_H__
 #define __I_EVENT_H__
 
-
-#include "IEntity.h"
+#include "API.h"
 
 namespace ECS { namespace Event {
 
@@ -20,7 +19,6 @@ namespace ECS { namespace Event {
 		using EventTimestamp	= TimeStamp;
 
 		static const EventTypeId INVALID_EVENTTYPE = INVALID_TYPE_ID;
-
 		
 
 		class ECS_API IEvent
@@ -28,18 +26,14 @@ namespace ECS { namespace Event {
 		private:
 
 			EventTypeId		m_TypeId;
-			EntityId		m_Sender;
-			EntityId		m_Receiver;
 			EventTimestamp	m_TimeCreated;
 
 		public:
 
-			IEvent(EventTypeId typeId, EntityId sender, EntityId receiver);
+			IEvent(EventTypeId typeId);
 			 
 			// ACCESSOR
 			inline const EventTypeId	GetEventTypeID()	const { return this->m_TypeId; }
-			inline const EntityId		GetSender()			const { return this->m_Sender; }
-			inline const EntityId		GetReceiver()		const { return this->m_Receiver; }
 			inline const EventTimestamp GetTimeCreated()	const { return this->m_TimeCreated; }
 
 		}; // class IEvent

@@ -26,8 +26,7 @@ namespace ECS { namespace Event {
 		// note: wont be part of stored event memory DATA
 		static const EventTypeId STATIC_EVENT_TYPE_ID;
 	
-		Event(EntityId sender = ECS::INVALID_ENTITY_ID, EntityId receiver = ECS::INVALID_ENTITY_ID) :
-			IEvent(STATIC_EVENT_TYPE_ID, sender, receiver)
+		Event() : IEvent(STATIC_EVENT_TYPE_ID)
 		{}
 
 	}; // class Event<T>
