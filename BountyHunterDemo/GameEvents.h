@@ -129,4 +129,20 @@ struct KeyPressedEvent : public ECS::Event::Event<KeyPressedEvent>
 };
 
 
+///-------------------------------------------------------------------------------------------------
+/// Summary:	General video state events.
+/// Author:	Tobias Stein
+///
+/// Date:	4/10/2017
+///-------------------------------------------------------------------------------------------------
+
+struct ToggleFullscreenEvent : public ECS::Event::Event<ToggleFullscreenEvent>
+{};
+
+struct EnterFullscreenModeEvent : public ECS::Event::Event<EnterFullscreenModeEvent>
+{};
+
+struct EnterWindowModeEvent : public ECS::Event::Event<EnterWindowModeEvent>
+{};
+
 #endif // __GAME_EVENTS_H__

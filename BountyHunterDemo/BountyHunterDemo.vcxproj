@@ -167,15 +167,19 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BountyHunterDemo.cpp" />
+    <ClCompile Include="Collector.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputSystem.cpp" />
+    <ClCompile Include="MenuSystem.cpp" />
     <ClCompile Include="OpenGL.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Collector.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameConfiguration.h" />
     <ClInclude Include="GameEvents.h" />
     <ClInclude Include="InputSystem.h" />
+    <ClInclude Include="MenuSystem.h" />
     <ClInclude Include="OpenGL.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

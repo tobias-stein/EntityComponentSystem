@@ -7,15 +7,14 @@
 #include "Game.h"
 
 #include "InputSystem.h"
+#include "MenuSystem.h"
 
 Game::Game() :
 	mAppState(NOT_INITIALIZED),
 	mWindow(nullptr),
 	mFullscreen(false),
-	mWindowX(-1),
-	mWindowY(-1),
-	mWindowW(-1),
-	mWindowH(-1)
+	mWindowX(-1), mWindowY(-1),
+	mWindowW(-1), mWindowH(-1)
 {}
 
 Game::~Game()
@@ -27,14 +26,16 @@ void Game::InitializeECS()
 	ECS::Initialize();
 
 	// Create and initialize systems
-	{
-		ECS::ECS_Engine->GetSystemManager()->AddSystem<InputSystem>();
-		ECS::ECS_Engine->GetSystemManager()->SetSystemPriority<InputSystem>(ECS::HIGH_SYSTEM_PRIORITY);
-	}
+
+	// InputSystem
+	InputSystem* IS = ECS::ECS_Engine->GetSystemManager()->AddSystem<InputSystem>();
+	ECS::ECS_Engine->GetSystemManager()->SetSystemPriority<InputSystem>(ECS::HIGH_SYSTEM_PRIORITY);
+
+	// MenuSystem
+	MenuSystem* MS = ECS::ECS_Engine->GetSystemManager()->AddSystem<MenuSystem>();
+
 
 	// Add system dependencies
-	{
-	}
 }
 
 void Game::InitializeSDL(const char* title, int width, int height, bool fullscreen)
@@ -65,15 +66,24 @@ void Game::RegisterEventCallbacks()
 	RegisterEventCallback(&Game::OnPauseGameEvent);
 	RegisterEventCallback(&Game::OnResumeGameEvent);
 	RegisterEventCallback(&Game::OnQuitGameEvent);
+	RegisterEventCallback(&Game::OnToggleFullscreenEvent);
+}
+
+void Game::UnregisterEventCallbacks()
+{
+	UnregisterEventCallback(&Game::OnPauseGameEvent);
+	UnregisterEventCallback(&Game::OnResumeGameEvent);
+	UnregisterEventCallback(&Game::OnQuitGameEvent);
+	UnregisterEventCallback(&Game::OnToggleFullscreenEvent);
 }
 
 void Game::Init(const char* title, int width, int height, bool fullscreen) {
 
-	// Initialize ECS
-	InitializeECS();
-
 	// Initialize SDL
 	InitializeSDL(title, width, height, fullscreen);
+
+	// Initialize ECS
+	InitializeECS();
 
 	// Register Event Callbacks
 	RegisterEventCallbacks();
@@ -92,15 +102,19 @@ void Game::Terminate()
 	// set new app state to about to termiante
 	mAppState = ABOUT_TO_TERMINATE;
 
+	// note: we need to release Game event callbacks before termination ECS or we might risk an exception due 
+	// enforcement of event callback unregistration through IEventListener d'tor
+	UnregisterEventCallbacks();
+
+	// Terminate ECS
+	ECS::Terminate();
+
 	// Destroy window
 	if (mWindow)
 		SDL_DestroyWindow(mWindow);
 
 	// Terminate SDL
-	SDL_Quit();
-
-	// Terminate ECS
-	ECS::Terminate();
+	SDL_Quit();	
 
 	// set new app state to terminated
 	mAppState = TERMINATED;
@@ -116,10 +130,6 @@ void Game::ProcessWindowEvent()
 
 		switch (event.window.event) 
 		{
-			case SDL_QUIT:
-				Terminate();
-				break;
-
 			case SDL_WINDOWEVENT_SHOWN:
 				break;
 			case SDL_WINDOWEVENT_HIDDEN:
@@ -147,7 +157,9 @@ void Game::ProcessWindowEvent()
 			case SDL_WINDOWEVENT_FOCUS_LOST:
 				break;
 			case SDL_WINDOWEVENT_CLOSE:
+				OnQuitGameEvent(nullptr);
 				break;
+
 #if SDL_VERSION_ATLEAST(2, 0, 5)
 			case SDL_WINDOWEVENT_TAKE_FOCUS:
 				break;
@@ -160,6 +172,11 @@ void Game::ProcessWindowEvent()
 
 
 void Game::ToggleFullscreen() {
+
+	if(mFullscreen == false)
+		ECS::ECS_Engine->SendEvent<EnterFullscreenModeEvent>();
+	else
+		ECS::ECS_Engine->SendEvent<EnterWindowModeEvent>();
 
 	mFullscreen = !mFullscreen;
 	SDL_SetWindowFullscreen(mWindow, mFullscreen);
@@ -211,5 +228,10 @@ void Game::OnResumeGameEvent(const ResumeGameEvent* event)
 void Game::OnQuitGameEvent(const QuitGameEvent* event)
 {
 	if (this->mAppState < ABOUT_TO_TERMINATE)
-		this->Terminate();
+		this->mAppState = ABOUT_TO_TERMINATE;
+}
+
+void Game::OnToggleFullscreenEvent(const ToggleFullscreenEvent* event)
+{
+	this->ToggleFullscreen();
 }

@@ -89,6 +89,8 @@ private:
 
 	void RegisterEventCallbacks();
 
+	void UnregisterEventCallbacks();
+
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	void Game::ProcessWindowEvent();
 	///
@@ -105,6 +107,7 @@ private:
 	void OnPauseGameEvent(const PauseGameEvent* event);
 	void OnResumeGameEvent(const ResumeGameEvent* event);
 	void OnQuitGameEvent(const QuitGameEvent* event);
+	void OnToggleFullscreenEvent(const ToggleFullscreenEvent* event);
 
 public:
 
