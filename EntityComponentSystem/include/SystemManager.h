@@ -162,6 +162,9 @@ namespace ECS
 					this->m_SystemDependencyMatrix[i].resize(STID + 1);
 			}
 
+			// add to work list
+			this->m_SystemWorkOrder.push_back(system);
+
 			// Broadcast SystemCreated event
 			ECS_Engine->ECS_EventHandler->Send<SystemCreated>(STID);
 

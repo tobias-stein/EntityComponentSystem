@@ -24,13 +24,14 @@ namespace ECS
 	}
 	
 	SystemManager::~SystemManager()
-	{
-		for (auto system : this->m_Systems)
+	{		
+		for (SystemWorkOrder::reverse_iterator it = this->m_SystemWorkOrder.rbegin(); it != this->m_SystemWorkOrder.rend(); ++it)
 		{
-			system.second->~ISystem();
-			system.second = nullptr;
+			(*it)->~ISystem();
+			*it = nullptr;
 		}
 
+		m_SystemWorkOrder.clear();
 		m_Systems.clear();
 
 		// free allocated global memory
