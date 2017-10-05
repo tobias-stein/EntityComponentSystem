@@ -12,17 +12,14 @@
 #include "GameConfiguration.h"
 #include "GameEvents.h"
 
-#include <stdio.h>
-
 #include <SDL.h> 
-
 #include <ECS.h>
 
 // to prevent:
 // Error	LNK2019	unresolved external symbol SDL_main referenced in function main_utf8	BountyHunterDemo	..\EntityComponentSystem\BountyHunterDemo\SDL2main.lib(SDL_windows_main.obj)	1
 #undef main 
 
-class Game : public ECS::Event::IEventListener {
+class Game : protected ECS::Event::IEventListener {
 
 public:
 

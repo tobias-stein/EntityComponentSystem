@@ -8,6 +8,7 @@
 
 #include "InputSystem.h"
 #include "MenuSystem.h"
+#include "RenderSystem.h"
 
 Game::Game() :
 	mAppState(NOT_INITIALIZED),
@@ -34,6 +35,8 @@ void Game::InitializeECS()
 	// MenuSystem
 	MenuSystem* MS = ECS::ECS_Engine->GetSystemManager()->AddSystem<MenuSystem>();
 
+	// RenderSystem
+	RenderSystem* RS = ECS::ECS_Engine->GetSystemManager()->AddSystem<RenderSystem>(this->mWindow);
 
 	// Add system dependencies
 }
@@ -47,7 +50,7 @@ void Game::InitializeSDL(const char* title, int width, int height, bool fullscre
 	mWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL | (fullscreen ? SDL_WINDOW_FULLSCREEN : (0)));
 	if (mWindow == 0) {
 
-		printf("Unable to create game application window! %s", SDL_GetError());
+		SDL_Log("Unable to create game application window! %s", SDL_GetError());
 		exit(-1);
 	}
 
@@ -58,7 +61,7 @@ void Game::InitializeSDL(const char* title, int width, int height, bool fullscre
 
 	// Place and resize application window
 	SDL_GetWindowPosition(mWindow, &mWindowX, &mWindowY);
-	SDL_GetWindowSize(mWindow, &mWindowW, &mWindowH);
+	SDL_GetWindowSize(mWindow, &mWindowW, &mWindowH);	
 }
 
 void Game::RegisterEventCallbacks()
@@ -84,6 +87,15 @@ void Game::Init(const char* title, int width, int height, bool fullscreen) {
 
 	// Initialize ECS
 	InitializeECS();
+
+	// broadcast initial window state
+	ECS::ECS_Engine->SendEvent<WindowResizedEvent>(width, height);
+
+	if (fullscreen == false)
+		ECS::ECS_Engine->SendEvent<EnterFullscreenModeEvent>();
+	else
+		ECS::ECS_Engine->SendEvent<EnterWindowModeEvent>();
+
 
 	// Register Event Callbacks
 	RegisterEventCallbacks();
@@ -139,15 +151,21 @@ void Game::ProcessWindowEvent()
 			case SDL_WINDOWEVENT_MOVED:
 				break;
 			case SDL_WINDOWEVENT_RESIZED:
+				ECS::ECS_Engine->SendEvent<WindowResizedEvent>(event.window.data1, event.window.data2);
 				break;
+
 			case SDL_WINDOWEVENT_SIZE_CHANGED:
 				break;
 			case SDL_WINDOWEVENT_MINIMIZED:
+				ECS::ECS_Engine->SendEvent<WindowMinimizedEvent>();
 				break;
+
 			case SDL_WINDOWEVENT_MAXIMIZED:
 				break;
 			case SDL_WINDOWEVENT_RESTORED:
+				ECS::ECS_Engine->SendEvent<WindowRestoredEvent>();
 				break;
+
 			case SDL_WINDOWEVENT_ENTER:
 				break;
 			case SDL_WINDOWEVENT_LEAVE:

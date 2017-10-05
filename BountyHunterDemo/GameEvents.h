@@ -145,4 +145,28 @@ struct EnterFullscreenModeEvent : public ECS::Event::Event<EnterFullscreenModeEv
 struct EnterWindowModeEvent : public ECS::Event::Event<EnterWindowModeEvent>
 {};
 
+///-------------------------------------------------------------------------------------------------
+/// Summary:	General window events.
+/// Author:	Tobias Stein
+///
+/// Date:	5/10/2017
+///-------------------------------------------------------------------------------------------------
+
+struct WindowMinimizedEvent : public ECS::Event::Event<WindowMinimizedEvent>
+{};
+
+struct WindowRestoredEvent : public ECS::Event::Event<WindowRestoredEvent>
+{};
+
+struct WindowResizedEvent : public ECS::Event::Event<WindowResizedEvent>
+{
+	int width;
+	int height;
+
+	WindowResizedEvent(int w, int h) :
+		width(w),
+		height(h)
+	{}
+};
+
 #endif // __GAME_EVENTS_H__
