@@ -10,6 +10,7 @@
 #include "MenuSystem.h"
 #include "RenderSystem.h"
 
+
 Game::Game() :
 	mAppState(NOT_INITIALIZED),
 	mWindow(nullptr),
@@ -24,7 +25,9 @@ Game::~Game()
 
 void Game::InitializeECS()
 {
+	// start the engine
 	ECS::Initialize();
+
 
 	// Create and initialize systems
 

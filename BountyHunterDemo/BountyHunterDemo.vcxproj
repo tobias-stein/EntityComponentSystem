@@ -170,19 +170,29 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="Collector.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputSystem.cpp" />
+    <ClCompile Include="IShape.cpp" />
     <ClCompile Include="MenuSystem.cpp" />
     <ClCompile Include="OpenGL.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="Shape.cpp" />
+    <ClCompile Include="ShapeComponent.cpp" />
+    <ClCompile Include="ShapeGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="QuadShape.h" />
     <ClInclude Include="Collector.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameConfiguration.h" />
     <ClInclude Include="GameEvents.h" />
     <ClInclude Include="InputSystem.h" />
+    <ClInclude Include="IShape.h" />
     <ClInclude Include="MenuSystem.h" />
     <ClInclude Include="OpenGL.h" />
     <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="Shape.h" />
+    <ClInclude Include="ShapeComponent.h" />
+    <ClInclude Include="ShapeGenerator.h" />
+    <ClInclude Include="TriangleShape.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

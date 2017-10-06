@@ -13,6 +13,36 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\ShapeGenerator">
+      <UniqueIdentifier>{ee057c0c-491c-4de2-9128-fdb8784f1868}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ShapeGenerator">
+      <UniqueIdentifier>{bca29481-4835-4f1b-b95a-016cf0c42173}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities">
+      <UniqueIdentifier>{d01be4f0-a9b6-4a18-b977-4fa67dcadb58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Systems">
+      <UniqueIdentifier>{5462c44d-3302-467c-8d65-cfae595756c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems">
+      <UniqueIdentifier>{e42220ee-c6f6-4c70-9750-9925f2a51bf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities">
+      <UniqueIdentifier>{3666a414-e422-43dd-962d-fed0b3c5b3ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ShapeGenerator\Shapes">
+      <UniqueIdentifier>{974a819b-cec0-419f-98ba-1031d8d2b2df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ShapeGenerator\Shapes">
+      <UniqueIdentifier>{d638efcd-450b-4d1a-9f14-806af5c505ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{6204e7af-0833-4230-b5a3-63d528d14c95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{934eeeae-3742-42e7-9600-3977edf0d362}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -27,17 +57,29 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InputSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Collector.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="RenderSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="MenuSystem.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Collector.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="IShape.cpp">
+      <Filter>Source Files\ShapeGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>Source Files\ShapeGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeGenerator.cpp">
+      <Filter>Source Files\ShapeGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeComponent.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,20 +92,38 @@
     <ClInclude Include="GameConfiguration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InputSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Collector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MenuSystem.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem.h">
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="RenderSystem.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Collector.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="IShape.h">
+      <Filter>Header Files\ShapeGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="ShapeGenerator.h">
+      <Filter>Header Files\ShapeGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>Header Files\ShapeGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="TriangleShape.h">
+      <Filter>Header Files\ShapeGenerator\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadShape.h">
+      <Filter>Header Files\ShapeGenerator\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ShapeComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
