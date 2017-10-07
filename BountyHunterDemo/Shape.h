@@ -17,6 +17,8 @@
 
 class Shape
 {
+private:
+
 	const IShape* m_ShapeData;
 
 public:
@@ -25,20 +27,23 @@ public:
 	Shape(const IShape* shapeData);
 	~Shape();
 
+	inline const ShapeID				GetShapeID() const { return this->m_ShapeData->GetShapeID(); }
 
 	// >>> Forward methods to real shape data >>> 
 
-	inline const size_t				GetVertexCount() const { this->m_ShapeData->GetVertexCount(); }
+	inline const size_t					GetVertexCount() const { return this->m_ShapeData->GetVertexCount(); }
 
-	inline const float*				GetPosition() const { this->m_ShapeData->GetPosition(); }
+	inline const size_t					GetIndexCount() const { return this->m_ShapeData->GetIndexCount(); }
 
-	inline const unsigned short*	GetIndex() const { this->m_ShapeData->GetIndex(); }
+	inline const VertexPositionData*	GetPosition() const { return this->m_ShapeData->GetPosition(); }
 
-	inline const float*				GetNormal() const { this->m_ShapeData->GetNormal(); }
+	inline const VertexIndexData*		GetIndex() const { return this->m_ShapeData->GetIndex(); }
 
-	inline const float*				GetUV() const { this->m_ShapeData->GetUV(); }
+	inline const VertexNormalData*		GetNormal() const { return this->m_ShapeData->GetNormal(); }
 
-	inline const float*				GetColor() const { this->m_ShapeData->GetColor(); }
+	inline const VertexUVData*			GetUV() const { return this->m_ShapeData->GetUV(); }
+
+	inline const VertexColorData*		GetColor() const { return this->m_ShapeData->GetColor(); }
 
 }; // class Shape
 

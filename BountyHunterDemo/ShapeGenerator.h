@@ -18,9 +18,7 @@ class ShapeGenerator
 {
 	using ShapeRegistry = std::vector<IShape*>;
 
-private:
-
-	
+private:	
 
 	ShapeGenerator();
 

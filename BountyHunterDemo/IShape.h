@@ -7,6 +7,33 @@
 #ifndef __I_SHAPE_H__
 #define __I_SHAPE_H__
 
+#include <stdint.h>
+
+typedef float			VertexPositionData;
+typedef unsigned short	VertexIndexData;
+typedef float			VertexNormalData;
+typedef float			VertexUVData;
+typedef float			VertexColorData;
+
+static constexpr size_t SHAPE_VERTEX_POSITION_DATA_ELEMENT_LEN		{ 3 };
+static constexpr size_t SHAPE_VERTEX_INDEX_DATA_ELEMENT_LEN			{ 1 };
+static constexpr size_t SHAPE_VERTEX_NORMAL_DATA_ELEMENT_LEN		{ 3 };
+static constexpr size_t SHAPE_VERTEX_UV_DATA_ELEMENT_LEN			{ 2 };
+static constexpr size_t SHAPE_VERTEX_COLOR_DATA_ELEMENT_LEN			{ 3 };
+
+static constexpr size_t SHAPE_VERTEX_POSITION_DATA_ELEMENT_SIZE		{ SHAPE_VERTEX_POSITION_DATA_ELEMENT_LEN * sizeof(VertexPositionData) };
+static constexpr size_t SHAPE_VERTEX_INDEX_DATA_ELEMENT_SIZE		{ SHAPE_VERTEX_INDEX_DATA_ELEMENT_LEN * sizeof(VertexIndexData) };
+static constexpr size_t SHAPE_VERTEX_NORMAL_DATA_ELEMENT_SIZE		{ SHAPE_VERTEX_NORMAL_DATA_ELEMENT_LEN * sizeof(VertexNormalData) };
+static constexpr size_t SHAPE_VERTEX_UV_DATA_ELEMENT_SIZE			{ SHAPE_VERTEX_UV_DATA_ELEMENT_LEN * sizeof(VertexUVData) };
+static constexpr size_t SHAPE_VERTEX_COLOR_DATA_ELEMENT_SIZE		{ SHAPE_VERTEX_COLOR_DATA_ELEMENT_LEN * sizeof(VertexColorData) };
+
+
+
+
+typedef uint16_t ShapeID;
+
+static constexpr ShapeID INVALID_SHAPE_ID { 0xffff };
+
 ///-------------------------------------------------------------------------------------------------
 /// Class:	IShape
 ///
@@ -19,21 +46,14 @@
 
 class IShape
 {
-private:
-
-	/// Summary:	Running shape id
-	static unsigned long NEXT_STATIC_SHAPE_ID;
-
-	unsigned long SHAPE_ID;
-
-protected:
-
 public:
 
 	enum Type
 	{
-		TRIANLGE,
-		QUAD,
+		INVALID_SHAPE	= INVALID_SHAPE_ID,
+		TRIANLGE		= 0,
+		QUAD			= 1,
+
 		MAX_SHAPES
 	}; // enum Type
 
@@ -42,6 +62,19 @@ public:
 
 	virtual ~IShape();
 
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:	virtual inline unsigned long IShape::GetShapeID() const
+	///
+	/// Summary:	Gets shape unique identifier.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	7/10/2017
+	///
+	/// Returns:	The shape identifier.
+	///-------------------------------------------------------------------------------------------------
+
+	virtual inline ShapeID GetShapeID() const { return INVALID_SHAPE; }
 
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	virtual bool IShape::Initialize();
@@ -83,6 +116,19 @@ public:
 
 	virtual const size_t GetVertexCount() const = 0;
 
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:	virtual const size_t IShape::GetIndexCount() const = 0;
+	///
+	/// Summary:	Returns the number of indices used for this shape. 
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	7/10/2017
+	///
+	/// Returns:	The index count or 0 if no indices are used
+	///-------------------------------------------------------------------------------------------------
+
+	virtual const size_t GetIndexCount() const = 0;
 
 	// >>> SHAPE ATTRIBUTES >>>
 	 
@@ -98,7 +144,7 @@ public:
 	/// Returns:	Null if it fails, else the position array.
 	///-------------------------------------------------------------------------------------------------
 
-	virtual const float* GetPosition() const = 0;
+	virtual const VertexPositionData* GetPosition() const = 0;
 
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	virtual const unsigned short IShape::GetIndex() const = 0;
@@ -112,7 +158,7 @@ public:
 	/// Returns:	The index data, null if no index data is provided.
 	///-------------------------------------------------------------------------------------------------
 
-	virtual const unsigned short* GetIndex() const = 0;
+	virtual const VertexIndexData* GetIndex() const = 0;
 
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	virtual const float* IShape::GetNormal() const = 0;
@@ -126,7 +172,7 @@ public:
 	/// Returns:	Null if shape does not has normal's, else the normal array.
 	///-------------------------------------------------------------------------------------------------
 
-	virtual const float* GetNormal() const = 0;
+	virtual const VertexNormalData* GetNormal() const = 0;
 
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	virtual const float* IShape::GetUV() const = 0;
@@ -140,7 +186,7 @@ public:
 	/// Returns:	Null if shape does not has uv's, else the uv array.
 	///-------------------------------------------------------------------------------------------------
 
-	virtual const float* GetUV() const = 0;
+	virtual const VertexUVData* GetUV() const = 0;
 
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	virtual const float* IShape::GetColor() const = 0;
@@ -154,7 +200,7 @@ public:
 	/// Returns:	Null if no color data is provided, else the color data array.
 	///-------------------------------------------------------------------------------------------------
 
-	virtual const float* GetColor() const = 0;
+	virtual const VertexColorData* GetColor() const = 0;
 
 }; // class IShape
 

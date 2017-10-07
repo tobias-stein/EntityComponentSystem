@@ -1,18 +1,17 @@
 ///-------------------------------------------------------------------------------------------------
-/// File:	IShape.cpp.
+/// File:	IMaterial.cpp.
 ///
-/// Summary:	Declares the IShape interface.
+/// Summary:	Declares the Material interface.
 ///-------------------------------------------------------------------------------------------------
 
+#include "IMaterial.h"
 
-#include "IShape.h"
-
-IShape::IShape()
+IMaterial::IMaterial()
 {
 	this->Initialize();
 }
 
-IShape::~IShape()
+IMaterial::~IMaterial()
 {
 	this->Release();
 }

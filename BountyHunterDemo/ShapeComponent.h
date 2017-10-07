@@ -10,9 +10,14 @@
 #include <ECS.h>
 
 #include "Shape.h"
+#include "ShapeBufferIndex.h"
 
-class ShapeComponent : public Shape, public ECS::Component<ShapeComponent>
+class ShapeComponent : public Shape, public ShapeBufferIndex, public ECS::Component<ShapeComponent>
 {
+	friend class RenderSystem;
+
+	void SetShapeBufferIndex(const ShapeBufferIndex& shapeBufferIndex);
+
 public:
 
 	ShapeComponent(const Shape& shape);

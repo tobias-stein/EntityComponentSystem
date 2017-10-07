@@ -11,3 +11,12 @@ ShapeComponent::ShapeComponent(const Shape& shape) : Shape(shape)
 
 ShapeComponent::~ShapeComponent()
 {}
+
+void ShapeComponent::SetShapeBufferIndex(const ShapeBufferIndex& shapeBufferIndex)
+{
+	this->m_PositionDataIndex	= shapeBufferIndex.GetPositionDataIndex();
+	this->m_IndexDataIndex		= shapeBufferIndex.GetIndexDataIndex();
+	this->m_NormalDataIndex		= shapeBufferIndex.GetNormalDataIndex();
+	this->m_UVDataIndex			= shapeBufferIndex.GetUVDataIndex();
+	this->m_ColorDataIndex		= shapeBufferIndex.GetColorDataIndex();
+}

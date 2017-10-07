@@ -1,6 +1,7 @@
 #ifndef __OPEN_GL_H__
 #define __OPEN_GL_H__
 
+#define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 
 #include <GL/glew.h>
@@ -19,7 +20,7 @@ void __glGetLastErrorImpl(const char* file, int line, const char *func);
 	This is a convinient macro which invokes the implementation of glCheckError
 	with the right file name and line number.
 */
-#ifdef DEBUG_MODE
+#ifdef _DEBUG
 #define glGetLastError() __glGetLastErrorImpl( __FILE__, __LINE__, __FUNCTION__ )
 #else
 #define glGetLastError()

@@ -169,8 +169,12 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="BountyHunterDemo.cpp" />
     <ClCompile Include="Collector.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GLShader.cpp" />
+    <ClCompile Include="IMaterial.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="IShape.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="MaterialComponent.cpp" />
     <ClCompile Include="MenuSystem.cpp" />
     <ClCompile Include="OpenGL.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
@@ -179,6 +183,11 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="ShapeGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GLBuffer.h" />
+    <ClInclude Include="GLShader.h" />
+    <ClInclude Include="IMaterial.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="MaterialComponent.h" />
     <ClInclude Include="QuadShape.h" />
     <ClInclude Include="Collector.h" />
     <ClInclude Include="Game.h" />
@@ -188,8 +197,10 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="IShape.h" />
     <ClInclude Include="MenuSystem.h" />
     <ClInclude Include="OpenGL.h" />
+    <ClInclude Include="RenderableGroup.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="Shape.h" />
+    <ClInclude Include="ShapeBufferIndex.h" />
     <ClInclude Include="ShapeComponent.h" />
     <ClInclude Include="ShapeGenerator.h" />
     <ClInclude Include="TriangleShape.h" />

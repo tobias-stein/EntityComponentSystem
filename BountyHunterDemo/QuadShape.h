@@ -15,14 +15,31 @@ private:
 
 	static constexpr size_t				VERTEX_COUNT { 4 };
 
-	static constexpr float				VERTEX_DATA_POS[VERTEX_COUNT * 3]
-	{};
+	static constexpr size_t				INDEX_COUNT { 6 };
 
-	static constexpr float				VERTEX_DATA_NRM[VERTEX_COUNT * 3]
-	{};
+	static constexpr VertexPositionData	VERTEX_DATA_POS[VERTEX_COUNT * SHAPE_VERTEX_POSITION_DATA_ELEMENT_LEN]
+	{
+		//	x,		y,		z
+		-1.0f,	-1.0f,	0.0f,			// v0
+		-1.0f,	 1.0f,	0.0f,			// v1
+		 1.0f,	 1.0f,	0.0f,			// v2
+		 1.0f,	 1.0f,	0.0f			// v3
+	};
 
-	static constexpr unsigned short		VERTEX_DATA_IDX[VERTEX_COUNT]
-	{};
+	static constexpr VertexNormalData	VERTEX_DATA_NRM[VERTEX_COUNT * SHAPE_VERTEX_NORMAL_DATA_ELEMENT_LEN]
+	{
+		//	x,		y,		z
+		 0.0f,	 1.0f,	0.0f,			// n0
+		 0.0f,	 1.0f,	0.0f,			// n1
+		 0.0f,	 1.0f,	0.0f,			// n2
+		 0.0f,	 1.0f,	0.0f			// n3
+	};
+
+	static constexpr VertexIndexData	VERTEX_DATA_IDX[INDEX_COUNT]
+	{
+		0, 1, 2,						// t1
+		2, 1, 3							// t2
+	};
 
 public:
 
@@ -30,20 +47,25 @@ public:
 
 	QuadShape()
 	{}
+
 	virtual ~QuadShape()
 	{}
 
+	virtual inline ShapeID				GetShapeID() const override { return SHAPE_TYPE; }
+
+	virtual const size_t				GetIndexCount() const override { return INDEX_COUNT; }
+
 	virtual const size_t				GetVertexCount() const override { return VERTEX_COUNT; }
 
-	virtual const float*				GetPosition() const override { return VERTEX_DATA_POS; }
+	virtual const VertexPositionData*	GetPosition() const override { return VERTEX_DATA_POS; }
 
-	virtual const unsigned short*		GetIndex() const override { return VERTEX_DATA_IDX; }
+	virtual const VertexIndexData*		GetIndex() const override { return VERTEX_DATA_IDX; }
 
-	virtual const float*				GetNormal() const override { return VERTEX_DATA_NRM; }
+	virtual const VertexNormalData*		GetNormal() const override { return VERTEX_DATA_NRM; }
 
-	virtual const float*				GetUV() const override { return nullptr; }
+	virtual const VertexUVData*			GetUV() const override { return nullptr; }
 
-	virtual const float*				GetColor() const override { return nullptr; }
+	virtual const VertexColorData*		GetColor() const override { return nullptr; }
 
 }; // class QuadShape
 
