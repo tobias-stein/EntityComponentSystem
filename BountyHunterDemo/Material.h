@@ -28,9 +28,18 @@ public:
 
 	inline const MaterialID GetMaterialID() const { return this->m_materialData->GetMaterialID(); }
 
-	void Use() { const_cast<IMaterial*>(this->m_materialData)->Use(); }
+	void Use() const { const_cast<IMaterial*>(this->m_materialData)->Use(); }
 
-	void Unuse() { const_cast<IMaterial*>(this->m_materialData)->Unuse(); }
+	void Unuse() const { const_cast<IMaterial*>(this->m_materialData)->Unuse(); }
+
+
+	const MaterialVertexAttributeID GetPositionVertexAttributeLocation() const { return this->GetPositionVertexAttributeLocation(); }
+
+	const MaterialVertexAttributeID GetNormalVertexAttributeLocation() const { return this->GetNormalVertexAttributeLocation(); }
+
+	const MaterialVertexAttributeID GetTexCoordVertexAttributeLocation() const { return this->GetTexCoordVertexAttributeLocation(); }
+
+	const MaterialVertexAttributeID GetColorVertexAttributeLocation() const { return this->GetColorVertexAttributeLocation(); }
 };
 
 #endif // __MATERIAL_H__

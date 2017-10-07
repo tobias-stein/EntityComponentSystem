@@ -8,11 +8,14 @@
 
 RenderSystem::RenderSystem(SDL_Window* window) :
 	m_Window(window),
-	m_VertexBuffer(GLOBAL_VERTEX_BUFFER_SIZE),
-	m_IndexBuffer(GLOBAL_INDEX_BUFFER_SIZE),
 	m_BufferedShapes(IShape::MAX_SHAPES, nullptr)
 {
 	InitializeOpenGL();
+
+	// create global vertex and index buffer
+	this->m_VertexBuffer = new VertexBuffer(GLOBAL_VERTEX_BUFFER_SIZE);
+	this->m_IndexBuffer = new IndexBuffer(GLOBAL_INDEX_BUFFER_SIZE);
+
 	RegisterEventCallbacks();
 }
 
@@ -26,6 +29,15 @@ RenderSystem::~RenderSystem()
 	this->m_BufferedShapes.clear();
 
 	UnregisterEventCallbacks();
+	
+	
+	// free global vertex and index buffer
+	this->m_VertexBuffer = nullptr;
+	delete this->m_VertexBuffer;
+
+	this->m_IndexBuffer = nullptr;
+	delete this->m_IndexBuffer;
+
 	TerminateOpenGL();
 }
 
@@ -79,8 +91,36 @@ void RenderSystem::PreUpdate(float dt)
 
 void RenderSystem::Update(float dt)
 {
-	// Check for errors
-	glGetLastError();
+	for (auto renderableGroup : this->m_RenderableGroups)
+	{
+		// restore vertex attribute bindings for this group
+		renderableGroup.first.m_VertexArray.Bind();
+		{
+			// render all renderable of this group
+			for (auto renderable : renderableGroup.second)
+			{
+				// apply material
+				renderable.m_MaterialComponent->Use();
+				
+				// draw shape
+				if (renderable.m_ShapeComponent->IsIndexed() == true)
+				{
+					// draw with indices
+					glDrawElements(GL_TRIANGLES, renderable.m_ShapeComponent->GetIndexCount(), VERTEX_INDEX_DATA_TYPE, BUFFER_OFFSET(renderable.m_ShapeComponent->GetIndexDataIndex()));
+				}
+				else
+				{
+					// draw without indices
+					glDrawArrays(GL_TRIANGLES, 0, renderable.m_ShapeComponent->GetTriangleCount());
+				}
+			}
+
+		}
+		renderableGroup.first.m_VertexArray.Unbind();
+
+		// Check for errors
+		glGetLastError();
+	}
 }
 
 void RenderSystem::PostUpdate(float dt)
@@ -109,44 +149,44 @@ void RenderSystem::SetShapeBufferIndex(ShapeComponent* shapeComponent)
 	this->m_BufferedShapes[shapeComponent->GetShapeID()] = bufferIndex;
 
 	// bind global vertex buffer
-	this->m_VertexBuffer.Bind();
+	this->m_VertexBuffer->Bind();
 
 	// buffer vertex position data
 	{
 		assert(shapeComponent->GetPosition() != nullptr && "Invalid shape. Shape has no vertex position data!");
-		bufferIndex->m_PositionDataIndex = this->m_VertexBuffer.BufferVertexData(shapeComponent->GetPosition(), SHAPE_VERTEX_POSITION_DATA_ELEMENT_SIZE * shapeComponent->GetVertexCount());
+		bufferIndex->m_PositionDataIndex = this->m_VertexBuffer->BufferVertexData(shapeComponent->GetPosition(), VERTEX_POSITION_DATA_ELEMENT_SIZE * shapeComponent->GetVertexCount());
 	}
 
 	// buffer vertex index data
 	if(shapeComponent->GetIndexCount() > 0 && shapeComponent->GetIndex() != nullptr)
 	{
-		this->m_IndexBuffer.Bind();
+		this->m_IndexBuffer->Bind();
 		{
-			bufferIndex->m_IndexDataIndex = this->m_IndexBuffer.BufferIndexData(shapeComponent->GetIndex(), SHAPE_VERTEX_INDEX_DATA_ELEMENT_SIZE * shapeComponent->GetIndexCount());
+			bufferIndex->m_IndexDataIndex = this->m_IndexBuffer->BufferIndexData(shapeComponent->GetIndex(), VERTEX_INDEX_DATA_ELEMENT_SIZE * shapeComponent->GetIndexCount());
 		}
-		this->m_IndexBuffer.Unbind();
+		this->m_IndexBuffer->Unbind();
 	}
 
 	// buffer vertex normal data
 	if(shapeComponent->GetNormal() != nullptr)
 	{
-		bufferIndex->m_NormalDataIndex = this->m_VertexBuffer.BufferVertexData(shapeComponent->GetNormal(), SHAPE_VERTEX_NORMAL_DATA_ELEMENT_SIZE * shapeComponent->GetVertexCount());
+		bufferIndex->m_NormalDataIndex = this->m_VertexBuffer->BufferVertexData(shapeComponent->GetNormal(), VERTEX_NORMAL_DATA_ELEMENT_SIZE * shapeComponent->GetVertexCount());
 	}
 
 	// buffer vertex uv data
-	if (shapeComponent->GetUV() != nullptr)
+	if (shapeComponent->GetTexCoord() != nullptr)
 	{
-		bufferIndex->m_UVDataIndex = this->m_VertexBuffer.BufferVertexData(shapeComponent->GetUV(), SHAPE_VERTEX_UV_DATA_ELEMENT_SIZE * shapeComponent->GetVertexCount());
+		bufferIndex->m_TexCoordDataIndex = this->m_VertexBuffer->BufferVertexData(shapeComponent->GetTexCoord(), VERTEX_TEXCOORD_DATA_ELEMENT_SIZE * shapeComponent->GetVertexCount());
 	}
 
 	// buffer vertex color data
 	if (shapeComponent->GetColor() != nullptr)
 	{
-		bufferIndex->m_ColorDataIndex = this->m_VertexBuffer.BufferVertexData(shapeComponent->GetColor(), SHAPE_VERTEX_COLOR_DATA_ELEMENT_SIZE * shapeComponent->GetVertexCount());
+		bufferIndex->m_ColorDataIndex = this->m_VertexBuffer->BufferVertexData(shapeComponent->GetColor(), VERTEX_COLOR_DATA_ELEMENT_SIZE * shapeComponent->GetVertexCount());
 	}
 
 	// unbind global vertex buffer
-	this->m_VertexBuffer.Unbind();
+	this->m_VertexBuffer->Unbind();
 
 	// set indices
 	shapeComponent->SetShapeBufferIndex(*bufferIndex);
@@ -174,37 +214,49 @@ void RenderSystem::RegisterRenderable(const ECS::EntityId id, const MaterialComp
 		renderableGroup.m_VertexArray.Bind();
 		{
 			// bind global vertex buffer
-			this->m_VertexBuffer.Bind();
+			this->m_VertexBuffer->Bind();
 
 			// buffer vertex position data
+			MaterialVertexAttributeID positionVertexAttribute = material->GetPositionVertexAttributeLocation();
+			assert(positionVertexAttribute != INVALID_MATERIAL_VERTEX_ATTRIBUTE_ID && "Material of a renderable does not provide a position vertex attribute!");
 
+			glEnableVertexAttribArray(positionVertexAttribute);
+			glVertexAttribPointer(positionVertexAttribute, VERTEX_POSITION_DATA_ELEMENT_LEN, VERTEX_POSITION_DATA_TYPE, GL_FALSE, 0, BUFFER_OFFSET(shape->GetPositionDataIndex()));
 
 			// buffer vertex index data
 			if (shape->GetIndexCount() > 0 && shape->GetIndex() != nullptr)
 			{
-				this->m_IndexBuffer.Bind();
-
+				this->m_IndexBuffer->Bind();
 			}
 
 			// buffer vertex normal data
-			if (shape->GetNormal() != nullptr)
+			MaterialVertexAttributeID normalVertexAttribute = material->GetNormalVertexAttributeLocation();
+			if (shape->GetNormal() != nullptr && normalVertexAttribute != INVALID_MATERIAL_VERTEX_ATTRIBUTE_ID)
 			{
+				glEnableVertexAttribArray(normalVertexAttribute);
+				glVertexAttribPointer(normalVertexAttribute, VERTEX_NORMAL_DATA_ELEMENT_LEN, VERTEX_NORMAL_DATA_TYPE, GL_FALSE, 0, BUFFER_OFFSET(shape->GetNormalDataIndex()));
 			}
 
 			// buffer vertex uv data
-			if (shape->GetUV() != nullptr)
+			MaterialVertexAttributeID texCoordVertexAttribute = material->GetTexCoordVertexAttributeLocation();
+			if (shape->GetTexCoord() != nullptr && texCoordVertexAttribute != INVALID_MATERIAL_VERTEX_ATTRIBUTE_ID)
 			{
+				glEnableVertexAttribArray(texCoordVertexAttribute);
+				glVertexAttribPointer(texCoordVertexAttribute, VERTEX_TEXCOORD_DATA_ELEMENT_LEN, VERTEX_TEXCOORD_DATA_TYPE, GL_FALSE, 0, BUFFER_OFFSET(shape->GetTexCoordDataIndex()));
 			}
 
 			// buffer vertex color data
-			if (shape->GetColor() != nullptr)
+			MaterialVertexAttributeID colorVertexAttribute = material->GetColorVertexAttributeLocation();
+			if (shape->GetColor() != nullptr && colorVertexAttribute != INVALID_MATERIAL_VERTEX_ATTRIBUTE_ID)
 			{
+				glEnableVertexAttribArray(colorVertexAttribute);
+				glVertexAttribPointer(colorVertexAttribute, VERTEX_COLOR_DATA_ELEMENT_LEN, VERTEX_COLOR_DATA_TYPE, GL_FALSE, 0, BUFFER_OFFSET(shape->GetColorDataIndex()));
 			}
 		}
 		renderableGroup.m_VertexArray.Unbind();
 
-		this->m_VertexBuffer.Unbind();
-		this->m_IndexBuffer.Unbind();
+		this->m_VertexBuffer->Unbind();
+		this->m_IndexBuffer->Unbind();
 	}
 	this->m_RenderableGroups[renderableGroup].push_back(Renderable(id, material, shape));
 }

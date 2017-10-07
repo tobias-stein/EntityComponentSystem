@@ -73,8 +73,8 @@ private:
 	SDL_GLContext		m_Context;
 
 	// Global Vertex and Index Buffer
-	VertexBuffer		m_VertexBuffer;
-	IndexBuffer			m_IndexBuffer;
+	VertexBuffer*		m_VertexBuffer;
+	IndexBuffer*		m_IndexBuffer;
 
 	// Keeps track of already buffered shapes
 	BufferedShapes		m_BufferedShapes;

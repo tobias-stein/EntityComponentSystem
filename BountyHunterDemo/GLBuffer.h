@@ -49,12 +49,12 @@ struct VertexArray
 		glGetLastError();
 	}
 
-	inline void Bind()
+	inline void Bind() const
 	{
 		glBindVertexArray(this->m_ID);
 	}
 
-	inline void Unbind()
+	inline void Unbind() const
 	{
 		glBindVertexArray(0);
 	}
@@ -83,9 +83,9 @@ struct VertexBuffer
 	{
 		glGenBuffers(1, &this->m_ID);
 		glBindBuffer(GL_ARRAY_BUFFER, this->m_ID);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glBufferData(GL_ARRAY_BUFFER, size, 0, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glGetLastError();
 	}
@@ -98,12 +98,12 @@ struct VertexBuffer
 		glGetLastError();
 	}
 
-	inline void Bind()
+	inline void Bind() const
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, this->m_ID);
 	}
 
-	inline void Unbind()
+	inline void Unbind() const
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
@@ -162,9 +162,9 @@ struct IndexBuffer
 	{
 		glGenBuffers(1, &this->m_ID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ID);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, 0, GL_STATIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 		glGetLastError();
 	}
@@ -177,12 +177,12 @@ struct IndexBuffer
 		glGetLastError();
 	}
 
-	inline void Bind()
+	inline void Bind() const
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->m_ID);
 	}
 
-	inline void Unbind()
+	inline void Unbind() const
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}

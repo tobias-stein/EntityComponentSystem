@@ -33,7 +33,11 @@ public:
 
 	inline const size_t					GetVertexCount() const { return this->m_ShapeData->GetVertexCount(); }
 
+	inline const size_t					GetTriangleCount() const { return this->m_ShapeData->GetTriangleCount(); }
+
 	inline const size_t					GetIndexCount() const { return this->m_ShapeData->GetIndexCount(); }
+
+	inline const bool					IsIndexed() const { return this->m_ShapeData->GetIndex() != nullptr; }
 
 	inline const VertexPositionData*	GetPosition() const { return this->m_ShapeData->GetPosition(); }
 
@@ -41,7 +45,7 @@ public:
 
 	inline const VertexNormalData*		GetNormal() const { return this->m_ShapeData->GetNormal(); }
 
-	inline const VertexUVData*			GetUV() const { return this->m_ShapeData->GetUV(); }
+	inline const VertexTexCoordData*	GetTexCoord() const { return this->m_ShapeData->GetTexCoord(); }
 
 	inline const VertexColorData*		GetColor() const { return this->m_ShapeData->GetColor(); }
 

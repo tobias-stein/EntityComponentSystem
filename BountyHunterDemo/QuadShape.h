@@ -15,9 +15,11 @@ private:
 
 	static constexpr size_t				VERTEX_COUNT { 4 };
 
+	static constexpr size_t				TRIANGLE_COUNT{ 2 };
+
 	static constexpr size_t				INDEX_COUNT { 6 };
 
-	static constexpr VertexPositionData	VERTEX_DATA_POS[VERTEX_COUNT * SHAPE_VERTEX_POSITION_DATA_ELEMENT_LEN]
+	static constexpr VertexPositionData	VERTEX_DATA_POS[VERTEX_COUNT * VERTEX_POSITION_DATA_ELEMENT_LEN]
 	{
 		//	x,		y,		z
 		-1.0f,	-1.0f,	0.0f,			// v0
@@ -26,7 +28,7 @@ private:
 		 1.0f,	 1.0f,	0.0f			// v3
 	};
 
-	static constexpr VertexNormalData	VERTEX_DATA_NRM[VERTEX_COUNT * SHAPE_VERTEX_NORMAL_DATA_ELEMENT_LEN]
+	static constexpr VertexNormalData	VERTEX_DATA_NRM[VERTEX_COUNT * VERTEX_NORMAL_DATA_ELEMENT_LEN]
 	{
 		//	x,		y,		z
 		 0.0f,	 1.0f,	0.0f,			// n0
@@ -53,9 +55,12 @@ public:
 
 	virtual inline ShapeID				GetShapeID() const override { return SHAPE_TYPE; }
 
-	virtual const size_t				GetIndexCount() const override { return INDEX_COUNT; }
-
+	
 	virtual const size_t				GetVertexCount() const override { return VERTEX_COUNT; }
+
+	virtual const size_t				GetTriangleCount() const override { return TRIANGLE_COUNT; }
+
+	virtual const size_t				GetIndexCount() const override { return INDEX_COUNT; }
 
 	virtual const VertexPositionData*	GetPosition() const override { return VERTEX_DATA_POS; }
 
@@ -63,7 +68,7 @@ public:
 
 	virtual const VertexNormalData*		GetNormal() const override { return VERTEX_DATA_NRM; }
 
-	virtual const VertexUVData*			GetUV() const override { return nullptr; }
+	virtual const VertexTexCoordData*	GetTexCoord() const override { return nullptr; }
 
 	virtual const VertexColorData*		GetColor() const override { return nullptr; }
 

@@ -20,7 +20,7 @@ protected:
 
 	size_t	m_NormalDataIndex;
 
-	size_t	m_UVDataIndex;
+	size_t	m_TexCoordDataIndex;
 
 	size_t	m_ColorDataIndex;
 
@@ -30,7 +30,7 @@ public:
 		m_PositionDataIndex(-1),
 		m_IndexDataIndex(-1),
 		m_NormalDataIndex(-1),
-		m_UVDataIndex(-1),
+		m_TexCoordDataIndex(-1),
 		m_ColorDataIndex(-1)
 	{}
 
@@ -40,7 +40,7 @@ public:
 
 	inline size_t GetNormalDataIndex() const { return this->m_NormalDataIndex; }
 
-	inline size_t GetUVDataIndex() const { return this->m_UVDataIndex; }
+	inline size_t GetTexCoordDataIndex() const { return this->m_TexCoordDataIndex; }
 
 	inline size_t GetColorDataIndex() const { return this->m_ColorDataIndex; }
 

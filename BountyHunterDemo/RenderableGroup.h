@@ -22,7 +22,7 @@ using RenderableGroupID = uint32_t;
 struct RenderableGroup
 {
 	const RenderableGroupID		m_GroupID;
-	VertexArray					m_VertexArray;
+	const VertexArray			m_VertexArray;
 
 	RenderableGroup(const RenderableGroupID groupID) :
 		m_GroupID(groupID)

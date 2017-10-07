@@ -9,23 +9,7 @@
 
 #include <stdint.h>
 
-typedef float			VertexPositionData;
-typedef unsigned short	VertexIndexData;
-typedef float			VertexNormalData;
-typedef float			VertexUVData;
-typedef float			VertexColorData;
-
-static constexpr size_t SHAPE_VERTEX_POSITION_DATA_ELEMENT_LEN		{ 3 };
-static constexpr size_t SHAPE_VERTEX_INDEX_DATA_ELEMENT_LEN			{ 1 };
-static constexpr size_t SHAPE_VERTEX_NORMAL_DATA_ELEMENT_LEN		{ 3 };
-static constexpr size_t SHAPE_VERTEX_UV_DATA_ELEMENT_LEN			{ 2 };
-static constexpr size_t SHAPE_VERTEX_COLOR_DATA_ELEMENT_LEN			{ 3 };
-
-static constexpr size_t SHAPE_VERTEX_POSITION_DATA_ELEMENT_SIZE		{ SHAPE_VERTEX_POSITION_DATA_ELEMENT_LEN * sizeof(VertexPositionData) };
-static constexpr size_t SHAPE_VERTEX_INDEX_DATA_ELEMENT_SIZE		{ SHAPE_VERTEX_INDEX_DATA_ELEMENT_LEN * sizeof(VertexIndexData) };
-static constexpr size_t SHAPE_VERTEX_NORMAL_DATA_ELEMENT_SIZE		{ SHAPE_VERTEX_NORMAL_DATA_ELEMENT_LEN * sizeof(VertexNormalData) };
-static constexpr size_t SHAPE_VERTEX_UV_DATA_ELEMENT_SIZE			{ SHAPE_VERTEX_UV_DATA_ELEMENT_LEN * sizeof(VertexUVData) };
-static constexpr size_t SHAPE_VERTEX_COLOR_DATA_ELEMENT_SIZE		{ SHAPE_VERTEX_COLOR_DATA_ELEMENT_LEN * sizeof(VertexColorData) };
+#include "OpenGL.h"
 
 
 
@@ -117,6 +101,20 @@ public:
 	virtual const size_t GetVertexCount() const = 0;
 
 	///-------------------------------------------------------------------------------------------------
+	/// Fn:	virtual const size_t IShape::GetTriangleCount() const = 0;
+	///
+	/// Summary:	Gets triangle count.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	7/10/2017
+	///
+	/// Returns:	The triangle count.
+	///-------------------------------------------------------------------------------------------------
+
+	virtual const size_t GetTriangleCount() const = 0;
+
+	///-------------------------------------------------------------------------------------------------
 	/// Fn:	virtual const size_t IShape::GetIndexCount() const = 0;
 	///
 	/// Summary:	Returns the number of indices used for this shape. 
@@ -175,7 +173,7 @@ public:
 	virtual const VertexNormalData* GetNormal() const = 0;
 
 	///-------------------------------------------------------------------------------------------------
-	/// Fn:	virtual const float* IShape::GetUV() const = 0;
+	/// Fn:	virtual const float* IShape::GetTexCoord() const = 0;
 	///
 	/// Summary:	Gets the uv texture coordinates for each vertex.
 	///
@@ -186,7 +184,7 @@ public:
 	/// Returns:	Null if shape does not has uv's, else the uv array.
 	///-------------------------------------------------------------------------------------------------
 
-	virtual const VertexUVData* GetUV() const = 0;
+	virtual const VertexTexCoordData* GetTexCoord() const = 0;
 
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	virtual const float* IShape::GetColor() const = 0;
