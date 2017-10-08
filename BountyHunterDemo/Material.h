@@ -33,13 +33,13 @@ public:
 	void Unuse() const { const_cast<IMaterial*>(this->m_materialData)->Unuse(); }
 
 
-	const MaterialVertexAttributeLoc GetPositionVertexAttributeLocation() const { return this->GetPositionVertexAttributeLocation(); }
+	const MaterialVertexAttributeLoc GetPositionVertexAttributeLocation() const { return this->m_materialData->GetPositionVertexAttributeLocation(); }
 
-	const MaterialVertexAttributeLoc GetNormalVertexAttributeLocation() const { return this->GetNormalVertexAttributeLocation(); }
+	const MaterialVertexAttributeLoc GetNormalVertexAttributeLocation() const { return this->m_materialData->GetNormalVertexAttributeLocation(); }
 
-	const MaterialVertexAttributeLoc GetTexCoordVertexAttributeLocation() const { return this->GetTexCoordVertexAttributeLocation(); }
+	const MaterialVertexAttributeLoc GetTexCoordVertexAttributeLocation() const { return this->m_materialData->GetTexCoordVertexAttributeLocation(); }
 
-	const MaterialVertexAttributeLoc GetColorVertexAttributeLocation() const { return this->GetColorVertexAttributeLocation(); }
+	const MaterialVertexAttributeLoc GetColorVertexAttributeLocation() const { return this->m_materialData->GetColorVertexAttributeLocation(); }
 };
 
 #endif // __MATERIAL_H__

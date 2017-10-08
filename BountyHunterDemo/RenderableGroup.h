@@ -22,11 +22,17 @@ using RenderableGroupID = uint32_t;
 struct RenderableGroup
 {
 	const RenderableGroupID		m_GroupID;
-	const VertexArray			m_VertexArray;
+	const VertexArray*			m_VertexArray;
 
 	RenderableGroup(const RenderableGroupID groupID) :
-		m_GroupID(groupID)
+		m_GroupID(groupID),
+		m_VertexArray(new VertexArray)
 	{}
+
+	void Delete() const
+	{
+		delete this->m_VertexArray;
+	}
 
 	bool operator==(const RenderableGroup &other) const
 	{

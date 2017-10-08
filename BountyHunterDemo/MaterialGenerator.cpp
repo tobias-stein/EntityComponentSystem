@@ -16,8 +16,11 @@ MaterialGenerator::~MaterialGenerator()
 {
 	for (int i = 0; i < this->m_MaterialRegistry.size(); ++i)
 	{
-		this->m_MaterialRegistry[i]->Release();
-		delete this->m_MaterialRegistry[i];
-		this->m_MaterialRegistry[i] = nullptr;
+		if (this->m_MaterialRegistry[i] != nullptr)
+		{
+			this->m_MaterialRegistry[i]->Release();
+			delete this->m_MaterialRegistry[i];
+			this->m_MaterialRegistry[i] = nullptr;
+		}
 	}
 }

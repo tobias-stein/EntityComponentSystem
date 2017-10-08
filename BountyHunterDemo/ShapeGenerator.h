@@ -55,7 +55,7 @@ public:
 		shape = new S;
 
 		assert(shape->Initialize() && "Failed to initialize shape!");
-		SDL_Log("Shade #%d initialized.", M::SHAPE_TYPE);
+		fprintf(stdout, "Shape #%d initialized.", S::SHAPE_TYPE);
 
 		instance.m_ShapeRegistry[S::SHAPE_TYPE] = shape;
 

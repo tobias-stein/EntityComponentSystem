@@ -81,9 +81,6 @@
     <ClCompile Include="InputSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Collector.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="IShape.cpp">
       <Filter>Source Files\ShapeGenerator</Filter>
     </ClCompile>
@@ -117,6 +114,9 @@
     <ClCompile Include="MaterialGenerator.cpp">
       <Filter>Source Files\MaterialGenerator</Filter>
     </ClCompile>
+    <ClCompile Include="CollectorEntity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -136,9 +136,6 @@
     </ClInclude>
     <ClInclude Include="RenderSystem.h">
       <Filter>Header Files\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="Collector.h">
-      <Filter>Header Files\Entities</Filter>
     </ClInclude>
     <ClInclude Include="IShape.h">
       <Filter>Header Files\ShapeGenerator</Filter>
@@ -187,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="DefaultMaterial.h">
       <Filter>Header Files\MaterialGenerator\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="CollectorEntity.h">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

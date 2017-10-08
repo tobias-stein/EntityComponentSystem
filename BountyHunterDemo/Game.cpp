@@ -216,6 +216,7 @@ void Game::Resume() {
 	ECS::ECS_Engine->SendEvent<GameResumedEvent>();
 }
 
+
 void Game::Run() {
 
 	// set new app state to running

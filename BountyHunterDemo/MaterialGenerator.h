@@ -55,7 +55,7 @@ public:
 		material = new M;
 		
 		assert(material->Initialize() && "Failed to initialize material!");
-		SDL_Log("Material #%d initialized.", M::MATERIAL_TYPE);
+		fprintf(stdout, "Material #%d initialized.", M::MATERIAL_TYPE);
 
 		instance.m_MaterialRegistry[M::MATERIAL_TYPE] = material;
 

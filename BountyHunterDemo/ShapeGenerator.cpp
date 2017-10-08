@@ -17,8 +17,11 @@ ShapeGenerator::~ShapeGenerator()
 {
 	for (int i = 0; i < this->m_ShapeRegistry.size(); ++i)
 	{
-		this->m_ShapeRegistry[i]->Release();
-		delete this->m_ShapeRegistry[i];
-		this->m_ShapeRegistry[i] = nullptr;
+		if (this->m_ShapeRegistry[i] != nullptr)
+		{
+			this->m_ShapeRegistry[i]->Release();
+			delete this->m_ShapeRegistry[i];
+			this->m_ShapeRegistry[i] = nullptr;
+		}
 	}
 }

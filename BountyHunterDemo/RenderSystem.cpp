@@ -21,6 +21,8 @@ RenderSystem::RenderSystem(SDL_Window* window) :
 
 RenderSystem::~RenderSystem()
 {
+	UnregisterEventCallbacks();
+
 	for (size_t i = 0; i < this->m_BufferedShapes.size(); ++i)
 	{
 		delete this->m_BufferedShapes[i];
@@ -28,7 +30,11 @@ RenderSystem::~RenderSystem()
 	}
 	this->m_BufferedShapes.clear();
 
-	UnregisterEventCallbacks();
+	for (auto it : this->m_RenderableGroups)
+	{		
+		it.first.Delete();
+		it.second.clear();
+	}
 	
 	
 	// free global vertex and index buffer
@@ -94,7 +100,7 @@ void RenderSystem::Update(float dt)
 	for (auto renderableGroup : this->m_RenderableGroups)
 	{
 		// restore vertex attribute bindings for this group
-		renderableGroup.first.m_VertexArray.Bind();
+		renderableGroup.first.m_VertexArray->Bind();
 		{
 			// render all renderable of this group
 			for (auto renderable : renderableGroup.second)
@@ -116,7 +122,7 @@ void RenderSystem::Update(float dt)
 			}
 
 		}
-		renderableGroup.first.m_VertexArray.Unbind();
+		renderableGroup.first.m_VertexArray->Unbind();
 
 		// Check for errors
 		glGetLastError();
@@ -211,7 +217,7 @@ void RenderSystem::RegisterRenderable(const ECS::EntityId id, const MaterialComp
 	RenderableGroup renderableGroup(RGID);
 	{
 		// Configure render state
-		renderableGroup.m_VertexArray.Bind();
+		renderableGroup.m_VertexArray->Bind();
 		{
 			// bind global vertex buffer
 			this->m_VertexBuffer->Bind();
@@ -253,7 +259,7 @@ void RenderSystem::RegisterRenderable(const ECS::EntityId id, const MaterialComp
 				glVertexAttribPointer(colorVertexAttribute, VERTEX_COLOR_DATA_ELEMENT_LEN, VERTEX_COLOR_DATA_TYPE, GL_FALSE, 0, BUFFER_OFFSET(shape->GetColorDataIndex()));
 			}
 		}
-		renderableGroup.m_VertexArray.Unbind();
+		renderableGroup.m_VertexArray->Unbind();
 
 		this->m_VertexBuffer->Unbind();
 		this->m_IndexBuffer->Unbind();
@@ -347,5 +353,7 @@ void RenderSystem::OnEntityDestroyed(const ECS::EntityDestroyed* event)
 
 	// If there is one of the components missing we can stop, there is nothing todo for the renderer
 	if (materialComponent == nullptr || shapeComponent == nullptr)
-		UnregisterRenderable(event->m_EntityID, materialComponent, shapeComponent);
+		return;
+
+	UnregisterRenderable(event->m_EntityID, materialComponent, shapeComponent);
 }
