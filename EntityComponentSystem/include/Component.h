@@ -41,7 +41,7 @@ namespace ECS
 	// This private member only exists to force the compiler to create an instance of Component T,
 	// which will set its unique identifier.
 	template<class T>
-	const ComponentTypeId Component<T>::STATIC_COMPONENT_TYPE_ID = util::Internal::FamilyTypeID<IComponent>::Increment();
+	const ComponentTypeId Component<T>::STATIC_COMPONENT_TYPE_ID = util::Internal::FamilyTypeID<IComponent>::Get<T>();
 }
 
 #endif // __COMPONENT_H__

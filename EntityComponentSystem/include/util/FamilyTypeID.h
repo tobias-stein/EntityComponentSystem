@@ -23,12 +23,14 @@ namespace ECS { namespace util { namespace Internal {
 	
 	public:
 	
-		static inline TypeID Increment()
+		template<class U>
+		static const TypeID Get()
 		{
-			return s_count++;
+			static const TypeID STATIC_TYPE_ID { s_count++ };
+			return STATIC_TYPE_ID;
 		}
-	
-		static inline const TypeID Get()
+
+		static const TypeID Get()
 		{
 			return s_count;
 		}

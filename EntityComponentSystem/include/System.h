@@ -89,7 +89,7 @@ namespace ECS
 	}; // class System<T>
 
 	template<class T>
-	const SystemTypeId System<T>::STATIC_SYSTEM_TYPE_ID = util::Internal::FamilyTypeID<ISystem>::Increment();
+	const SystemTypeId System<T>::STATIC_SYSTEM_TYPE_ID = util::Internal::FamilyTypeID<ISystem>::Get<T>();
 
 } // namespace ECS
 

@@ -145,8 +145,11 @@ namespace ECS
 		}; // EntityContainer
 
 		using EntityRegistry = std::unordered_map<EntityTypeId, IEntityContainer*>;
-
 		EntityRegistry m_EntityRegistry;
+
+		using PendingDestroyedEntities = std::vector<EntityId>;
+		PendingDestroyedEntities m_PendingDestroyedEntities;
+		size_t m_NumPendingDestroyedEntities;
 
 	private:	
 
@@ -154,6 +157,8 @@ namespace ECS
 		EntityManager& operator=(EntityManager&) = delete;
 
 		EntityHandleTable m_EntityHandleTable;
+
+
 
 		///-------------------------------------------------------------------------------------------------
 		/// Fn:	template<class T> inline EntityContainer<T>* EntityManager::GetEntityContainer()
@@ -221,7 +226,7 @@ namespace ECS
 		/// id - 	The identifier.
 		///-------------------------------------------------------------------------------------------------
 
-		void ReleaseEntityId(EntityId id);
+		void ReleaseEntityId(EntityId id);	
 
 	public:
 
@@ -265,21 +270,21 @@ namespace ECS
 		void DestroyEntity(EntityId entityId)
 		{
 			IEntity* entity = this->m_EntityHandleTable[entityId];
-
+		
 			const EntityTypeId ETID = entity->GetStaticEntityTypeID();
-
-			// get appropriate entity container and destroy entity
-			auto it = this->m_EntityRegistry.find(ETID);
-			if (it != this->m_EntityRegistry.end())
-			{
-				it->second->DestroyEntity(entity);
-			}
 
 			// Broadcast EntityDestroyed event
 			ECS_Engine->ECS_EventHandler->Send<EntityDestroyed>(entityId, ETID);
 
-			// release entity's components as well
-			ECS_Engine->ECS_ComponentManager->RemoveAllComponents(entityId);
+			if (this->m_NumPendingDestroyedEntities < this->m_PendingDestroyedEntities.size())
+			{
+				this->m_PendingDestroyedEntities[this->m_NumPendingDestroyedEntities++] = entityId;
+			}
+			else
+			{
+				this->m_PendingDestroyedEntities.push_back(entityId);
+				this->m_NumPendingDestroyedEntities++;
+			}
 		}
 
 		///-------------------------------------------------------------------------------------------------
@@ -321,6 +326,18 @@ namespace ECS
 		{
 			return this->m_EntityHandleTable[index];
 		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	void EntityManager::RemoveDestroyedEntities();
+		///
+		/// Summary:	Removes all destroyed entities.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	8/10/2017
+		///-------------------------------------------------------------------------------------------------
+
+		void RemoveDestroyedEntities();
 	};
 
 	 

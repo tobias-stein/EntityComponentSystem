@@ -54,7 +54,7 @@ namespace ECS {
 
 	// set unique type id for this Entity<T>
 	template<class T>
-	const EntityTypeId Entity<T>::STATIC_ENTITY_TYPE_ID = util::Internal::FamilyTypeID<IEntity>::Increment();
+	const EntityTypeId Entity<T>::STATIC_ENTITY_TYPE_ID = util::Internal::FamilyTypeID<IEntity>::Get<T>();
 }
 
 #endif // __ENTITY_H__

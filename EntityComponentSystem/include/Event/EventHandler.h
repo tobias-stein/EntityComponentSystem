@@ -53,12 +53,12 @@ namespace ECS { namespace Event {
 		template<class E>
 		inline void AddEventCallback(Internal::IEventDelegate* const eventDelegate)
 		{
-			EventTypeId tid = E::STATIC_EVENT_TYPE_ID;
-	
-			EventDispatcherMap::const_iterator iter = this->m_EventDispatcherMap.find(tid);
+			EventTypeId ETID = E::STATIC_EVENT_TYPE_ID;
+
+			EventDispatcherMap::const_iterator iter = this->m_EventDispatcherMap.find(ETID);
 			if (iter == this->m_EventDispatcherMap.end())
 			{
-				std::pair<EventTypeId, Internal::IEventDispatcher*> kvp(tid, new Internal::EventDispatcher<E>());
+				std::pair<EventTypeId, Internal::IEventDispatcher*> kvp(ETID, new Internal::EventDispatcher<E>());
 	
 				kvp.second->AddEventCallback(eventDelegate);
 	
@@ -66,7 +66,7 @@ namespace ECS { namespace Event {
 			}
 			else
 			{
-				this->m_EventDispatcherMap[tid]->AddEventCallback(eventDelegate);
+				this->m_EventDispatcherMap[ETID]->AddEventCallback(eventDelegate);
 			}
 	
 		}

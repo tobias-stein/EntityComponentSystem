@@ -19,8 +19,7 @@ namespace ECS { namespace Event {
 
 	template<class T>
 	class Event : public IEvent
-	{
-
+	{	 
 	public:
 	
 		// note: wont be part of stored event memory DATA
@@ -32,7 +31,7 @@ namespace ECS { namespace Event {
 	}; // class Event<T>
 	
 	template<class T>
-	const EventTypeId Event<T>::STATIC_EVENT_TYPE_ID = util::Internal::FamilyTypeID<IEvent>::Increment();
+	const EventTypeId Event<T>::STATIC_EVENT_TYPE_ID { typeid(T).hash_code() };
 
 }} // namespace ECS::Event
 

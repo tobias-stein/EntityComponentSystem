@@ -47,11 +47,14 @@ namespace ECS
 		// Advance engine time
 		ECS_EngineTime->Tick(tick_ms);
 
+		// Update all running systems
+		ECS_SystemManager->Update(tick_ms);
+
 		// Dispatch all events accumulated last frame
 		ECS_EventHandler->DispatchEvents();
 
-		// Update all running systems
-		ECS_SystemManager->Update(tick_ms);
+		// Finalize pending destroyed entities
+		ECS_EntityManager->RemoveDestroyedEntities();
 	}
 
 	void ECSEngine::UnsubscribeEvent(u64 typeId, Event::Internal::EventDelegateId eventDelegateId)
