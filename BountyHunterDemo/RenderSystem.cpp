@@ -217,8 +217,8 @@ void RenderSystem::RegisterRenderable(const ECS::EntityId id, const MaterialComp
 			this->m_VertexBuffer->Bind();
 
 			// buffer vertex position data
-			MaterialVertexAttributeID positionVertexAttribute = material->GetPositionVertexAttributeLocation();
-			assert(positionVertexAttribute != INVALID_MATERIAL_VERTEX_ATTRIBUTE_ID && "Material of a renderable does not provide a position vertex attribute!");
+			MaterialVertexAttributeLoc positionVertexAttribute = material->GetPositionVertexAttributeLocation();
+			assert(positionVertexAttribute != INVALID_MATERIAL_VERTEX_ATTRIBUTE_LOC && "Material of a renderable does not provide a position vertex attribute!");
 
 			glEnableVertexAttribArray(positionVertexAttribute);
 			glVertexAttribPointer(positionVertexAttribute, VERTEX_POSITION_DATA_ELEMENT_LEN, VERTEX_POSITION_DATA_TYPE, GL_FALSE, 0, BUFFER_OFFSET(shape->GetPositionDataIndex()));
@@ -230,24 +230,24 @@ void RenderSystem::RegisterRenderable(const ECS::EntityId id, const MaterialComp
 			}
 
 			// buffer vertex normal data
-			MaterialVertexAttributeID normalVertexAttribute = material->GetNormalVertexAttributeLocation();
-			if (shape->GetNormal() != nullptr && normalVertexAttribute != INVALID_MATERIAL_VERTEX_ATTRIBUTE_ID)
+			MaterialVertexAttributeLoc normalVertexAttribute = material->GetNormalVertexAttributeLocation();
+			if (shape->GetNormal() != nullptr && normalVertexAttribute != INVALID_MATERIAL_VERTEX_ATTRIBUTE_LOC)
 			{
 				glEnableVertexAttribArray(normalVertexAttribute);
 				glVertexAttribPointer(normalVertexAttribute, VERTEX_NORMAL_DATA_ELEMENT_LEN, VERTEX_NORMAL_DATA_TYPE, GL_FALSE, 0, BUFFER_OFFSET(shape->GetNormalDataIndex()));
 			}
 
 			// buffer vertex uv data
-			MaterialVertexAttributeID texCoordVertexAttribute = material->GetTexCoordVertexAttributeLocation();
-			if (shape->GetTexCoord() != nullptr && texCoordVertexAttribute != INVALID_MATERIAL_VERTEX_ATTRIBUTE_ID)
+			MaterialVertexAttributeLoc texCoordVertexAttribute = material->GetTexCoordVertexAttributeLocation();
+			if (shape->GetTexCoord() != nullptr && texCoordVertexAttribute != INVALID_MATERIAL_VERTEX_ATTRIBUTE_LOC)
 			{
 				glEnableVertexAttribArray(texCoordVertexAttribute);
 				glVertexAttribPointer(texCoordVertexAttribute, VERTEX_TEXCOORD_DATA_ELEMENT_LEN, VERTEX_TEXCOORD_DATA_TYPE, GL_FALSE, 0, BUFFER_OFFSET(shape->GetTexCoordDataIndex()));
 			}
 
 			// buffer vertex color data
-			MaterialVertexAttributeID colorVertexAttribute = material->GetColorVertexAttributeLocation();
-			if (shape->GetColor() != nullptr && colorVertexAttribute != INVALID_MATERIAL_VERTEX_ATTRIBUTE_ID)
+			MaterialVertexAttributeLoc colorVertexAttribute = material->GetColorVertexAttributeLocation();
+			if (shape->GetColor() != nullptr && colorVertexAttribute != INVALID_MATERIAL_VERTEX_ATTRIBUTE_LOC)
 			{
 				glEnableVertexAttribArray(colorVertexAttribute);
 				glVertexAttribPointer(colorVertexAttribute, VERTEX_COLOR_DATA_ELEMENT_LEN, VERTEX_COLOR_DATA_TYPE, GL_FALSE, 0, BUFFER_OFFSET(shape->GetColorDataIndex()));

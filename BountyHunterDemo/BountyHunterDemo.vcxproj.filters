@@ -55,6 +55,12 @@
     <Filter Include="Source Files\MaterialGenerator">
       <UniqueIdentifier>{87ee1a16-1f04-4d2d-840c-b5ae2108adaf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\MaterialGenerator\Materials">
+      <UniqueIdentifier>{5ec33784-91ce-4b42-8d5c-3dea0ccd9bdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MaterialGenerator\Materials">
+      <UniqueIdentifier>{73c36a76-c827-4590-b886-c4bfb141d929}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -104,6 +110,12 @@
     </ClCompile>
     <ClCompile Include="MaterialComponent.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultMaterial.cpp">
+      <Filter>Source Files\MaterialGenerator\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialGenerator.cpp">
+      <Filter>Source Files\MaterialGenerator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +181,12 @@
     </ClInclude>
     <ClInclude Include="RenderableGroup.h">
       <Filter>Header Files\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialGenerator.h">
+      <Filter>Header Files\MaterialGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultMaterial.h">
+      <Filter>Header Files\MaterialGenerator\Materials</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

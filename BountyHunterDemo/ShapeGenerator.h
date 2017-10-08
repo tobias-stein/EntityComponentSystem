@@ -27,13 +27,13 @@ private:
 
 	ShapeRegistry m_ShapeRegistry;
 
-public:
-
 	static ShapeGenerator& GetInstance()
 	{
 		static ShapeGenerator INSTANCE;
 		return INSTANCE;
 	}
+
+public:
 
 	~ShapeGenerator();
 
@@ -51,8 +51,12 @@ public:
 			return Shape(shape);
 
 
-		// shape tyep not instantiated yet
+		// shape type not instantiated yet
 		shape = new S;
+
+		assert(shape->Initialize() && "Failed to initialize shape!");
+		SDL_Log("Shade #%d initialized.", M::SHAPE_TYPE);
+
 		instance.m_ShapeRegistry[S::SHAPE_TYPE] = shape;
 
 		return Shape(shape);

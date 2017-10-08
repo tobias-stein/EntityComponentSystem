@@ -168,6 +168,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
   <ItemGroup>
     <ClCompile Include="BountyHunterDemo.cpp" />
     <ClCompile Include="Collector.cpp" />
+    <ClCompile Include="DefaultMaterial.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GLShader.cpp" />
     <ClCompile Include="IMaterial.cpp" />
@@ -175,6 +176,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="IShape.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialComponent.cpp" />
+    <ClCompile Include="MaterialGenerator.cpp" />
     <ClCompile Include="MenuSystem.cpp" />
     <ClCompile Include="OpenGL.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
@@ -183,11 +185,13 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="ShapeGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DefaultMaterial.h" />
     <ClInclude Include="GLBuffer.h" />
     <ClInclude Include="GLShader.h" />
     <ClInclude Include="IMaterial.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialComponent.h" />
+    <ClInclude Include="MaterialGenerator.h" />
     <ClInclude Include="QuadShape.h" />
     <ClInclude Include="Collector.h" />
     <ClInclude Include="Game.h" />

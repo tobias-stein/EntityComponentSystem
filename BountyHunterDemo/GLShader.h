@@ -11,9 +11,8 @@
 
 #include "OpenGL.h"
 
-#include <map>
+#include <unordered_map>
 #include <vector>
-#include <string>
 
 
 /** \class Shader
@@ -45,7 +44,7 @@ protected:
 	/** compile
 		Compiles the shader code.
 	*/
-	void compile( const std::string& code );
+	void compile(const char* code );
 
 	/** log
 		Prints the information log.
@@ -56,7 +55,7 @@ public:
 
 	/** C'tor
 	*/
-	Shader( const std::string& file, GLenum type );
+	Shader( const char* code, GLenum type );
 
 	/** D'tor
 	*/
@@ -82,7 +81,7 @@ class VertexShader : public Shader {
 
 public:
 
-	VertexShader(const std::string& file);
+	VertexShader(const char* code);
 
 }; // class VertexShader
 
@@ -96,7 +95,7 @@ class FragmentShader : public Shader {
 
 public:
 
-	FragmentShader(const std::string& file);
+	FragmentShader(const char* code);
 
 }; // class FragmentShader
 
@@ -138,7 +137,7 @@ private:
 	*/
 	void log();
 
-	typedef std::map<std::string, GLint> tShaderVars; 
+	typedef std::unordered_map<const char*, GLint> tShaderVars;
 	
 	/** mShaderAttributes
 		A collection of all shader attribute variables used by shaders in this program.
@@ -188,7 +187,7 @@ public:
 
 		@return Returns the location of the attribute.
 	*/
-	GLint AddAttribute( std::string& attr );
+	GLint AddAttribute(const char* attr );
 
 	/** AddUniform 
 
@@ -198,7 +197,7 @@ public:
 
 		@return Returns the location of the uniform.
 	*/
-	GLint AddUniform( std::string& uni );
+	GLint AddUniform(const char* uni );
 
 	/** Overload index operator
 	
@@ -206,7 +205,7 @@ public:
 
 		@param var_name The name of the attribute.
 	*/
-	GLint operator[]( const std::string& attribute );
+	GLint operator[](const char* attribute );
 
 	/** Overload function operator
 	
@@ -214,7 +213,7 @@ public:
 
 		@param uniform The name of the uniform.
 	*/
-	GLint operator()( const std::string& uniform );
+	GLint operator()(const char* uniform );
 
 	////////////////////////////////////////////////////
 	// ACCESSORS

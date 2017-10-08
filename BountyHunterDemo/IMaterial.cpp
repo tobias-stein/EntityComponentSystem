@@ -7,11 +7,7 @@
 #include "IMaterial.h"
 
 IMaterial::IMaterial()
-{
-	this->Initialize();
-}
+{}
 
 IMaterial::~IMaterial()
-{
-	this->Release();
-}
+{}

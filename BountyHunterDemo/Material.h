@@ -9,7 +9,7 @@
 #define __MATERIAL_H__
 
 // incldue materials
-#include "IMaterial.h"
+#include "DefaultMaterial.h"
 
 
 class Material
@@ -33,13 +33,13 @@ public:
 	void Unuse() const { const_cast<IMaterial*>(this->m_materialData)->Unuse(); }
 
 
-	const MaterialVertexAttributeID GetPositionVertexAttributeLocation() const { return this->GetPositionVertexAttributeLocation(); }
+	const MaterialVertexAttributeLoc GetPositionVertexAttributeLocation() const { return this->GetPositionVertexAttributeLocation(); }
 
-	const MaterialVertexAttributeID GetNormalVertexAttributeLocation() const { return this->GetNormalVertexAttributeLocation(); }
+	const MaterialVertexAttributeLoc GetNormalVertexAttributeLocation() const { return this->GetNormalVertexAttributeLocation(); }
 
-	const MaterialVertexAttributeID GetTexCoordVertexAttributeLocation() const { return this->GetTexCoordVertexAttributeLocation(); }
+	const MaterialVertexAttributeLoc GetTexCoordVertexAttributeLocation() const { return this->GetTexCoordVertexAttributeLocation(); }
 
-	const MaterialVertexAttributeID GetColorVertexAttributeLocation() const { return this->GetColorVertexAttributeLocation(); }
+	const MaterialVertexAttributeLoc GetColorVertexAttributeLocation() const { return this->GetColorVertexAttributeLocation(); }
 };
 
 #endif // __MATERIAL_H__

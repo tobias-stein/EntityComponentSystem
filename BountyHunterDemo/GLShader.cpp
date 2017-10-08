@@ -6,21 +6,9 @@
 
 #include "GLShader.h"
 
-#include <fstream>
-
-Shader::Shader(const std::string& file, GLenum type ) :	mType(type)
+Shader::Shader(const char* code, GLenum type ) : mType(type)
 {
-	
-	std::ifstream fs( file.c_str(), std::ifstream::in | std::ifstream::binary );
-
-
-	if(fs.good()) { 
-
-		std::string code;
-		code.assign(std::istreambuf_iterator<char>(fs), std::istreambuf_iterator<char>());
-
-		compile(code);
-	}
+	compile(code);
 }
 
 Shader::~Shader() 
@@ -29,28 +17,33 @@ Shader::~Shader()
 		glDeleteShader(mShaderID);
 }
 
-void Shader::compile(const std::string& code) 
+void Shader::compile(const char* code) 
 {
+
+	
 
 	// create new shader object
 	mShaderID = glCreateShader(mType);
 	glGetLastError();
 
 	// upload shader code
-	const GLchar* pCode = (const GLchar*)code.c_str();
+	const GLchar* pCode = (const GLchar*)code;
 	glShaderSource(mShaderID, 1, &pCode, NULL );
 
 	// compile
 	glCompileShader(mShaderID);
 
-	// check log
-	log();
-
 	// check compile result
 	glGetShaderiv( mShaderID, GL_COMPILE_STATUS, &mCompiled );
 
-	if(!mCompiled)
-		fprintf(stderr, "Failed to compile shader source code.\n");
+	if (!mCompiled)
+	{
+		fprintf(stderr, "FAILED TO COMPILE SHADER SOURCE:\n");
+		fprintf(stderr, "%s", code);
+		fprintf(stderr, "=== SHADER LOG ===\n");
+		log();
+		fprintf(stderr, "=== SHADER LOG ===\n");
+	}
 }
 
 void Shader::log() {
@@ -64,18 +57,17 @@ void Shader::log() {
 		GLchar* info = new GLchar[len];
 	
 		glGetShaderInfoLog( mShaderID, len, NULL, info);
-
-		fprintf(stderr, "Shader Info Log:\n%s\n", info);
+		fprintf(stderr, "%s", info);
 
 		delete info;
 		info = NULL;
 	}
 }
 
-VertexShader::VertexShader(const std::string& file) : Shader(file, GL_VERTEX_SHADER)
+VertexShader::VertexShader(const char* code) : Shader(code, GL_VERTEX_SHADER)
 {}
 
-FragmentShader::FragmentShader(const std::string& file) : Shader(file, GL_FRAGMENT_SHADER)
+FragmentShader::FragmentShader(const char* code) : Shader(code, GL_FRAGMENT_SHADER)
 {}
 
 
@@ -151,8 +143,13 @@ void ShaderProgram::link(Shader** shader, int num)
 	// validate program
 	glValidateProgram(mShaderProgramID);
 
-	if(mLinked == GL_FALSE)
-		fprintf(stderr, "Failed to link shader program.\n");
+	if (mLinked == GL_FALSE)
+	{
+		fprintf(stderr, "FAILED TO LINK SHADER PROGRAM:\n");
+		fprintf(stderr, "=== SHADER PROGRAM LOG ===\n");
+		log();
+		fprintf(stderr, "=== SHADER PROGRAM LOG ===\n");
+	}
 }
 
 void ShaderProgram::log() {
@@ -166,8 +163,7 @@ void ShaderProgram::log() {
 		GLchar* info = new GLchar[len];
 
 		glGetProgramInfoLog(mShaderProgramID, len, NULL, info);
-
-		fprintf(stderr, "Shader Program Info Log:\n%s\n", info);
+		fprintf(stderr, "%s", info);
 
 		delete info;
 		info = NULL;
@@ -191,9 +187,9 @@ void ShaderProgram::Unuse() const
 	glUseProgram(0);
 }
 
-GLint ShaderProgram::AddAttribute(std::string& attr)
+GLint ShaderProgram::AddAttribute(const char* attr)
 {
-	GLint loc = glGetAttribLocation(this->mShaderProgramID, attr.c_str());
+	GLint loc = glGetAttribLocation(this->mShaderProgramID, attr);
 	glGetLastError();
 
 	mShaderAttributes[attr] = loc;
@@ -201,9 +197,9 @@ GLint ShaderProgram::AddAttribute(std::string& attr)
 	return loc;
 }
 
-GLint ShaderProgram::AddUniform(std::string& uni)
+GLint ShaderProgram::AddUniform(const char* uni)
 {
-	GLint loc = glGetUniformLocation(this->mShaderProgramID, uni.c_str());
+	GLint loc = glGetUniformLocation(this->mShaderProgramID, uni);
 	glGetLastError();
 
 	mShaderAttributes[uni] = loc;
@@ -211,24 +207,24 @@ GLint ShaderProgram::AddUniform(std::string& uni)
 	return loc;
 }
 
-GLint ShaderProgram::operator[](const std::string& attribute)
+GLint ShaderProgram::operator[](const char* attribute)
 {
 	tShaderVars::iterator loc = mShaderAttributes.find( attribute );
 
 	// second chance
 	if(loc == mShaderAttributes.end())
-		return AddAttribute(std::string(attribute));
+		return AddAttribute(attribute);
 
 	return loc->second;
 }
 
-GLint ShaderProgram::operator()(const std::string& uniform)
+GLint ShaderProgram::operator()(const char* uniform)
 {
 	tShaderVars::iterator loc = mShaderUniforms.find( uniform );
 
 	// second chance
 	if(loc == mShaderUniforms.end())
-		return AddUniform(std::string(uniform));
+		return AddUniform(uniform);
 
 	return loc->second;
 }

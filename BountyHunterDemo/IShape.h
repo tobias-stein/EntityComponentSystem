@@ -35,6 +35,7 @@ public:
 	enum Type
 	{
 		INVALID_SHAPE	= INVALID_SHAPE_ID,
+
 		TRIANLGE		= 0,
 		QUAD			= 1,
 
@@ -72,7 +73,7 @@ public:
 	/// Returns:	True if it succeeds, false if it fails.
 	///-------------------------------------------------------------------------------------------------
 
-	virtual bool Initialize() { return true; }
+	virtual bool Initialize() const = 0;
 
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	virtual void IShape::Release();
@@ -84,7 +85,7 @@ public:
 	/// Date:	6/10/2017
 	///-------------------------------------------------------------------------------------------------
 
-	virtual void Release() {}
+	virtual void Release() const = 0;
 
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	virtual const size_t IShape::GetVertexCount() const = 0;

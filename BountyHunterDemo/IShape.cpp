@@ -8,11 +8,7 @@
 #include "IShape.h"
 
 IShape::IShape()
-{
-	this->Initialize();
-}
+{}
 
 IShape::~IShape()
-{
-	this->Release();
-}
+{}

@@ -56,6 +56,10 @@ public:
 	virtual inline ShapeID				GetShapeID() const override { return SHAPE_TYPE; }
 
 	
+	virtual bool						Initialize() const override { return true; }
+
+	virtual void						Release() const override { }
+
 	virtual const size_t				GetVertexCount() const override { return VERTEX_COUNT; }
 
 	virtual const size_t				GetTriangleCount() const override { return TRIANGLE_COUNT; }
