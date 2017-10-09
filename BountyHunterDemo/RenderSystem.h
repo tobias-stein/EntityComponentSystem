@@ -9,7 +9,7 @@
 
 
 
-#include <ECS.h>
+#include <ECS/ECS.h>
 #include <SDL.h>
 
 #include <unordered_map>

@@ -8,7 +8,6 @@
 #include "GameEvents.h"
 
 #include <SDL.h>
-#include <ECS.h>
 
 InputSystem::InputSystem()
 {

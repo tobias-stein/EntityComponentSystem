@@ -7,7 +7,7 @@
 #ifndef __MATERIAL_COMPONENT_H__
 #define __MATERIAL_COMPONENT_H__
 
-#include <ECS.h>
+#include <ECS/ECS.h>
 
 #include "Material.h"
 class MaterialComponent : public Material, public ECS::Component<MaterialComponent>

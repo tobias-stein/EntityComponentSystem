@@ -8,9 +8,9 @@
 #ifndef __COLLECTOR_ENTITY_H__
 #define __COLLECTOR_ENTITY_H__
 
-#include <ECS.h>
+#include "GameObject.h"
 
-class CollectorEntity : public ECS::Entity<CollectorEntity>
+class CollectorEntity : public GameObject<CollectorEntity>
 {
 private:
 

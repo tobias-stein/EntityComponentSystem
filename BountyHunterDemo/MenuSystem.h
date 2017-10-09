@@ -7,7 +7,7 @@
 #ifndef __MENU_SYSTEM_H__
 #define __MENU_SYSTEM_H__
 
-#include <ECS.h>
+#include <ECS/ECS.h>
 
 #include "GameEvents.h"
 

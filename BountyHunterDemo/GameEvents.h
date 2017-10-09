@@ -7,7 +7,7 @@
 #ifndef __GAME_EVENTS_H__
 #define __GAME_EVENTS_H__
 
-#include <Event/Event.h>
+#include <ECS/ECS.h>
 
 ///-------------------------------------------------------------------------------------------------
 /// Summary:	General game state events.

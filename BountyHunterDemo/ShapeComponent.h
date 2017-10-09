@@ -7,7 +7,7 @@
 #ifndef __SHAPE_COMPONENT_H__
 #define __SHAPE_COMPONENT_H__
 
-#include <ECS.h>
+#include <ECS/ECS.h>
 
 #include "Shape.h"
 #include "ShapeBufferIndex.h"

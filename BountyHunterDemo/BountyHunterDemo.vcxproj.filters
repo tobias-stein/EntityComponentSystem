@@ -61,6 +61,9 @@
     <Filter Include="Header Files\MaterialGenerator\Materials">
       <UniqueIdentifier>{73c36a76-c827-4590-b886-c4bfb141d929}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Math">
+      <UniqueIdentifier>{4e8c2f71-c9c6-4011-b344-11282e619e15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -187,6 +190,12 @@
     </ClInclude>
     <ClInclude Include="CollectorEntity.h">
       <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="math.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

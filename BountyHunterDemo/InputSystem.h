@@ -8,8 +8,7 @@
 #define __INPUT_SYSTEM_H__
 
 
-#include <System.h>
-
+#include <ECS/ECS.h>
 class InputSystem : public ECS::System<InputSystem>
 {
 private:
