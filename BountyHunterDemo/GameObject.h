@@ -11,16 +11,22 @@
 
 #include <ECS/ECS.h>
 
+#include "TransformComponent.h"
+
 template<class T>
 class GameObject : public ECS::Entity<T>
 {
 public:
 
-	GameObject()
-	{}
+	template<class... ARGS>
+	GameObject(ARGS&... args)
+	{
+		AddComponent<TransformComponent>(std::forward<ARGS>(args)...);
+	}
 
 	virtual ~GameObject()
 	{}
-};
+
+}; // class GameObject
 
 #endif // __GAME_OBJECT_H__

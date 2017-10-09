@@ -82,16 +82,20 @@ public:
 
 	virtual void Release() override;
 
+	virtual void SetModelTransform(const float* model)
+	{
+		if (this->m_ShaderProgram != nullptr)
+		{
+			glUniformMatrix4fv((*this->m_ShaderProgram)(SHADER_UNIFORM_MODEL_TRANSFORM), 1, GL_FALSE, (const GLfloat*)model);
+		}
+	}
+
 	virtual void SetViewProjectionTransform(const float* view, const float* proj) override
 	{
 		if (this->m_ShaderProgram != nullptr)
 		{
-			this->m_ShaderProgram->Use();
-			{
-				glUniformMatrix4fv((*this->m_ShaderProgram)(SHADER_UNIFORM_VIEW_TRANSFORM), 1, GL_FALSE, (const GLfloat*)view);
-				glUniformMatrix4fv((*this->m_ShaderProgram)(SHADER_UNIFORM_PROJECTION_TRANSFORM), 1, GL_FALSE, (const GLfloat*)proj);
-			}
-			this->m_ShaderProgram->Unuse();
+			glUniformMatrix4fv((*this->m_ShaderProgram)(SHADER_UNIFORM_VIEW_TRANSFORM), 1, GL_FALSE, (const GLfloat*)view);
+			glUniformMatrix4fv((*this->m_ShaderProgram)(SHADER_UNIFORM_PROJECTION_TRANSFORM), 1, GL_FALSE, (const GLfloat*)proj);
 		}
 	}
 

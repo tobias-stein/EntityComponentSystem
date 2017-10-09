@@ -216,7 +216,9 @@ void Game::Resume() {
 	ECS::ECS_Engine->SendEvent<GameResumedEvent>();
 }
 
-#include "CollectorEntity.h"
+#include "GameCamera.h"
+#include "Collector.h"
+#include "Bounty.h"
 
 void Game::Run() {
 
@@ -225,8 +227,15 @@ void Game::Run() {
 
 	ECS::ECS_Engine->SendEvent<GameStartedEvent>();
 
-	// create test dummy
-	ECS::ECS_Engine->GetEntityManager()->CreateEntity<CollectorEntity>(true);
+	// create test dummies
+	ECS::ECS_Engine->GetEntityManager()->CreateEntity<Bounty>(glm::vec2(0.0f, 0.0f));
+	ECS::ECS_Engine->GetEntityManager()->CreateEntity<Collector>(glm::vec2(5.0f, 5.0f));
+	ECS::ECS_Engine->GetEntityManager()->CreateEntity<Collector>(glm::vec2(-5.0f, -5.0f));
+	ECS::ECS_Engine->GetEntityManager()->CreateEntity<Collector>(glm::vec2(-5.0f, 5.0f));
+	ECS::ECS_Engine->GetEntityManager()->CreateEntity<Collector>(glm::vec2(5.0f, -5.0f));
+
+	// create a camera
+	ECS::ECS_Engine->GetEntityManager()->CreateEntity<GameCamera>();
 
 	while (mAppState < ABOUT_TO_TERMINATE) 
 	{

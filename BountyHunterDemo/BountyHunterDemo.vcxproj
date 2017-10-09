@@ -167,9 +167,10 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BountyHunterDemo.cpp" />
-    <ClCompile Include="CollectorEntity.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DefaultMaterial.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GLShader.cpp" />
     <ClCompile Include="IMaterial.cpp" />
     <ClCompile Include="InputSystem.cpp" />
@@ -183,19 +184,24 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="ShapeComponent.cpp" />
     <ClCompile Include="ShapeGenerator.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bounty.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collector.h" />
     <ClInclude Include="DefaultMaterial.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GLBuffer.h" />
     <ClInclude Include="GLShader.h" />
     <ClInclude Include="IMaterial.h" />
+    <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialComponent.h" />
     <ClInclude Include="MaterialGenerator.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="QuadShape.h" />
-    <ClInclude Include="CollectorEntity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameConfiguration.h" />
     <ClInclude Include="GameEvents.h" />
@@ -209,6 +215,8 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="ShapeBufferIndex.h" />
     <ClInclude Include="ShapeComponent.h" />
     <ClInclude Include="ShapeGenerator.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="TriangleShape.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

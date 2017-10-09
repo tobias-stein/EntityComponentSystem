@@ -126,7 +126,10 @@ void RenderSystem::Update(float dt)
 		{
 			// apply material
 			renderable.m_MaterialComponent->Apply();
-			
+
+			// Set model transform uniform
+			renderable.m_MaterialComponent->SetModelTransform(renderable.m_TransformComponent->GetTranformPtr());
+
 			// draw shape
 			if (renderable.m_ShapeComponent->IsIndexed() == true)
 			{
@@ -217,7 +220,7 @@ void RenderSystem::SetShapeBufferIndex(ShapeComponent* shapeComponent)
 	shapeComponent->SetShapeBufferIndex(*bufferIndex);
 }
 
-void RenderSystem::RegisterRenderable(const ECS::EntityId id, const MaterialComponent* material, const ShapeComponent* shape)
+void RenderSystem::RegisterRenderable(const ECS::EntityId id, TransformComponent* transform, MaterialComponent* material, ShapeComponent* shape)
 {
 	const RenderableGroupID RGID = CreateRenderableGroupID(material, shape);
 
@@ -227,7 +230,7 @@ void RenderSystem::RegisterRenderable(const ECS::EntityId id, const MaterialComp
 		if (it.first.m_GroupID == RGID)
 		{
 			// place renderable in this group
-			it.second.push_back(Renderable(id, material, shape));
+			this->m_RenderableGroups[RGID].push_back(Renderable(id, transform, material, shape));
 			return;
 		}
 	}
@@ -283,10 +286,10 @@ void RenderSystem::RegisterRenderable(const ECS::EntityId id, const MaterialComp
 		this->m_VertexBuffer->Unbind();
 		this->m_IndexBuffer->Unbind();
 	}
-	this->m_RenderableGroups[renderableGroup].push_back(Renderable(id, material, shape));
+	this->m_RenderableGroups[renderableGroup].push_back(Renderable(id, transform, material, shape));
 }
 
-void RenderSystem::UnregisterRenderable(const ECS::EntityId id, const MaterialComponent* material, const ShapeComponent* shape)
+void RenderSystem::UnregisterRenderable(const ECS::EntityId id, MaterialComponent* material, ShapeComponent* shape)
 {
 	const RenderableGroupID RGID = CreateRenderableGroupID(material, shape);
 
@@ -346,18 +349,19 @@ void RenderSystem::OnEntityCreated(const ECS::EntityCreated* event)
 	assert(entity != nullptr && "Failed to retrieve entity by id!");
 
 	// get entities material and shape component
-	const MaterialComponent*	materialComponent	= entity->GetComponent<MaterialComponent>();
-	const ShapeComponent*		shapeComponent		= entity->GetComponent<ShapeComponent>();
+	TransformComponent*	transformComponent	= entity->GetComponent<TransformComponent>();
+	MaterialComponent*	materialComponent	= entity->GetComponent<MaterialComponent>();
+	ShapeComponent*		shapeComponent		= entity->GetComponent<ShapeComponent>();
 
 	// If there is one of the components missing we can stop, there is nothing todo for the renderer
-	if (materialComponent == nullptr || shapeComponent == nullptr)
+	if (transformComponent == nullptr || materialComponent == nullptr || shapeComponent == nullptr)
 		return;
 
 	// Set shape's data buffer indices
 	SetShapeBufferIndex(const_cast<ShapeComponent*>(shapeComponent));
 	
 	// Register entity as new renderable
-	RegisterRenderable(event->m_EntityID, materialComponent, shapeComponent);
+	RegisterRenderable(event->m_EntityID, transformComponent, materialComponent, shapeComponent);
 }
 
 void RenderSystem::OnEntityDestroyed(const ECS::EntityDestroyed* event)
@@ -367,8 +371,8 @@ void RenderSystem::OnEntityDestroyed(const ECS::EntityDestroyed* event)
 	assert(entity != nullptr && "Failed to retrieve entity by id!");
 
 	// get entities material and shape component
-	const MaterialComponent*	materialComponent = entity->GetComponent<MaterialComponent>();
-	const ShapeComponent*		shapeComponent = entity->GetComponent<ShapeComponent>();
+	MaterialComponent*	materialComponent	= entity->GetComponent<MaterialComponent>();
+	ShapeComponent*		shapeComponent		= entity->GetComponent<ShapeComponent>();
 
 	// If there is one of the components missing we can stop, there is nothing todo for the renderer
 	if (materialComponent == nullptr || shapeComponent == nullptr)

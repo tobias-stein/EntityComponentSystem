@@ -24,6 +24,7 @@
 #include "Shape.h"
 #include "ShapeBufferIndex.h"
 
+#include "TransformComponent.h"
 #include "ShapeComponent.h"
 #include "MaterialComponent.h"
 
@@ -33,7 +34,7 @@ class RenderSystem : public ECS::System<RenderSystem>, protected ECS::Event::IEv
 	static constexpr size_t		GLOBAL_VERTEX_BUFFER_SIZE { 8388608 /* 8 MB */ };
 	static constexpr size_t		GLOBAL_INDEX_BUFFER_SIZE  { 8388608 /* 8 MB */ };
 
-	static inline const RenderableGroupID CreateRenderableGroupID(const MaterialComponent* material, const ShapeComponent* shape)
+	static inline const RenderableGroupID CreateRenderableGroupID(MaterialComponent* material, ShapeComponent* shape)
 	{
 		return ((material->GetMaterialID() << 16) | shape->GetShapeID());
 	}
@@ -43,19 +44,23 @@ class RenderSystem : public ECS::System<RenderSystem>, protected ECS::Event::IEv
 
 	struct Renderable
 	{
-		const ECS::EntityId			m_EntityId;
+		const ECS::EntityId		m_EntityId;
 		
-		const MaterialComponent*	m_MaterialComponent;
-		const ShapeComponent*		m_ShapeComponent;
+		TransformComponent*		m_TransformComponent;
+		ShapeComponent*			m_ShapeComponent;
+		MaterialComponent*		m_MaterialComponent;
+		
 
-		Renderable(const ECS::EntityId id, const MaterialComponent* material, const ShapeComponent* shape) :
+		Renderable(const ECS::EntityId id, TransformComponent* transform, MaterialComponent* material, ShapeComponent* shape) :
 			m_EntityId(id),
+			m_TransformComponent(transform),
 			m_MaterialComponent(material),
 			m_ShapeComponent(shape)
 		{}
 
 		~Renderable()
 		{
+			this->m_TransformComponent = nullptr;
 			this->m_MaterialComponent = nullptr;
 			this->m_ShapeComponent = nullptr;
 		}
@@ -106,8 +111,8 @@ private:
 
 	void SetShapeBufferIndex(ShapeComponent* shapeComponent);
 
-	void RegisterRenderable(const ECS::EntityId id, const MaterialComponent* material, const ShapeComponent* shape);
-	void UnregisterRenderable(const ECS::EntityId id, const MaterialComponent* material, const ShapeComponent* shape);
+	void RegisterRenderable(const ECS::EntityId id, TransformComponent* transform, MaterialComponent* material, ShapeComponent* shape);
+	void UnregisterRenderable(const ECS::EntityId id, MaterialComponent* material, ShapeComponent* shape);
 
 	// Event callbacks
 	void OnWindowResized(const WindowResizedEvent* event);

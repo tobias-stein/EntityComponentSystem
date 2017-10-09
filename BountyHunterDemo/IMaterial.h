@@ -98,6 +98,21 @@ public:
 	virtual void Release() = 0;
 
 	///-------------------------------------------------------------------------------------------------
+	/// Fn:	virtual void IMaterial::SetModelTransform(const float* model) = 0;
+	///
+	/// Summary:	Sets model transform uniform, if shader supports it.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	9/10/2017
+	///
+	/// Parameters:
+	/// model - 	The model.
+	///-------------------------------------------------------------------------------------------------
+
+	virtual void SetModelTransform(const float* model) = 0;
+
+	///-------------------------------------------------------------------------------------------------
 	/// Fn:
 	/// virtual void IMaterial::SetViewPerspectiveTransform(const float* view, const float* pers) = 0;
 	///

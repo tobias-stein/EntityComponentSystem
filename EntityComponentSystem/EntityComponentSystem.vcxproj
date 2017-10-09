@@ -150,40 +150,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\API.h" />
-    <ClInclude Include="include\Component.h" />
-    <ClInclude Include="include\ComponentManager.h" />
-    <ClInclude Include="include\ECS.h" />
-    <ClInclude Include="include\Engine.h" />
-    <ClInclude Include="include\Entity.h" />
-    <ClInclude Include="include\EntityManager.h" />
-    <ClInclude Include="include\Event\Event.h" />
-    <ClInclude Include="include\Event\EventDelegate.h" />
-    <ClInclude Include="include\Event\EventDispatcher.h" />
-    <ClInclude Include="include\Event\EventHandler.h" />
-    <ClInclude Include="include\Event\IEvent.h" />
-    <ClInclude Include="include\Event\IEventDispatcher.h" />
-    <ClInclude Include="include\Event\IEventListener.h" />
-    <ClInclude Include="include\IComponent.h" />
-    <ClInclude Include="include\IEntity.h" />
-    <ClInclude Include="include\ISystem.h" />
-    <ClInclude Include="include\Log\Logger.h" />
-    <ClInclude Include="include\Log\LoggerMacro.h" />
-    <ClInclude Include="include\Log\LoggerManager.h" />
-    <ClInclude Include="include\Memory\Allocator\IAllocator.h" />
-    <ClInclude Include="include\Memory\Allocator\LinearAllocator.h" />
-    <ClInclude Include="include\Memory\Allocator\PoolAllocator.h" />
-    <ClInclude Include="include\Memory\Allocator\StackAllocator.h" />
-    <ClInclude Include="include\Memory\ECSMM.h" />
-    <ClInclude Include="include\Memory\MemoryChunkAllocator.h" />
-    <ClInclude Include="include\Platform.h" />
-    <ClInclude Include="include\System.h" />
-    <ClInclude Include="include\SystemManager.h" />
-    <ClInclude Include="include\util\Timer.h" />
-    <ClInclude Include="include\util\FamilyTypeID.h" />
-    <ClInclude Include="include\util\Handle.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="src\API.cpp" />
     <ClCompile Include="src\ComponentManager.cpp" />
     <ClCompile Include="src\Engine.cpp" />
@@ -204,6 +170,40 @@
     <ClCompile Include="src\SystemManager.cpp" />
     <ClCompile Include="src\util\FamilyTypeID.cpp" />
     <ClCompile Include="src\util\Timer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ECS\API.h" />
+    <ClInclude Include="include\ECS\Component.h" />
+    <ClInclude Include="include\ECS\ComponentManager.h" />
+    <ClInclude Include="include\ECS\ECS.h" />
+    <ClInclude Include="include\ECS\Engine.h" />
+    <ClInclude Include="include\ECS\Entity.h" />
+    <ClInclude Include="include\ECS\EntityManager.h" />
+    <ClInclude Include="include\ECS\Event\Event.h" />
+    <ClInclude Include="include\ECS\Event\EventDelegate.h" />
+    <ClInclude Include="include\ECS\Event\EventDispatcher.h" />
+    <ClInclude Include="include\ECS\Event\EventHandler.h" />
+    <ClInclude Include="include\ECS\Event\IEvent.h" />
+    <ClInclude Include="include\ECS\Event\IEventDispatcher.h" />
+    <ClInclude Include="include\ECS\Event\IEventListener.h" />
+    <ClInclude Include="include\ECS\IComponent.h" />
+    <ClInclude Include="include\ECS\IEntity.h" />
+    <ClInclude Include="include\ECS\ISystem.h" />
+    <ClInclude Include="include\ECS\Log\Logger.h" />
+    <ClInclude Include="include\ECS\Log\LoggerMacro.h" />
+    <ClInclude Include="include\ECS\Log\LoggerManager.h" />
+    <ClInclude Include="include\ECS\Memory\Allocator\IAllocator.h" />
+    <ClInclude Include="include\ECS\Memory\Allocator\LinearAllocator.h" />
+    <ClInclude Include="include\ECS\Memory\Allocator\PoolAllocator.h" />
+    <ClInclude Include="include\ECS\Memory\Allocator\StackAllocator.h" />
+    <ClInclude Include="include\ECS\Memory\ECSMM.h" />
+    <ClInclude Include="include\ECS\Memory\MemoryChunkAllocator.h" />
+    <ClInclude Include="include\ECS\Platform.h" />
+    <ClInclude Include="include\ECS\System.h" />
+    <ClInclude Include="include\ECS\SystemManager.h" />
+    <ClInclude Include="include\ECS\util\FamilyTypeID.h" />
+    <ClInclude Include="include\ECS\util\Handle.h" />
+    <ClInclude Include="include\ECS\util\Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

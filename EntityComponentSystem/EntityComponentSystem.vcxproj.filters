@@ -13,134 +13,36 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Event">
-      <UniqueIdentifier>{c33a721d-7054-4c64-ba18-fd6aa4bfa083}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Event">
       <UniqueIdentifier>{1a7d48ac-5f6d-4f16-8663-2f0c7e2e19e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Memory">
-      <UniqueIdentifier>{11ee7dde-8a79-4e74-983c-982c25ba9bf3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Memory">
       <UniqueIdentifier>{440b7267-ae45-4dad-aa5f-8280cfc6cce6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\util">
-      <UniqueIdentifier>{6a124ea5-12e6-4154-8867-a7e49047f0a8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\util">
       <UniqueIdentifier>{f61bc7f2-7b6d-4fb1-aba1-77826ffb0fcd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Log">
-      <UniqueIdentifier>{6a505cfb-0180-4bbe-b5bb-df3071803bdc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Log">
       <UniqueIdentifier>{d0ba76b6-b51a-426c-b920-6eb16b2c8c3b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Memory\Allocator">
-      <UniqueIdentifier>{0fa20c40-79f6-4ead-bbc2-17d181948abe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Memory\Allocator">
       <UniqueIdentifier>{c241fa35-e4e6-4327-a34f-521ead3f6096}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\Component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\IComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ISystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\System.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Event\IEvent.h">
-      <Filter>Header Files\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Event\Event.h">
-      <Filter>Header Files\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Event\EventHandler.h">
-      <Filter>Header Files\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Event\EventDispatcher.h">
-      <Filter>Header Files\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Event\IEventListener.h">
-      <Filter>Header Files\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="include\EntityManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Event\IEventDispatcher.h">
-      <Filter>Header Files\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SystemManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Event\EventDelegate.h">
-      <Filter>Header Files\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Log\Logger.h">
-      <Filter>Header Files\Log</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Memory\Allocator\LinearAllocator.h">
-      <Filter>Header Files\Memory\Allocator</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Memory\Allocator\StackAllocator.h">
-      <Filter>Header Files\Memory\Allocator</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Memory\Allocator\PoolAllocator.h">
-      <Filter>Header Files\Memory\Allocator</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Memory\Allocator\IAllocator.h">
-      <Filter>Header Files\Memory\Allocator</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ECS.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Memory\ECSMM.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ComponentManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Platform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\API.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Log\LoggerManager.h">
-      <Filter>Header Files\Log</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Log\LoggerMacro.h">
-      <Filter>Header Files\Log</Filter>
-    </ClInclude>
-    <ClInclude Include="include\IEntity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Memory\MemoryChunkAllocator.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="include\util\Handle.h">
-      <Filter>Header Files\util</Filter>
-    </ClInclude>
-    <ClInclude Include="include\util\FamilyTypeID.h">
-      <Filter>Header Files\util</Filter>
-    </ClInclude>
-    <ClInclude Include="include\util\Timer.h">
-      <Filter>Header Files\util</Filter>
-    </ClInclude>
+    <Filter Include="Header Files\Event">
+      <UniqueIdentifier>{71d8115b-6ca7-4f06-b78b-66592a2903ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Log">
+      <UniqueIdentifier>{494b1b7f-cb1c-42ec-bd81-aa8977623483}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Memory">
+      <UniqueIdentifier>{96a4c085-1d59-486a-acfb-a8834478e7fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{e219f6f5-cd4d-4ba8-b378-b434880437d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Memory\Allocator">
+      <UniqueIdentifier>{c9be67cd-bcf7-431a-a643-028298ddcfc8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Event\EventHandler.cpp">
@@ -203,5 +105,103 @@
     <ClCompile Include="src\Event\IEvent.cpp">
       <Filter>Source Files\Event</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ECS\API.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\ComponentManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\ECS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\EntityManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\IComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\IEntity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\ISystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\System.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\SystemManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Event\IEvent.h">
+      <Filter>Header Files\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Event\IEventDispatcher.h">
+      <Filter>Header Files\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Event\IEventListener.h">
+      <Filter>Header Files\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Event\EventHandler.h">
+      <Filter>Header Files\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Event\EventDispatcher.h">
+      <Filter>Header Files\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Event\EventDelegate.h">
+      <Filter>Header Files\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Event\Event.h">
+      <Filter>Header Files\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Log\Logger.h">
+      <Filter>Header Files\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Log\LoggerMacro.h">
+      <Filter>Header Files\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Log\LoggerManager.h">
+      <Filter>Header Files\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Memory\ECSMM.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Memory\MemoryChunkAllocator.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Memory\Allocator\IAllocator.h">
+      <Filter>Header Files\Memory\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Memory\Allocator\LinearAllocator.h">
+      <Filter>Header Files\Memory\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Memory\Allocator\PoolAllocator.h">
+      <Filter>Header Files\Memory\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Memory\Allocator\StackAllocator.h">
+      <Filter>Header Files\Memory\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\util\FamilyTypeID.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\util\Handle.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\util\Timer.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

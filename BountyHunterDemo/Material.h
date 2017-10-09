@@ -32,6 +32,8 @@ public:
 
 	void Unuse() const { const_cast<IMaterial*>(this->m_materialData)->Unuse(); }
 
+	void SetModelTransform(const float* model) { this->m_materialData->SetModelTransform(model); }
+
 	void SetViewProjectionTransform(const float* view, const float* proj) { this->m_materialData->SetViewProjectionTransform(view, proj); };
 
 	const MaterialVertexAttributeLoc GetPositionVertexAttributeLocation() const { return this->m_materialData->GetPositionVertexAttributeLocation(); }

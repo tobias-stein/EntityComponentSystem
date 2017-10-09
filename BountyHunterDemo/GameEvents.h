@@ -145,6 +145,31 @@ struct EnterFullscreenModeEvent : public ECS::Event::Event<EnterFullscreenModeEv
 struct EnterWindowModeEvent : public ECS::Event::Event<EnterWindowModeEvent>
 {};
 
+
+///-------------------------------------------------------------------------------------------------
+/// Summary:	Game Camera events.
+/// Author:	Tobias Stein
+///
+/// Date:	9/10/2017
+///-------------------------------------------------------------------------------------------------
+
+struct CameraCreated : public ECS::Event::Event<CameraCreated>
+{
+	ECS::EntityId cameraID;
+
+	CameraCreated(ECS::EntityId id) : cameraID(id)
+	{}
+};
+
+struct CameraDestroyed : public ECS::Event::Event<CameraDestroyed>
+{
+	ECS::EntityId cameraID;
+
+	CameraDestroyed(ECS::EntityId id) : cameraID(id)
+	{}
+};
+
+
 ///-------------------------------------------------------------------------------------------------
 /// Summary:	General window events.
 /// Author:	Tobias Stein
