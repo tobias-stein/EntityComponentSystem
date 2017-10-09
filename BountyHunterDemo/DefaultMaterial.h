@@ -8,8 +8,8 @@
 #define __DEFAULT_MATERIAL_H__
 
 #include "IMaterial.h"
+#include "GLShader.h"
 
-class ShaderProgram;
 
 class DefaultMaterial : public IMaterial
 {
@@ -22,9 +22,9 @@ class DefaultMaterial : public IMaterial
 		SHADER_DEFINE_INPUT_TEXCOORD_VERTEX_ATTRIBUTE
 		SHADER_DEFINE_INPUT_COLOR_VERTEX_ATTRIBUTE
 
-		SHADER_DEFINE_UNIFORM("uModelTransform",		"mat4")
-		SHADER_DEFINE_UNIFORM("uViewTransform",			"mat4")
-		SHADER_DEFINE_UNIFORM("uProjectionTransform",	"mat4")
+		SHADER_DEFINE_UNIFORM(SHADER_UNIFORM_MODEL_TRANSFORM,		"mat4")
+		SHADER_DEFINE_UNIFORM(SHADER_UNIFORM_VIEW_TRANSFORM,		"mat4")
+		SHADER_DEFINE_UNIFORM(SHADER_UNIFORM_PROJECTION_TRANSFORM,	"mat4")
 
 		"out " SHADER_IN_VERTEX_ATTRIBUTE_NORMAL_TYPE		" outNormal;\n"
 		"out " SHADER_IN_VERTEX_ATTRIBUTE_TEXCOORD_TYPE		" outTexCoord;\n"
@@ -36,7 +36,7 @@ class DefaultMaterial : public IMaterial
 		"	outTexCoord	= " SHADER_IN_VERTEX_ATTRIBUTE_TEXCOORD_NAME ";\n"
 		"	outColor	= " SHADER_IN_VERTEX_ATTRIBUTE_COLOR_NAME ";\n"
 
-		"	gl_Position = (uProjectionTransform * uViewTransform * uModelTransform) * vec4(" SHADER_IN_VERTEX_ATTRIBUTE_POSITION_NAME ", 1.0);\n"
+		"	gl_Position = (" SHADER_UNIFORM_PROJECTION_TRANSFORM " * " SHADER_UNIFORM_VIEW_TRANSFORM " * " SHADER_UNIFORM_MODEL_TRANSFORM ") * vec4(" SHADER_IN_VERTEX_ATTRIBUTE_POSITION_NAME ", 1.0);\n"
 		"}\n"
 	};
 
@@ -55,14 +55,14 @@ class DefaultMaterial : public IMaterial
 		"void main()\n"
 		"{\n"
 		"	vec4 texColor = texture(texSampler, inTexCoord);\n"
-
-		"	" SHADER_OUT_VERTEX_ATTRIBUTE_COLOR_NAME " = mix( texColor, vec4(inColor, 1.0), 0.5 );\n"
+		//"	" SHADER_OUT_VERTEX_ATTRIBUTE_COLOR_NAME " = mix( texColor, vec4(inColor, 1.0), 0.5 );\n"
+		"	" SHADER_OUT_VERTEX_ATTRIBUTE_COLOR_NAME " = vec4(0.0, 1.0, 1.0, 1.0);\n"
 		"}\n"
 	};
 
 private:
 
-	const ShaderProgram* m_ShaderProgram;
+	ShaderProgram* m_ShaderProgram;
 
 public:
 
@@ -81,6 +81,19 @@ public:
 	virtual bool Initialize() override;
 
 	virtual void Release() override;
+
+	virtual void SetViewProjectionTransform(const float* view, const float* proj) override
+	{
+		if (this->m_ShaderProgram != nullptr)
+		{
+			this->m_ShaderProgram->Use();
+			{
+				glUniformMatrix4fv((*this->m_ShaderProgram)(SHADER_UNIFORM_VIEW_TRANSFORM), 1, GL_FALSE, (const GLfloat*)view);
+				glUniformMatrix4fv((*this->m_ShaderProgram)(SHADER_UNIFORM_PROJECTION_TRANSFORM), 1, GL_FALSE, (const GLfloat*)proj);
+			}
+			this->m_ShaderProgram->Unuse();
+		}
+	}
 
 	virtual const MaterialVertexAttributeLoc GetPositionVertexAttributeLocation() const override
 	{

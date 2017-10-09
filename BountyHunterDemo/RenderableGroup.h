@@ -7,9 +7,10 @@
 #ifndef __RENDERABLE_GROUP_H__
 #define __RENDERABLE_GROUP_H__
 
-
+#include "Material.h"
 
 struct VertexArray;
+
 
 using RenderableGroupID = uint32_t;
 
@@ -23,10 +24,19 @@ struct RenderableGroup
 {
 	const RenderableGroupID		m_GroupID;
 	const VertexArray*			m_VertexArray;
+	
+	Material					m_Material;
 
 	RenderableGroup(const RenderableGroupID groupID) :
 		m_GroupID(groupID),
-		m_VertexArray(new VertexArray)
+		m_VertexArray(new VertexArray),
+		m_Material(nullptr)
+	{}
+
+	RenderableGroup(const RenderableGroupID groupID, Material material) :
+		m_GroupID(groupID),
+		m_VertexArray(new VertexArray),
+		m_Material(material)
 	{}
 
 	void Delete() const

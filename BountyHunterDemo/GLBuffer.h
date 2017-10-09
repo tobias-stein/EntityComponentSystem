@@ -28,9 +28,11 @@
 /// Date:	7/10/2017
 ///-------------------------------------------------------------------------------------------------
 
+using VertexArrayID = GLuint;
+
 struct VertexArray
 {
-	GLuint			m_ID;
+	VertexArrayID	m_ID;
 
 	VertexArray()
 	{
@@ -58,6 +60,8 @@ struct VertexArray
 	{
 		glBindVertexArray(0);
 	}
+
+	inline const VertexArrayID GetID() const { return this->m_ID; }
 };
 
 ///-------------------------------------------------------------------------------------------------
@@ -70,14 +74,16 @@ struct VertexArray
 /// Date:	7/10/2017
 ///-------------------------------------------------------------------------------------------------
 
+using VertexBufferID = GLuint;
+
 struct VertexBuffer
 {
-	GLuint			m_ID;
+	VertexBufferID		m_ID;
 
-	const size_t	m_BufferCapacity;
-	size_t			m_CurrentBufferIndex;
+	const GLsizeiptr	m_BufferCapacity;
+	GLintptr 			m_CurrentBufferIndex;
 
-	VertexBuffer(const size_t size) :
+	VertexBuffer(const GLsizeiptr size) :
 		m_BufferCapacity(size),
 		m_CurrentBufferIndex(0)
 	{
@@ -108,6 +114,8 @@ struct VertexBuffer
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
+	inline const VertexBufferID GetID() const { return this->m_ID; }
+
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	size_t BufferVertexData(const void* data, size_t size)
 	///
@@ -124,11 +132,11 @@ struct VertexBuffer
 	/// Returns:	A size_t.
 	///-------------------------------------------------------------------------------------------------
 
-	size_t BufferVertexData(const void* data, size_t size)
+	GLintptr BufferVertexData(const void* data, GLsizeiptr size)
 	{
 		assert(this->m_CurrentBufferIndex + size < this->m_BufferCapacity && "VertexBuffer capacity exceeded.");
 
-		size_t dataBufferIndex = this->m_CurrentBufferIndex;
+		GLintptr dataBufferIndex = this->m_CurrentBufferIndex;
 
 		glBufferSubData(GL_ARRAY_BUFFER, this->m_CurrentBufferIndex, size, data);
 		glGetLastError();
@@ -149,14 +157,16 @@ struct VertexBuffer
 /// Date:	7/10/2017
 ///-------------------------------------------------------------------------------------------------
 
+using IndexBufferID = GLuint;
+
 struct IndexBuffer
 {
-	GLuint			m_ID;
+	IndexBufferID		m_ID;
 
-	const size_t	m_BufferCapacity;
-	size_t			m_CurrentBufferIndex;
+	const GLsizeiptr	m_BufferCapacity;
+	GLintptr			m_CurrentBufferIndex;
 
-	IndexBuffer(const size_t size) :
+	IndexBuffer(const GLsizeiptr size) :
 		m_BufferCapacity(size),
 		m_CurrentBufferIndex(0)
 	{
@@ -187,6 +197,9 @@ struct IndexBuffer
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
+	inline const IndexBufferID GetID() const { return this->m_ID; }
+
+
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	size_t BufferIndexData(const void* data, size_t size)
 	///
@@ -203,11 +216,11 @@ struct IndexBuffer
 	/// Returns:	A size_t.
 	///-------------------------------------------------------------------------------------------------
 
-	size_t BufferIndexData(const void* data, size_t size)
+	GLintptr BufferIndexData(const void* data, GLsizeiptr size)
 	{
 		assert(this->m_CurrentBufferIndex + size < this->m_BufferCapacity && "IndexBuffer capacity exceeded.");
 
-		size_t dataBufferIndex = this->m_CurrentBufferIndex;
+		GLintptr dataBufferIndex = this->m_CurrentBufferIndex;
 
 		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, this->m_CurrentBufferIndex, size, data);
 		glGetLastError();

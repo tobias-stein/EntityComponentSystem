@@ -18,6 +18,8 @@ public:
 
 	virtual ~MaterialComponent();
 
+	void Apply() const;
+
 }; // class MaterialComponent
 
 #endif // __MATERIAL_COMPONENT_H__

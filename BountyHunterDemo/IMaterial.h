@@ -18,6 +18,7 @@
 
 #define SHADER_DEFINE_SAMPLER2D(name)								SHADER_DEFINE_UNIFORM(name, "sampler2D")
 
+
 // DEFAULT INPUT VERTEX ATTRIBUTES	
 #define	SHADER_IN_VERTEX_ATTRIBUTE_POSITION_NAME					"vPosition"
 #define	SHADER_IN_VERTEX_ATTRIBUTE_POSITION_TYPE					"vec3"
@@ -45,6 +46,12 @@
 
 
 #define SHADER_DEFINE_OUTPUT_COLOR_VERTEX_ATTRIBUTE					SHADER_DEFINE_OUTPUT_VERTEX_ATTRIBUTE(SHADER_OUT_VERTEX_ATTRIBUTE_COLOR_NAME,	SHADER_OUT_VERTEX_ATTRIBUTE_COLOR_TYPE,		0)
+
+
+// DEFAULT SHADER UNIFORMS
+#define SHADER_UNIFORM_MODEL_TRANSFORM								"uModelTransform"
+#define SHADER_UNIFORM_VIEW_TRANSFORM								"uViewTransform"
+#define SHADER_UNIFORM_PROJECTION_TRANSFORM							"uProjectionTransform"
 
 
 
@@ -90,6 +97,22 @@ public:
 
 	virtual void Release() = 0;
 
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:
+	/// virtual void IMaterial::SetViewPerspectiveTransform(const float* view, const float* pers) = 0;
+	///
+	/// Summary:	If the material uses shader with view and/or perspective transformation they can by applied here.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	8/10/2017
+	///
+	/// Parameters:
+	/// view - 	   	The view.
+	/// pers - 	   	The proj.
+	///-------------------------------------------------------------------------------------------------
+
+	virtual void SetViewProjectionTransform(const float* view, const float* proj) = 0;
 
 	virtual const MaterialVertexAttributeLoc GetPositionVertexAttributeLocation() const = 0;
 

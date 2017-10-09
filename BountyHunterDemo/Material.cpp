@@ -6,7 +6,7 @@
 
 #include "Material.h"
 
-Material::Material(const IMaterial* material) :
+Material::Material(IMaterial* material) :
 	m_materialData(material)
 {}
 

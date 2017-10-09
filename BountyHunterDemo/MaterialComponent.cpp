@@ -11,3 +11,8 @@ MaterialComponent::MaterialComponent(const Material& material) : Material(materi
 
 MaterialComponent::~MaterialComponent()
 {}
+
+void MaterialComponent::Apply() const
+{
+
+}

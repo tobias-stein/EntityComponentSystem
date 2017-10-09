@@ -5,11 +5,6 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EntityComponentSystem", "EntityComponentSystem\EntityComponentSystem.vcxproj", "{FEF185A4-404A-4CA9-9A6D-6F5857E34E39}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo01", "demo01\demo01.vcxproj", "{AE69233B-2855-42A1-B54B-D8B37F1A001D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{FEF185A4-404A-4CA9-9A6D-6F5857E34E39} = {FEF185A4-404A-4CA9-9A6D-6F5857E34E39}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testEntityComponentSystem", "testEntityComponentSystem\testEntityComponentSystem.vcxproj", "{09A0E8AA-F0EE-4500-BF96-7C1011279D83}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FEF185A4-404A-4CA9-9A6D-6F5857E34E39} = {FEF185A4-404A-4CA9-9A6D-6F5857E34E39}
@@ -36,14 +31,6 @@ Global
 		{FEF185A4-404A-4CA9-9A6D-6F5857E34E39}.Release|Win32.Build.0 = Release|Win32
 		{FEF185A4-404A-4CA9-9A6D-6F5857E34E39}.Release|x64.ActiveCfg = Release|x64
 		{FEF185A4-404A-4CA9-9A6D-6F5857E34E39}.Release|x64.Build.0 = Release|x64
-		{AE69233B-2855-42A1-B54B-D8B37F1A001D}.Debug|Win32.ActiveCfg = Debug|Win32
-		{AE69233B-2855-42A1-B54B-D8B37F1A001D}.Debug|Win32.Build.0 = Debug|Win32
-		{AE69233B-2855-42A1-B54B-D8B37F1A001D}.Debug|x64.ActiveCfg = Debug|x64
-		{AE69233B-2855-42A1-B54B-D8B37F1A001D}.Debug|x64.Build.0 = Debug|x64
-		{AE69233B-2855-42A1-B54B-D8B37F1A001D}.Release|Win32.ActiveCfg = Release|Win32
-		{AE69233B-2855-42A1-B54B-D8B37F1A001D}.Release|Win32.Build.0 = Release|Win32
-		{AE69233B-2855-42A1-B54B-D8B37F1A001D}.Release|x64.ActiveCfg = Release|x64
-		{AE69233B-2855-42A1-B54B-D8B37F1A001D}.Release|x64.Build.0 = Release|x64
 		{09A0E8AA-F0EE-4500-BF96-7C1011279D83}.Debug|Win32.ActiveCfg = Debug|Win32
 		{09A0E8AA-F0EE-4500-BF96-7C1011279D83}.Debug|Win32.Build.0 = Debug|Win32
 		{09A0E8AA-F0EE-4500-BF96-7C1011279D83}.Debug|x64.ActiveCfg = Debug|x64

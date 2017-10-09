@@ -172,14 +172,7 @@ void ShaderProgram::log() {
 
 void ShaderProgram::Use() const
 {
-	GLint activeProgramID;
-	glGetIntegerv(GL_CURRENT_PROGRAM, &activeProgramID);
-
-	if (activeProgramID != mShaderProgramID)
-	{
-		glUseProgram(mShaderProgramID);
-		glGetLastError();
-	}
+	glUseProgram(mShaderProgramID);
 }
 
 void ShaderProgram::Unuse() const

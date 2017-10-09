@@ -97,36 +97,55 @@ void RenderSystem::PreUpdate(float dt)
 
 void RenderSystem::Update(float dt)
 {
+	MaterialID		lastUsedMaterial	= INVALID_MATERIAL_ID;
+	VertexArrayID	lastUsedVertexArray = -1;
+
 	for (auto renderableGroup : this->m_RenderableGroups)
 	{
-		// restore vertex attribute bindings for this group
-		renderableGroup.first.m_VertexArray->Bind();
+		// activate vertex array, if different from current bound
+		if (renderableGroup.first.m_VertexArray->GetID() != lastUsedVertexArray)
 		{
-			// render all renderable of this group
-			for (auto renderable : renderableGroup.second)
-			{
-				// apply material
-				renderable.m_MaterialComponent->Use();
-				
-				// draw shape
-				if (renderable.m_ShapeComponent->IsIndexed() == true)
-				{
-					// draw with indices
-					glDrawElements(GL_TRIANGLES, renderable.m_ShapeComponent->GetIndexCount(), VERTEX_INDEX_DATA_TYPE, BUFFER_OFFSET(renderable.m_ShapeComponent->GetIndexDataIndex()));
-				}
-				else
-				{
-					// draw without indices
-					glDrawArrays(GL_TRIANGLES, 0, renderable.m_ShapeComponent->GetTriangleCount());
-				}
-			}
+			// restore vertex attribute bindings for this group
+			renderableGroup.first.m_VertexArray->Bind();
 
+			lastUsedVertexArray = renderableGroup.first.m_VertexArray->GetID();
 		}
-		renderableGroup.first.m_VertexArray->Unbind();
+
+		// activate material, if different from current used
+		if (renderableGroup.first.m_Material.GetMaterialID() != lastUsedMaterial)
+		{
+			renderableGroup.first.m_Material.Use();
+
+			//renderableGroup.first.m_Material.SetViewProjectionTransform();
+			
+			lastUsedMaterial = renderableGroup.first.m_Material.GetMaterialID();
+		}
+
+		// render all renderables of current group
+		for(auto renderable : renderableGroup.second)
+		{
+			// apply material
+			renderable.m_MaterialComponent->Apply();
+			
+			// draw shape
+			if (renderable.m_ShapeComponent->IsIndexed() == true)
+			{
+				// draw with indices
+				glDrawElements(GL_TRIANGLES, renderable.m_ShapeComponent->GetIndexCount(), VERTEX_INDEX_DATA_TYPE, BUFFER_OFFSET(renderable.m_ShapeComponent->GetIndexDataIndex()));
+			}
+			else
+			{
+				// draw without indices
+				glDrawArrays(GL_TRIANGLES, 0, renderable.m_ShapeComponent->GetTriangleCount());
+			}
+		}	
 
 		// Check for errors
 		glGetLastError();
 	}
+
+	glBindVertexArray(0);
+	glUseProgram(0);
 }
 
 void RenderSystem::PostUpdate(float dt)
@@ -214,7 +233,7 @@ void RenderSystem::RegisterRenderable(const ECS::EntityId id, const MaterialComp
 	}
 	
 	// There is no group for this renderable yet, create a new one
-	RenderableGroup renderableGroup(RGID);
+	RenderableGroup renderableGroup(RGID, *material);
 	{
 		// Configure render state
 		renderableGroup.m_VertexArray->Bind();

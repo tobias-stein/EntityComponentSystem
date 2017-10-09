@@ -16,11 +16,11 @@ class Material
 {
 private:
 
-	const IMaterial* m_materialData;
+	IMaterial* m_materialData;
 
 public:
 
-	Material(const IMaterial* material);
+	Material(IMaterial* material);
 	~Material();
 
 
@@ -32,6 +32,7 @@ public:
 
 	void Unuse() const { const_cast<IMaterial*>(this->m_materialData)->Unuse(); }
 
+	void SetViewProjectionTransform(const float* view, const float* proj) { this->m_materialData->SetViewProjectionTransform(view, proj); };
 
 	const MaterialVertexAttributeLoc GetPositionVertexAttributeLocation() const { return this->m_materialData->GetPositionVertexAttributeLocation(); }
 

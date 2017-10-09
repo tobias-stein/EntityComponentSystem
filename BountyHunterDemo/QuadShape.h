@@ -15,7 +15,7 @@ private:
 
 	static constexpr size_t				VERTEX_COUNT { 4 };
 
-	static constexpr size_t				TRIANGLE_COUNT{ 2 };
+	static constexpr size_t				TRIANGLE_COUNT { 2 };
 
 	static constexpr size_t				INDEX_COUNT { 6 };
 
@@ -25,7 +25,7 @@ private:
 		-1.0f,	-1.0f,	0.0f,			// v0
 		-1.0f,	 1.0f,	0.0f,			// v1
 		 1.0f,	 1.0f,	0.0f,			// v2
-		 1.0f,	 1.0f,	0.0f			// v3
+		 1.0f,	-1.0f,	0.0f			// v3
 	};
 
 	static constexpr VertexNormalData	VERTEX_DATA_NRM[VERTEX_COUNT * VERTEX_NORMAL_DATA_ELEMENT_LEN]
@@ -40,7 +40,7 @@ private:
 	static constexpr VertexIndexData	VERTEX_DATA_IDX[INDEX_COUNT]
 	{
 		0, 1, 2,						// t1
-		2, 1, 3							// t2
+		0, 2, 3							// t2		
 	};
 
 public:

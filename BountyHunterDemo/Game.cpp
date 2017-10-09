@@ -216,6 +216,7 @@ void Game::Resume() {
 	ECS::ECS_Engine->SendEvent<GameResumedEvent>();
 }
 
+#include "CollectorEntity.h"
 
 void Game::Run() {
 
@@ -223,6 +224,9 @@ void Game::Run() {
 	mAppState = RUNNING;
 
 	ECS::ECS_Engine->SendEvent<GameStartedEvent>();
+
+	// create test dummy
+	ECS::ECS_Engine->GetEntityManager()->CreateEntity<CollectorEntity>(true);
 
 	while (mAppState < ABOUT_TO_TERMINATE) 
 	{
