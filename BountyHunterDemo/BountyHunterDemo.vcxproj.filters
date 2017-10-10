@@ -73,6 +73,12 @@
     <Filter Include="Source Files\Camera">
       <UniqueIdentifier>{3a3d443c-ef6e-41a3-bc60-373b35b83b2f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entities\Camera">
+      <UniqueIdentifier>{89729341-1b61-4e7a-8ab9-99977add2336}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Camera">
+      <UniqueIdentifier>{18b0a020-84a4-4fa9-a1e0-6a102bc1800f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -135,8 +141,11 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="GameCamera.cpp">
-      <Filter>Source Files\Entities</Filter>
+    <ClCompile Include="OrthoCamera.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="TabletopCamera.cpp">
+      <Filter>Source Files\Entities\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -206,9 +215,6 @@
     <ClInclude Include="DefaultMaterial.h">
       <Filter>Header Files\MaterialGenerator\Materials</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="math.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
@@ -227,7 +233,16 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="OrthoCamera.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="TabletopCamera.h">
+      <Filter>Header Files\Entities\Camera</Filter>
+    </ClInclude>
     <ClInclude Include="GameCamera.h">
+      <Filter>Header Files\Entities\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>

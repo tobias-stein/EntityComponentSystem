@@ -8,6 +8,7 @@
 
 RenderSystem::RenderSystem(SDL_Window* window) :
 	m_Window(window),
+	m_ActiveCamera(nullptr),
 	m_BufferedShapes(IShape::MAX_SHAPES, nullptr)
 {
 	InitializeOpenGL();
@@ -97,10 +98,16 @@ void RenderSystem::PreUpdate(float dt)
 
 void RenderSystem::Update(float dt)
 {
+	if (this->m_ActiveCamera == nullptr)
+	{
+		SDL_LogError(SDL_LOG_PRIORITY_ERROR, "RenderSystem has no active camera!");
+		return;
+	}
+
 	MaterialID		lastUsedMaterial	= INVALID_MATERIAL_ID;
 	VertexArrayID	lastUsedVertexArray = -1;
 
-	for (auto renderableGroup : this->m_RenderableGroups)
+	for (auto& renderableGroup : this->m_RenderableGroups)
 	{
 		// activate vertex array, if different from current bound
 		if (renderableGroup.first.m_VertexArray->GetID() != lastUsedVertexArray)
@@ -115,8 +122,10 @@ void RenderSystem::Update(float dt)
 		if (renderableGroup.first.m_Material.GetMaterialID() != lastUsedMaterial)
 		{
 			renderableGroup.first.m_Material.Use();
+		
 
-			//renderableGroup.first.m_Material.SetViewProjectionTransform();
+			// Set active camera's view and projection matrix
+			((RenderableGroup)(renderableGroup.first)).m_Material.SetViewProjectionTransform(this->m_ActiveCamera->GetViewTransform(), this->m_ActiveCamera->GetProjectionTransform());
 			
 			lastUsedMaterial = renderableGroup.first.m_Material.GetMaterialID();
 		}
@@ -314,6 +323,9 @@ void RenderSystem::RegisterEventCallbacks()
 
 	RegisterEventCallback(&RenderSystem::OnEntityCreated);
 	RegisterEventCallback(&RenderSystem::OnEntityDestroyed);
+
+	RegisterEventCallback(&RenderSystem::OnCameraCreated);
+	RegisterEventCallback(&RenderSystem::OnCameraDestroyed);
 }
 
 void RenderSystem::UnregisterEventCallbacks()
@@ -324,6 +336,9 @@ void RenderSystem::UnregisterEventCallbacks()
 
 	UnregisterEventCallback(&RenderSystem::OnEntityCreated);
 	UnregisterEventCallback(&RenderSystem::OnEntityDestroyed);
+
+	UnregisterEventCallback(&RenderSystem::OnCameraCreated);
+	UnregisterEventCallback(&RenderSystem::OnCameraDestroyed);
 }
 
 
@@ -379,4 +394,39 @@ void RenderSystem::OnEntityDestroyed(const ECS::EntityDestroyed* event)
 		return;
 
 	UnregisterRenderable(event->m_EntityID, materialComponent, shapeComponent);
+}
+
+void RenderSystem::OnCameraCreated(const CameraCreated* event)
+{
+	if (this->m_ActiveCamera == nullptr)
+	{
+		ECS::IEntity* camera = ECS::ECS_Engine->GetEntityManager()->GetEntity(event->cameraID);
+		if (camera != nullptr)
+		{
+			/*
+			note: dynamic_cast here, because we are doing a down-cast
+
+			   IEntity
+			      |
+		      GameObject   IGameCamera
+			      |            |
+		      GameCamera ------+
+			      |
+			 SpecificCamera
+			*/
+			this->m_ActiveCamera = dynamic_cast<IGameCamera*>(camera);
+
+			assert(this->m_ActiveCamera != nullptr && "RenderSystem failed to set active camera!");
+			SDL_Log("Camera (ID: %d) set as default active camera for RenderSystem.");
+		}
+	}
+}
+
+void RenderSystem::OnCameraDestroyed(const CameraDestroyed* event)
+{
+	if (event->cameraID == this->m_ActiveCamera->GetCameraID())
+	{
+		this->m_ActiveCamera = nullptr;
+		SDL_LogWarn(SDL_LOG_PRIORITY_WARN, "Warning RenderSystems active camera got destroyed!");
+	}
 }

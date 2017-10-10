@@ -28,6 +28,7 @@
 #include "ShapeComponent.h"
 #include "MaterialComponent.h"
 
+#include "GameCamera.h"
 
 class RenderSystem : public ECS::System<RenderSystem>, protected ECS::Event::IEventListener
 {
@@ -87,6 +88,9 @@ private:
 	// A set of all currently registered randerable entities
 	RenderableGroups	m_RenderableGroups;
 
+	// Active Camera
+	IGameCamera*		m_ActiveCamera;
+
 private:
 
 	void InitializeOpenGL();
@@ -121,6 +125,9 @@ private:
 
 	void OnEntityCreated(const ECS::EntityCreated* event);
 	void OnEntityDestroyed(const ECS::EntityDestroyed* event);
+
+	void OnCameraCreated(const CameraCreated* event);
+	void OnCameraDestroyed(const CameraDestroyed* event);
 
 public:
 
