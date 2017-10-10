@@ -79,6 +79,9 @@
     <Filter Include="Source Files\Entities\Camera">
       <UniqueIdentifier>{18b0a020-84a4-4fa9-a1e0-6a102bc1800f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\FSM">
+      <UniqueIdentifier>{44fe7365-619d-4f56-8453-b37a7af8d381}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -244,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleFSM.h">
+      <Filter>Header Files\FSM</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -220,8 +220,9 @@ void Game::Resume() {
 #include "Collector.h"
 #include "Bounty.h"
 
-void Game::Run() {
 
+void Game::Run() 
+{
 	// set new app state to running
 	mAppState = RUNNING;
 
