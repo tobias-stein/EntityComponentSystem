@@ -17,7 +17,8 @@ typedef glm::vec3 Point;
 typedef glm::vec3 Position;
 
 
-
+/// Summary:	Defines an inavlid position.
+static const Position INAVLID_POSITION = glm::vec3(std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity());
 
 struct Bounds
 {

@@ -11,9 +11,6 @@
 #include "World2D.h"
 #include "GameObject.h"
 
-/// Summary:	Defines an inavlid position.
-static const Point INAVLID_POSITION = glm::vec3(std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity());
-
 class WorldSystem : public ECS::System<WorldSystem>
 {
 	struct SpawnInfo

@@ -12,6 +12,8 @@
 #include <ECS/ECS.h>
 
 #include "GameEvents.h"
+#include "GameConfiguration.h"
+
 #include "TransformComponent.h"
 
 template<class T>

@@ -12,6 +12,7 @@
 
 #include "ShapeComponent.h"
 #include "MaterialComponent.h"
+#include "RespawnComponent.h"
 
 #include "ShapeGenerator.h"
 #include "MaterialGenerator.h"
@@ -25,6 +26,7 @@ public:
 	{
 		AddComponent<ShapeComponent>(ShapeGenerator::CreateShape<QuadShape>());
 		AddComponent<MaterialComponent>(MaterialGenerator::CreateMaterial<DefaultMaterial>());
+		AddComponent<RespawnComponent>(DEFAULT_COLLECTOR_RESPAWNTIME);
 	}
 
 	virtual ~Bounty()

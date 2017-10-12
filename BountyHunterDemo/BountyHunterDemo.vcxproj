@@ -181,6 +181,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="OpenGL.cpp" />
     <ClCompile Include="OrthoCamera.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="RespawnSystem.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="ShapeComponent.cpp" />
     <ClCompile Include="ShapeGenerator.cpp" />
@@ -216,6 +217,8 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="OpenGL.h" />
     <ClInclude Include="RenderableGroup.h" />
     <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="RespawnComponent.h" />
+    <ClInclude Include="RespawnSystem.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="ShapeBufferIndex.h" />
     <ClInclude Include="ShapeComponent.h" />
