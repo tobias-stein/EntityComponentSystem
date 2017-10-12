@@ -20,8 +20,7 @@ class Collector : public GameObject<Collector>
 {
 public:
 
-	template<class... ARGS>
-	Collector(ARGS&... args) : GameObject(std::forward<ARGS>(args)...)
+	Collector()
 	{
 		AddComponent<ShapeComponent>(ShapeGenerator::CreateShape<TriangleShape>());
 		AddComponent<MaterialComponent>(MaterialGenerator::CreateMaterial<DefaultMaterial>());

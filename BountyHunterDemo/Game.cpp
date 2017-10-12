@@ -9,6 +9,7 @@
 #include "InputSystem.h"
 #include "MenuSystem.h"
 #include "RenderSystem.h"
+#include "WorldSystem.h"
 
 Game::Game() :
 	mAppState(NOT_INITIALIZED),
@@ -39,6 +40,10 @@ void Game::InitializeECS()
 
 	// RenderSystem
 	RenderSystem* RS = ECS::ECS_Engine->GetSystemManager()->AddSystem<RenderSystem>(this->mWindow);
+
+	// WorldSystem
+	IWorld* world = new World2D(Bounds2D(Point2D(WORLD_BOUND_MIN[0], WORLD_BOUND_MIN[1]), Point2D(WORLD_BOUND_MAX[0], WORLD_BOUND_MAX[1])), glm::vec2(WORLD_UP_VECTOR[0], WORLD_UP_VECTOR[1]));
+	WorldSystem* WS = ECS::ECS_Engine->GetSystemManager()->AddSystem<WorldSystem>(world);
 
 	// Add system dependencies
 }
@@ -221,19 +226,29 @@ void Game::Resume() {
 #include "Bounty.h"
 
 
+
+
 void Game::Run() 
 {
+
 	// set new app state to running
 	mAppState = RUNNING;
 
 	ECS::ECS_Engine->SendEvent<GameStartedEvent>();
 
 	// create test dummies
-	ECS::ECS_Engine->GetEntityManager()->CreateEntity<Bounty>(glm::vec2(0.0f, 0.0f));
-	ECS::ECS_Engine->GetEntityManager()->CreateEntity<Collector>(glm::vec2(5.0f, 5.0f));
-	ECS::ECS_Engine->GetEntityManager()->CreateEntity<Collector>(glm::vec2(-5.0f, -5.0f));
-	ECS::ECS_Engine->GetEntityManager()->CreateEntity<Collector>(glm::vec2(-5.0f, 5.0f));
-	ECS::ECS_Engine->GetEntityManager()->CreateEntity<Collector>(glm::vec2(5.0f, -5.0f));
+	//ECS::ECS_Engine->GetEntityManager()->CreateEntity<Bounty>(glm::vec2(0.0f, 0.0f));
+	//ECS::ECS_Engine->GetEntityManager()->CreateEntity<Collector>(glm::vec2(5.0f, 5.0f));
+	//ECS::ECS_Engine->GetEntityManager()->CreateEntity<Collector>(glm::vec2(-5.0f, -5.0f));
+	//ECS::ECS_Engine->GetEntityManager()->CreateEntity<Collector>(glm::vec2(-5.0f, 5.0f));
+	//ECS::ECS_Engine->GetEntityManager()->CreateEntity<Collector>(glm::vec2(5.0f, -5.0f));
+
+	WorldSystem* worldSystem = ECS::ECS_Engine->GetSystemManager()->GetSystem<WorldSystem>();
+	worldSystem->SpawnGameObject<Bounty>(Position2D(0.0f, 0.0f));
+	worldSystem->SpawnGameObject<Collector>(Position2D(5.0f, 5.0f));
+	worldSystem->SpawnGameObject<Collector>(Position2D(-5.0f, 5.0f));
+	worldSystem->SpawnGameObject<Collector>(Position2D(5.0f, -5.0f));
+	worldSystem->SpawnGameObject<Collector>(Position2D(-5.0f, -5.0f));
 
 	// create a camera
 	ECS::ECS_Engine->GetEntityManager()->CreateEntity<TabletopCamera>(glm::vec2(0.0f, 0.0f), -10.0f, 10.0f);

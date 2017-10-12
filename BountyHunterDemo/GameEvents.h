@@ -9,6 +9,8 @@
 
 #include <ECS/ECS.h>
 
+#include "Transform.h"
+
 ///-------------------------------------------------------------------------------------------------
 /// Summary:	General game state events.
 /// Author:	Tobias Stein
@@ -168,6 +170,25 @@ struct GameObjectDestroyed : public ECS::Event::Event<GameObjectDestroyed>
 	ECS::EntityId	m_EntityID;
 
 	GameObjectDestroyed(ECS::EntityId id) : m_EntityID(id)
+	{}
+};
+
+struct GameObjectSpawned : public ECS::Event::Event<GameObjectSpawned>
+{
+	ECS::EntityId	m_EntityID;
+	Transform		m_Transform;
+
+	GameObjectSpawned(ECS::EntityId id, const Transform& transform) :
+		m_EntityID(id),
+		m_Transform(transform)
+	{}
+};
+
+struct GameObjectKilled : public ECS::Event::Event<GameObjectKilled>
+{
+	ECS::EntityId	m_EntityID;
+
+	GameObjectKilled(ECS::EntityId id) : m_EntityID(id)
 	{}
 };
 

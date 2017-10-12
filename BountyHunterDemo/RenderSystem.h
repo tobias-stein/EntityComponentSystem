@@ -45,15 +45,15 @@ class RenderSystem : public ECS::System<RenderSystem>, protected ECS::Event::IEv
 
 	struct Renderable
 	{
-		const ECS::EntityId		m_EntityId;
+		ECS::IEntity*			m_EntityId;
 		
 		TransformComponent*		m_TransformComponent;
 		ShapeComponent*			m_ShapeComponent;
 		MaterialComponent*		m_MaterialComponent;
 		
 
-		Renderable(const ECS::EntityId id, TransformComponent* transform, MaterialComponent* material, ShapeComponent* shape) :
-			m_EntityId(id),
+		Renderable(ECS::IEntity* entity, TransformComponent* transform, MaterialComponent* material, ShapeComponent* shape) :
+			m_EntityId(entity),
 			m_TransformComponent(transform),
 			m_MaterialComponent(material),
 			m_ShapeComponent(shape)
@@ -61,6 +61,7 @@ class RenderSystem : public ECS::System<RenderSystem>, protected ECS::Event::IEv
 
 		~Renderable()
 		{
+			this->m_EntityId = nullptr;
 			this->m_TransformComponent = nullptr;
 			this->m_MaterialComponent = nullptr;
 			this->m_ShapeComponent = nullptr;
@@ -115,8 +116,8 @@ private:
 
 	void SetShapeBufferIndex(ShapeComponent* shapeComponent);
 
-	void RegisterRenderable(const ECS::EntityId id, TransformComponent* transform, MaterialComponent* material, ShapeComponent* shape);
-	void UnregisterRenderable(const ECS::EntityId id, MaterialComponent* material, ShapeComponent* shape);
+	void RegisterRenderable(ECS::IEntity* entity, TransformComponent* transform, MaterialComponent* material, ShapeComponent* shape);
+	void UnregisterRenderable(ECS::IEntity* entity, MaterialComponent* material, ShapeComponent* shape);
 
 	// Event callbacks
 	void OnWindowResized(const WindowResizedEvent* event);

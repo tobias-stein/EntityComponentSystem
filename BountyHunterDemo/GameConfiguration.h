@@ -23,4 +23,10 @@ static constexpr bool				GAME_WINDOW_FULLSCREEN		{ false };
 /// Summary:	Defines the delta time step the game simulation will be advanced per update.
 static constexpr float				DELTA_TIME_STEP				{ 1.0f / 60.0f };
 
+/// Summary:	The world up vector.
+static constexpr float				WORLD_UP_VECTOR[2]			{ 0.0f, 1.0f };
+
+/// Summary:	The world min and max bounds.
+static constexpr float				WORLD_BOUND_MIN[2]			{ -100.0f, -100.0f };
+static constexpr float				WORLD_BOUND_MAX[2]			{  100.0f,  100.0f };
 #endif // __GAME_CONFIG_H__

@@ -11,9 +11,6 @@ Transform::Transform() :
 	m_Transform(1.0f)
 {}
 
-Transform::~Transform()
-{}
-
 Transform::Transform(const glm::mat4& transform) :
 	m_Transform(transform)
 {}

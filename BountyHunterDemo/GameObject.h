@@ -19,11 +19,15 @@ class GameObject : public ECS::Entity<T>
 {
 public:
 
-	template<class... ARGS>
-	GameObject(ARGS&... args)
+	GameObject()
 	{
-		
-		AddComponent<TransformComponent>(std::forward<ARGS>(args)...);
+		AddComponent<TransformComponent>(Transform());
+		ECS::ECS_Engine->SendEvent<GameObjectCreated>(this->GetEntityID());
+	}
+
+	GameObject(const Transform& transform)
+	{		
+		AddComponent<TransformComponent>(transform);
 		ECS::ECS_Engine->SendEvent<GameObjectCreated>(this->GetEntityID());
 	}
 

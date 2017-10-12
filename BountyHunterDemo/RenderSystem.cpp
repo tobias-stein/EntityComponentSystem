@@ -121,8 +121,7 @@ void RenderSystem::Update(float dt)
 		// activate material, if different from current used
 		if (renderableGroup.first.m_Material.GetMaterialID() != lastUsedMaterial)
 		{
-			renderableGroup.first.m_Material.Use();
-		
+			renderableGroup.first.m_Material.Use();	
 
 			// Set active camera's view and projection matrix
 			((RenderableGroup)(renderableGroup.first)).m_Material.SetViewProjectionTransform(this->m_ActiveCamera->GetViewTransform(), this->m_ActiveCamera->GetProjectionTransform());
@@ -133,6 +132,10 @@ void RenderSystem::Update(float dt)
 		// render all renderables of current group
 		for(auto renderable : renderableGroup.second)
 		{
+			// ignore disables renderables
+			if (renderable.m_EntityId->IsActive() == false)
+				return;
+			
 			// apply material
 			renderable.m_MaterialComponent->Apply();
 
@@ -229,7 +232,7 @@ void RenderSystem::SetShapeBufferIndex(ShapeComponent* shapeComponent)
 	shapeComponent->SetShapeBufferIndex(*bufferIndex);
 }
 
-void RenderSystem::RegisterRenderable(const ECS::EntityId id, TransformComponent* transform, MaterialComponent* material, ShapeComponent* shape)
+void RenderSystem::RegisterRenderable(ECS::IEntity* entity, TransformComponent* transform, MaterialComponent* material, ShapeComponent* shape)
 {
 	const RenderableGroupID RGID = CreateRenderableGroupID(material, shape);
 
@@ -239,7 +242,7 @@ void RenderSystem::RegisterRenderable(const ECS::EntityId id, TransformComponent
 		if (it.first.m_GroupID == RGID)
 		{
 			// place renderable in this group
-			this->m_RenderableGroups[RGID].push_back(Renderable(id, transform, material, shape));
+			this->m_RenderableGroups[RGID].push_back(Renderable(entity, transform, material, shape));
 			return;
 		}
 	}
@@ -295,17 +298,17 @@ void RenderSystem::RegisterRenderable(const ECS::EntityId id, TransformComponent
 		this->m_VertexBuffer->Unbind();
 		this->m_IndexBuffer->Unbind();
 	}
-	this->m_RenderableGroups[renderableGroup].push_back(Renderable(id, transform, material, shape));
+	this->m_RenderableGroups[renderableGroup].push_back(Renderable(entity, transform, material, shape));
 }
 
-void RenderSystem::UnregisterRenderable(const ECS::EntityId id, MaterialComponent* material, ShapeComponent* shape)
+void RenderSystem::UnregisterRenderable(ECS::IEntity* entity, MaterialComponent* material, ShapeComponent* shape)
 {
 	const RenderableGroupID RGID = CreateRenderableGroupID(material, shape);
 
 	RenderableList& group = this->m_RenderableGroups[RGID];
 	for (RenderableList::iterator it = group.begin(); it != group.end(); ++it)
 	{
-		if (it->m_EntityId == id)
+		if (it->m_EntityId->GetEntityID() == entity->GetEntityID())
 		{
 			group.erase(it);
 			return;
@@ -376,7 +379,7 @@ void RenderSystem::OnGameObjectCreated(const GameObjectCreated* event)
 	SetShapeBufferIndex(const_cast<ShapeComponent*>(shapeComponent));
 	
 	// Register entity as new renderable
-	RegisterRenderable(event->m_EntityID, transformComponent, materialComponent, shapeComponent);
+	RegisterRenderable(entity, transformComponent, materialComponent, shapeComponent);
 }
 
 void RenderSystem::OnGameObjectDestroyed(const GameObjectDestroyed* event)
@@ -393,7 +396,7 @@ void RenderSystem::OnGameObjectDestroyed(const GameObjectDestroyed* event)
 	if (materialComponent == nullptr || shapeComponent == nullptr)
 		return;
 
-	UnregisterRenderable(event->m_EntityID, materialComponent, shapeComponent);
+	UnregisterRenderable(entity, materialComponent, shapeComponent);
 }
 
 void RenderSystem::OnCameraCreated(const CameraCreated* event)

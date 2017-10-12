@@ -9,7 +9,7 @@
 
 #include "math.h"
 
-class Transform : public glm::mat4
+class Transform
 {
 private:
 
@@ -25,9 +25,6 @@ public:
 	Transform(const glm::vec3& position, const glm::vec3 axis, const float angle);
 	Transform(const glm::vec3& position, const glm::quat rotation, const glm::vec3& scale);
 	Transform(const glm::vec3& position, const glm::vec3 axis, const float angle, const glm::vec3& scale);
-	
-	virtual ~Transform();	
-
 
 	inline void Zero() { this->m_Transform = glm::mat4(0.0f); }
 	inline void One() { this->m_Transform = glm::mat4(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f); }
