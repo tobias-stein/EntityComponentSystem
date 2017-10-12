@@ -123,8 +123,8 @@ private:
 	void OnWindowMinimized(const WindowMinimizedEvent* event);
 	void OnWindowRestored(const WindowRestoredEvent* event);
 
-	void OnEntityCreated(const ECS::EntityCreated* event);
-	void OnEntityDestroyed(const ECS::EntityDestroyed* event);
+	void OnGameObjectCreated(const GameObjectCreated* event);
+	void OnGameObjectDestroyed(const GameObjectDestroyed* event);
 
 	void OnCameraCreated(const CameraCreated* event);
 	void OnCameraDestroyed(const CameraDestroyed* event);

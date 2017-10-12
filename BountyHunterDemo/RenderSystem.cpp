@@ -321,8 +321,8 @@ void RenderSystem::RegisterEventCallbacks()
 	RegisterEventCallback(&RenderSystem::OnWindowMinimized);
 	RegisterEventCallback(&RenderSystem::OnWindowRestored);
 
-	RegisterEventCallback(&RenderSystem::OnEntityCreated);
-	RegisterEventCallback(&RenderSystem::OnEntityDestroyed);
+	RegisterEventCallback(&RenderSystem::OnGameObjectCreated);
+	RegisterEventCallback(&RenderSystem::OnGameObjectDestroyed);
 
 	RegisterEventCallback(&RenderSystem::OnCameraCreated);
 	RegisterEventCallback(&RenderSystem::OnCameraDestroyed);
@@ -334,8 +334,8 @@ void RenderSystem::UnregisterEventCallbacks()
 	UnregisterEventCallback(&RenderSystem::OnWindowMinimized);
 	UnregisterEventCallback(&RenderSystem::OnWindowRestored);
 
-	UnregisterEventCallback(&RenderSystem::OnEntityCreated);
-	UnregisterEventCallback(&RenderSystem::OnEntityDestroyed);
+	UnregisterEventCallback(&RenderSystem::OnGameObjectCreated);
+	UnregisterEventCallback(&RenderSystem::OnGameObjectDestroyed);
 
 	UnregisterEventCallback(&RenderSystem::OnCameraCreated);
 	UnregisterEventCallback(&RenderSystem::OnCameraDestroyed);
@@ -357,7 +357,7 @@ void RenderSystem::OnWindowRestored(const WindowRestoredEvent* event)
 	// restore render context
 }
 
-void RenderSystem::OnEntityCreated(const ECS::EntityCreated* event)
+void RenderSystem::OnGameObjectCreated(const GameObjectCreated* event)
 {
 	// Get Entity
 	ECS::IEntity* entity = ECS::ECS_Engine->GetEntityManager()->GetEntity(event->m_EntityID);
@@ -379,7 +379,7 @@ void RenderSystem::OnEntityCreated(const ECS::EntityCreated* event)
 	RegisterRenderable(event->m_EntityID, transformComponent, materialComponent, shapeComponent);
 }
 
-void RenderSystem::OnEntityDestroyed(const ECS::EntityDestroyed* event)
+void RenderSystem::OnGameObjectDestroyed(const GameObjectDestroyed* event)
 {
 	// Get Entity
 	ECS::IEntity* entity = ECS::ECS_Engine->GetEntityManager()->GetEntity(event->m_EntityID);

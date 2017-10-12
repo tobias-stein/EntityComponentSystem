@@ -147,6 +147,31 @@ struct EnterWindowModeEvent : public ECS::Event::Event<EnterWindowModeEvent>
 
 
 ///-------------------------------------------------------------------------------------------------
+/// Summary:	Game Object events.
+/// Author:	Tobias Stein
+///
+/// Date:	12/10/2017
+///-------------------------------------------------------------------------------------------------
+
+struct GameObjectCreated : public ECS::Event::Event<GameObjectCreated>
+{
+	ECS::EntityId	m_EntityID;
+
+	GameObjectCreated(ECS::EntityId id) : m_EntityID(id)
+	{}
+};
+
+
+
+struct GameObjectDestroyed : public ECS::Event::Event<GameObjectDestroyed>
+{
+	ECS::EntityId	m_EntityID;
+
+	GameObjectDestroyed(ECS::EntityId id) : m_EntityID(id)
+	{}
+};
+
+///-------------------------------------------------------------------------------------------------
 /// Summary:	Game Camera events.
 /// Author:	Tobias Stein
 ///

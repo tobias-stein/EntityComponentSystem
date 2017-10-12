@@ -11,6 +11,7 @@
 
 #include <ECS/ECS.h>
 
+#include "GameEvents.h"
 #include "TransformComponent.h"
 
 template<class T>
@@ -21,11 +22,15 @@ public:
 	template<class... ARGS>
 	GameObject(ARGS&... args)
 	{
+		
 		AddComponent<TransformComponent>(std::forward<ARGS>(args)...);
+		ECS::ECS_Engine->SendEvent<GameObjectCreated>(this->GetEntityID());
 	}
 
 	virtual ~GameObject()
-	{}
+	{
+		ECS::ECS_Engine->SendEvent<GameObjectDestroyed>(this->GetEntityID());
+	}
 
 }; // class GameObject
 
