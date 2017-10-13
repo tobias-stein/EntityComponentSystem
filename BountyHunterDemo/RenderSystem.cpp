@@ -133,7 +133,7 @@ void RenderSystem::Update(float dt)
 		for(auto renderable : renderableGroup.second)
 		{
 			// ignore disables renderables
-			if (renderable.m_EntityId->IsActive() == false)
+			if (renderable.m_EntityId->IsActive() == false && renderable.m_MaterialComponent->IsActive() == true && renderable.m_ShapeComponent->IsActive() == true)
 				return;
 			
 			// apply material

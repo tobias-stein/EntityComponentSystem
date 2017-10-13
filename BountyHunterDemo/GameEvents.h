@@ -9,6 +9,10 @@
 
 #include <ECS/ECS.h>
 
+// allias for entity
+using GameObjectId = ECS::EntityId;
+static const GameObjectId INVALID_GAMEOBJECT_ID = ECS::INVALID_ENTITY_ID;
+
 #include "Transform.h"
 
 ///-------------------------------------------------------------------------------------------------
@@ -157,9 +161,9 @@ struct EnterWindowModeEvent : public ECS::Event::Event<EnterWindowModeEvent>
 
 struct GameObjectCreated : public ECS::Event::Event<GameObjectCreated>
 {
-	ECS::EntityId	m_EntityID;
+	GameObjectId	m_EntityID;
 
-	GameObjectCreated(ECS::EntityId id) : m_EntityID(id)
+	GameObjectCreated(GameObjectId id) : m_EntityID(id)
 	{}
 };
 
@@ -167,18 +171,18 @@ struct GameObjectCreated : public ECS::Event::Event<GameObjectCreated>
 
 struct GameObjectDestroyed : public ECS::Event::Event<GameObjectDestroyed>
 {
-	ECS::EntityId	m_EntityID;
+	GameObjectId	m_EntityID;
 
-	GameObjectDestroyed(ECS::EntityId id) : m_EntityID(id)
+	GameObjectDestroyed(GameObjectId id) : m_EntityID(id)
 	{}
 };
 
 struct GameObjectSpawned : public ECS::Event::Event<GameObjectSpawned>
 {
-	ECS::EntityId	m_EntityID;
+	GameObjectId	m_EntityID;
 	Transform		m_Transform;
 
-	GameObjectSpawned(ECS::EntityId id, const Transform& transform) :
+	GameObjectSpawned(GameObjectId id, const Transform& transform) :
 		m_EntityID(id),
 		m_Transform(transform)
 	{}
@@ -186,9 +190,9 @@ struct GameObjectSpawned : public ECS::Event::Event<GameObjectSpawned>
 
 struct GameObjectKilled : public ECS::Event::Event<GameObjectKilled>
 {
-	ECS::EntityId	m_EntityID;
+	GameObjectId	m_EntityID;
 
-	GameObjectKilled(ECS::EntityId id) : m_EntityID(id)
+	GameObjectKilled(GameObjectId id) : m_EntityID(id)
 	{}
 };
 
@@ -201,17 +205,17 @@ struct GameObjectKilled : public ECS::Event::Event<GameObjectKilled>
 
 struct CameraCreated : public ECS::Event::Event<CameraCreated>
 {
-	ECS::EntityId cameraID;
+	GameObjectId cameraID;
 
-	CameraCreated(ECS::EntityId id) : cameraID(id)
+	CameraCreated(GameObjectId id) : cameraID(id)
 	{}
 };
 
 struct CameraDestroyed : public ECS::Event::Event<CameraDestroyed>
 {
-	ECS::EntityId cameraID;
+	GameObjectId cameraID;
 
-	CameraDestroyed(ECS::EntityId id) : cameraID(id)
+	CameraDestroyed(GameObjectId id) : cameraID(id)
 	{}
 };
 

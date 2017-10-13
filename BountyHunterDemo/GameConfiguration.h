@@ -12,10 +12,10 @@
 static constexpr const char*		GAME_TITLE							{ "BountyHunter Demo" };
 
 /// Summary:	Width of the game window.
-static constexpr unsigned int		GAME_WINDOW_WIDTH					{ 800 };
+static constexpr unsigned int		GAME_WINDOW_WIDTH					{ 1024 };
 
 /// Summary:	Height of the game window.
-static constexpr unsigned int		GAME_WINDOW_HEIGHT					{ 600 };
+static constexpr unsigned int		GAME_WINDOW_HEIGHT					{ 1024 };
 
 /// Summary:	True if game should start in fullscreen mode.
 static constexpr bool				GAME_WINDOW_FULLSCREEN				{ false };
@@ -31,7 +31,7 @@ static constexpr float				WORLD_BOUND_MIN[2]					{ -100.0f, -100.0f };
 static constexpr float				WORLD_BOUND_MAX[2]					{  100.0f,  100.0f };
 
 /// Summary:	The default collector respawntime.
-static constexpr size_t				MAX_PLAYERS							{ 4 };
+static constexpr size_t				MAX_PLAYER							{ 36 };
 
 /// Summary:	The default collector respawntime.
 static constexpr float				DEFAULT_COLLECTOR_RESPAWNTIME		{ 5.0f }; // seconds

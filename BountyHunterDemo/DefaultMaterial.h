@@ -50,13 +50,13 @@ class DefaultMaterial : public IMaterial
 		"in " SHADER_IN_VERTEX_ATTRIBUTE_TEXCOORD_TYPE	" inTexCoord;\n"
 		"in " SHADER_IN_VERTEX_ATTRIBUTE_COLOR_TYPE		" inColor;\n"
 
-		SHADER_DEFINE_SAMPLER2D("texSampler")
+		//SHADER_DEFINE_SAMPLER2D("texSampler")
 
 		"void main()\n"
 		"{\n"
-		"	vec4 texColor = texture(texSampler, inTexCoord);\n"
+		//"	vec4 texColor = texture(texSampler, inTexCoord);\n"
 		//"	" SHADER_OUT_VERTEX_ATTRIBUTE_COLOR_NAME " = mix( texColor, vec4(inColor, 1.0), 0.5 );\n"
-		"	" SHADER_OUT_VERTEX_ATTRIBUTE_COLOR_NAME " = vec4(0.0, 1.0, 1.0, 1.0);\n"
+		"	" SHADER_OUT_VERTEX_ATTRIBUTE_COLOR_NAME " = vec4(1.0, 1.0, 1.0, 1.0);\n"
 		"}\n"
 	};
 

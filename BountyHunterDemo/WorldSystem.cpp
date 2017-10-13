@@ -8,6 +8,7 @@
 
 WorldSystem::WorldSystem(IWorld* world) :
 	m_World(world),
+	m_WorldObjects(1024),
 	m_SpawnQueue(1024),
 	m_KillQueue(1014),
 	m_PendingSpawns(0),
@@ -31,9 +32,9 @@ void WorldSystem::PreUpdate(float dt)
 	// process all pending spawns
 	for (size_t i = 0; i < this->m_PendingSpawns; ++i)
 	{
-		if (this->m_SpawnQueue[i].m_EntityID != ECS::INVALID_ENTITY_ID)
+		if (this->m_SpawnQueue[i].m_GameObjectID != INVALID_GAMEOBJECT_ID)
 		{
-			ECS::IEntity* entity = ECS::ECS_Engine->GetEntityManager()->GetEntity(this->m_SpawnQueue[i].m_EntityID);
+			ECS::IEntity* entity = ECS::ECS_Engine->GetEntityManager()->GetEntity(this->m_SpawnQueue[i].m_GameObjectID);
 
 			// get entities transform
 			TransformComponent* entityTransformComponent = entity->GetComponent<TransformComponent>();
@@ -44,7 +45,7 @@ void WorldSystem::PreUpdate(float dt)
 
 			entity->SetActive(true);
 
-			ECS::ECS_Engine->SendEvent<GameObjectSpawned>(this->m_SpawnQueue[i].m_EntityID, *entityTransformComponent);
+			ECS::ECS_Engine->SendEvent<GameObjectSpawned>(this->m_SpawnQueue[i].m_GameObjectID, *entityTransformComponent);
 		}
 	}
 
@@ -59,12 +60,12 @@ void WorldSystem::PostUpdate(float dt)
 	// process all pending kills
 	for (size_t i = 0; i < this->m_PendingKills; ++i)
 	{
-		if (this->m_KillQueue[i] != ECS::INVALID_ENTITY_ID)
+		if (this->m_KillQueue[i] != INVALID_GAMEOBJECT_ID)
 		{
 			ECS::IEntity* entity = ECS::ECS_Engine->GetEntityManager()->GetEntity(this->m_KillQueue[i]);
 			entity->SetActive(false);
 
-			ECS::ECS_Engine->SendEvent<GameObjectKilled>(this->m_SpawnQueue[i].m_EntityID);
+			ECS::ECS_Engine->SendEvent<GameObjectKilled>(this->m_KillQueue[i]);
 		}
 	}
 
@@ -72,42 +73,52 @@ void WorldSystem::PostUpdate(float dt)
 }
 
 
-void WorldSystem::SpawnGameObject(ECS::EntityId entityID, const Transform& transform)
+void WorldSystem::SpawnGameObject(GameObjectId gameObjectId, const Transform& transform)
 {
 	if (this->m_PendingSpawns < this->m_SpawnQueue.size())
 	{
-		this->m_SpawnQueue[this->m_PendingSpawns] = SpawnInfo(entityID, transform);
+		this->m_SpawnQueue[this->m_PendingSpawns] = SpawnInfo(gameObjectId, transform);
 	}
 	else
 	{
-		this->m_SpawnQueue.push_back(SpawnInfo(entityID, transform));
+		this->m_SpawnQueue.push_back(SpawnInfo(gameObjectId, transform));
 	}
 	
 	++this->m_PendingSpawns;
 }
 
-void WorldSystem::KillGameObject(ECS::EntityId entityID)
+void WorldSystem::KillGameObject(GameObjectId gameObjectId)
 {
 	if (this->m_PendingKills < this->m_KillQueue.size())
 	{
-		this->m_KillQueue[this->m_PendingKills] = entityID;
+		this->m_KillQueue[this->m_PendingKills] = gameObjectId;
 	}
 	else
 	{
-		this->m_KillQueue.push_back(entityID);
+		this->m_KillQueue.push_back(gameObjectId);
 	}
 
 	++this->m_PendingKills;
 }
 
-void WorldSystem::RemoveGameObject(ECS::EntityId entityID)
+void WorldSystem::RemoveGameObject(GameObjectId gameObjectId)
 {
-	ECS::ECS_Engine->GetEntityManager()->DestroyEntity(entityID);
+	ECS::ECS_Engine->GetEntityManager()->DestroyEntity(gameObjectId);
+
+
+	for (size_t i = 0; i < this->m_WorldObjects.size(); ++i)
+	{
+		if (this->m_WorldObjects[i].m_GameObjectID == gameObjectId)
+		{
+			this->m_WorldObjects[i].m_GameObjectID = INVALID_GAMEOBJECT_ID;
+			this->m_WorldObjects[i].m_GameObjectType = ECS::INVALID_TYPE_ID;
+		}
+	}
 
 	// remove entity from spawn/kill
 	for (size_t i = 0; i < this->m_PendingKills; ++i)
 	{
-		if (this->m_KillQueue[i] == entityID)
+		if (this->m_KillQueue[i] == gameObjectId)
 		{
 			this->m_KillQueue[i] = ECS::INVALID_ENTITY_ID;
 			return;
@@ -116,9 +127,9 @@ void WorldSystem::RemoveGameObject(ECS::EntityId entityID)
 
 	for (size_t i = 0; i < this->m_PendingSpawns; ++i)
 	{
-		if (this->m_SpawnQueue[i].m_EntityID == entityID)
+		if (this->m_SpawnQueue[i].m_GameObjectID == gameObjectId)
 		{
-			this->m_SpawnQueue[i].m_EntityID = ECS::INVALID_ENTITY_ID;
+			this->m_SpawnQueue[i].m_GameObjectID = INVALID_GAMEOBJECT_ID;
 			return;
 		}
 	}

@@ -231,7 +231,7 @@ void Game::Resume() {
 
 
 
-void Game::Run() 
+void Game::Run()
 {
 
 	// set new app state to running
@@ -241,14 +241,28 @@ void Game::Run()
 
 	// create test dummies
 	WorldSystem* worldSystem = ECS::ECS_Engine->GetSystemManager()->GetSystem<WorldSystem>();
-	worldSystem->SpawnGameObject<Bounty>(Position2D(0.0f, 0.0f));
-	worldSystem->SpawnGameObject<Collector>(Position2D(5.0f, 5.0f));
-	worldSystem->SpawnGameObject<Collector>(Position2D(-5.0f, 5.0f));
-	worldSystem->SpawnGameObject<Collector>(Position2D(5.0f, -5.0f));
-	worldSystem->SpawnGameObject<Collector>(Position2D(-5.0f, -5.0f));
+
+
+	// spawn max. number of player in a circle
+	const float STEP = glm::two_pi<float>() / max(1.0f, (float)MAX_PLAYER);
+	const float R = (WORLD_BOUND_MAX[0] - WORLD_BOUND_MIN[0]) * 0.5f;
+
+	for (size_t i = 0; i < MAX_PLAYER; ++i)
+	{
+		const float angle = i * STEP;
+		const float xR = glm::cos(angle);
+		const float yR = glm::sin(angle);
+
+		Position spawnPosition(xR * R, yR * R, 0.0f);
+
+		Transform initialTransform = glm::translate(glm::mat4(1.0f), spawnPosition) * glm::rotate(angle + glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		
+		worldSystem->SpawnGameObject<Collector>(initialTransform, spawnPosition, angle + glm::radians(90.0f));
+	}
+
 
 	// create a camera
-	ECS::ECS_Engine->GetEntityManager()->CreateEntity<TabletopCamera>(glm::vec2(0.0f, 0.0f), -10.0f, 10.0f);
+	ECS::ECS_Engine->GetEntityManager()->CreateEntity<TabletopCamera>(glm::vec2(0.0f, 0.0f), -10.0f, 5.0f);
 
 	while (mAppState < ABOUT_TO_TERMINATE) 
 	{

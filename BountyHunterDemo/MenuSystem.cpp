@@ -6,6 +6,9 @@
 
 #include "MenuSystem.h"
 
+#include "Collector.h"
+#include "WorldSystem.h"
+
 MenuSystem::MenuSystem()
 {
 	RegisterEventCallbacks();
@@ -47,5 +50,12 @@ void MenuSystem::OnKeyDownEvent(const KeyDownEvent* event)
 		case SDLK_F1:
 			ECS::ECS_Engine->SendEvent<ToggleFullscreenEvent>();
 			break;
+
+		// cheat: kill all game objects in the world
+		case SDLK_F9:
+		{
+			ECS::ECS_Engine->GetSystemManager()->GetSystem<WorldSystem>()->KillAllGameObjects<Collector>();
+			break;
+		}
 	}
 }

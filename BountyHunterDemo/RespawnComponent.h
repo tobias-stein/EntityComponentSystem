@@ -35,7 +35,7 @@ public:
 	// yaw, pitch, roll
 	glm::vec3	m_RespawnOrientation;
 
-	RespawnComponent(float respawnTime, const Position& respawnPosition = INAVLID_POSITION, const glm::vec3& respawnOrientation = glm::vec3(0.0f)) :
+	RespawnComponent(float respawnTime, const Position& respawnPosition = INVALID_POSITION, const glm::vec3& respawnOrientation = glm::vec3(0.0f)) :
 		m_RespawnTime(respawnTime),
 		m_RespawnPosition(respawnPosition),
 		m_RespawnOrientation(respawnOrientation)

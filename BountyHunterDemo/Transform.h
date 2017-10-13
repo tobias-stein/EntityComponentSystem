@@ -31,6 +31,9 @@ public:
 	inline void Identity() { this->m_Transform = glm::mat4(1.0f); }
 
 
+	void SetPosition(const glm::vec3& position);
+	void SetRotation(const glm::vec3& rotation_xyz);
+
 	inline glm::vec3 GetPosition() { glm::vec3(this->m_Transform[3]); }
 
 

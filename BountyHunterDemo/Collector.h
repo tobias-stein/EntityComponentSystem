@@ -21,11 +21,11 @@ class Collector : public GameObject<Collector>
 {
 public:
 
-	Collector()
+	Collector(Position spawnPosition, float angle)
 	{
 		AddComponent<ShapeComponent>(ShapeGenerator::CreateShape<TriangleShape>());
 		AddComponent<MaterialComponent>(MaterialGenerator::CreateMaterial<DefaultMaterial>());
-		AddComponent<RespawnComponent>(DEFAULT_COLLECTOR_RESPAWNTIME);
+		AddComponent<RespawnComponent>(DEFAULT_COLLECTOR_RESPAWNTIME, spawnPosition, glm::vec3(0.0f, 0.0f, angle));
 	}
 
 	virtual ~Collector()

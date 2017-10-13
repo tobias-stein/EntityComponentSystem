@@ -16,6 +16,7 @@
 
 #include "TransformComponent.h"
 
+
 template<class T>
 class GameObject : public ECS::Entity<T>
 {

@@ -32,7 +32,7 @@ Transform OrthoCamera::GetProjectionTransform() const
 	const float scaledHalfWidth = this->m_Viewport.z * 0.5f * this->m_Zoom;
 	const float scaledHalfHeight = this->m_Viewport.w * 0.5f * this->m_Zoom;
 
-	return glm::ortho(-scaledHalfWidth, scaledHalfWidth, scaledHalfHeight, -scaledHalfHeight, this->m_Near, this->m_Far);	
+	return glm::ortho(-scaledHalfWidth, scaledHalfWidth, -scaledHalfHeight, scaledHalfHeight, this->m_Near, this->m_Far);	
 }
 
 void OrthoCamera::TurnLeft(const float degrees)

@@ -15,32 +15,53 @@ class WorldSystem : public ECS::System<WorldSystem>
 {
 	struct SpawnInfo
 	{
-		ECS::EntityId		m_EntityID;
-		Transform			m_Transform;
+		GameObjectId 	m_GameObjectID;
+		Transform		m_Transform;
 
 		SpawnInfo() :
-			m_EntityID(ECS::INVALID_ENTITY_ID),
+			m_GameObjectID(INVALID_GAMEOBJECT_ID),
 			m_Transform(Transform())
 		{}
 
-		SpawnInfo(const ECS::EntityId& entityId, const Transform& transform) :
-			m_EntityID(entityId),
+		SpawnInfo(GameObjectId gameObjectId, const Transform& transform) :
+			m_GameObjectID(gameObjectId),
 			m_Transform(transform)
 		{}
-	};
 
-	using SpawnQueue = std::vector<SpawnInfo>;
-	using KillQueue = std::vector<ECS::EntityId>;
+	}; // struct SpawnInfo
 
+	struct WorldObjectInfo
+	{
+		GameObjectId		m_GameObjectID;
+		ECS::EntityTypeId	m_GameObjectType;
+
+		WorldObjectInfo() :
+			m_GameObjectID(INVALID_GAMEOBJECT_ID),
+			m_GameObjectType(ECS::INVALID_TYPE_ID)
+		{}
+
+		WorldObjectInfo(GameObjectId objectId, ECS::EntityTypeId typeId) :
+			m_GameObjectID(objectId),
+			m_GameObjectType(typeId)
+		{}
+
+	}; // struct WorldObjectInfo
+
+	using SpawnQueue	= std::vector<SpawnInfo>;
+	using KillQueue		= std::vector<GameObjectId>;
+
+	using WorldObjects	= std::vector<WorldObjectInfo>;
 private:
 
-	IWorld*		m_World;
+	IWorld*			m_World;
 
-	SpawnQueue	m_SpawnQueue;
-	size_t		m_PendingSpawns;
+	WorldObjects	m_WorldObjects;
 
-	KillQueue	m_KillQueue;
-	size_t		m_PendingKills;
+	SpawnQueue		m_SpawnQueue;
+	size_t			m_PendingSpawns;
+
+	KillQueue		m_KillQueue;
+	size_t			m_PendingKills;
 
 public:
 
@@ -52,7 +73,7 @@ public:
 	virtual void PostUpdate(float dt) override;
 
 	///-------------------------------------------------------------------------------------------------
-	/// Fn:	virtual void IWorld::SpawnGameObject(ECS::EntityId entityID, const Transform& transform) = 0;
+	/// Fn:	virtual void IWorld::SpawnGameObject(GameObjectId gameObjectId, const Transform& transform) = 0;
 	///
 	/// Summary:	Spawns a game object in the world, if the game object is not yet part of this world
 	/// it will be added first. A GameObjectSpawned event will be raised.
@@ -65,10 +86,10 @@ public:
 	/// entityID - 	Identifier for the entity.
 	///-------------------------------------------------------------------------------------------------
 
-	void SpawnGameObject(ECS::EntityId entityID, const Transform& transform);
+	void SpawnGameObject(GameObjectId gameObjectId, const Transform& transform);
 
 	///-------------------------------------------------------------------------------------------------
-	/// Fn:	virtual void IWorld::KillGameObject(ECS::EntityId entityID) = 0;
+	/// Fn:	virtual void IWorld::KillGameObject(GameObjectId gameObjectId) = 0;
 	///
 	/// Summary:	Kills a game object. This won't remove it from the world, but will mark it as dead.
 	/// "Dead" game objects are simply disabled entities. A GameObjectKilled event will be raised.
@@ -81,10 +102,10 @@ public:
 	/// entityID - 	Identifier for the entity.
 	///-------------------------------------------------------------------------------------------------
 
-	void KillGameObject(ECS::EntityId entityID);
+	void KillGameObject(GameObjectId gameObjectId);
 
 	///-------------------------------------------------------------------------------------------------
-	/// Fn:	virtual void IWorld::RemoveGameObject(ECS::EntityId entityID) = 0;
+	/// Fn:	virtual void IWorld::RemoveGameObject(GameObjectId gameObjectId) = 0;
 	///
 	/// Summary:	Removes a game object from the world.
 	///
@@ -96,7 +117,7 @@ public:
 	/// entityID - 	Identifier for the entity.
 	///-------------------------------------------------------------------------------------------------
 
-	void RemoveGameObject(ECS::EntityId entityID);
+	void RemoveGameObject(GameObjectId gameObjectId);
 
 
 	template<class T, class... ARGS>
@@ -105,12 +126,68 @@ public:
 		// create entity
 		ECS::EntityId entityId = ECS::ECS_Engine->GetEntityManager()->CreateEntity<T>(std::forward<ARGS>(args)...);
 
+		ECS::IEntity* entity = ECS::ECS_Engine->GetEntityManager()->GetEntity(entityId);
+
 		// get entities transform
-		TransformComponent* entityTransformComponent = ECS::ECS_Engine->GetComponentManager()->GetComponent<TransformComponent>(entityId);
+		TransformComponent* entityTransformComponent = entity->GetComponent<TransformComponent>();
 		assert(entityTransformComponent != nullptr && "Failure! Spawned entity has no TransformComponent!");
 
 		// set initial transform
 		*entityTransformComponent = transform;
+
+
+		// add Gameobject to list
+		size_t i = 0;
+		for (; i < this->m_WorldObjects.size(); ++i)
+		{
+			if (this->m_WorldObjects[i].m_GameObjectID == INVALID_GAMEOBJECT_ID)
+			{
+				this->m_WorldObjects[i] = WorldObjectInfo(entityId, entity->GetStaticEntityTypeID());
+				return;
+			}
+		}
+
+		this->m_WorldObjects.resize(this->m_WorldObjects.size() * 2);
+		this->m_WorldObjects[i] = WorldObjectInfo(entityId, entity->GetStaticEntityTypeID());
+	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:	template<class T> void WorldSystem::KillAllGameObjects()
+	///
+	/// Summary:	Kills all game objects of type T.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	13/10/2017
+	///
+	/// Typeparams:
+	/// T - 	Generic type parameter.
+	///-------------------------------------------------------------------------------------------------
+
+	template<class T>
+	void KillAllGameObjects()
+	{
+		ECS::EntityTypeId TYPE_ID = T::STATIC_ENTITY_TYPE_ID;
+
+		for (auto wo : this->m_WorldObjects)
+			if (wo.m_GameObjectType == TYPE_ID)
+				KillGameObject(wo.m_GameObjectID);
+	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:	void WorldSystem::KillAllGameObjects()
+	///
+	/// Summary:	Kill all game objects.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	13/10/2017
+	///-------------------------------------------------------------------------------------------------
+
+	void KillAllGameObjects()
+	{
+		for (auto wo : this->m_WorldObjects)
+			KillGameObject(wo.m_GameObjectID);
 	}
 
 }; // class WorldSystem
