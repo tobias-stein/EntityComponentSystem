@@ -10,15 +10,22 @@
 #include <ECS/ECS.h>
 
 #include "Material.h"
+
 class MaterialComponent : public Material, public ECS::Component<MaterialComponent>
 {
+	static const Color4f DEFAULT_COLOR0;
+
+private:
+
+	Color4f m_Color0;
+
 public:
 
-	MaterialComponent(const Material& material);
+	MaterialComponent(const Material& material, Color4f color = DEFAULT_COLOR0);
 
 	virtual ~MaterialComponent();
 
-	void Apply() const;
+	void Apply();
 
 }; // class MaterialComponent
 

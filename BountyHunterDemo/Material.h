@@ -43,6 +43,9 @@ public:
 	const MaterialVertexAttributeLoc GetTexCoordVertexAttributeLocation() const { return this->m_materialData->GetTexCoordVertexAttributeLocation(); }
 
 	const MaterialVertexAttributeLoc GetColorVertexAttributeLocation() const { return this->m_materialData->GetColorVertexAttributeLocation(); }
+
+	void SetUniform4fv(const char* uniformName, const float* vec4) { this->m_materialData->SetUniform4fv(uniformName, vec4); }
+	void SetUniformMatrix4fv(const char* uniformName, const float* mat4) { this->m_materialData->SetUniformMatrix4fv(uniformName, mat4); }
 };
 
 #endif // __MATERIAL_H__

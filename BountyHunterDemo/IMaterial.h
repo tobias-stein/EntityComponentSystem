@@ -53,10 +53,13 @@
 #define SHADER_UNIFORM_VIEW_TRANSFORM								"uViewTransform"
 #define SHADER_UNIFORM_PROJECTION_TRANSFORM							"uProjectionTransform"
 
+#define SHADER_UNIFORM_COLOR0										"uColor0"
 
-
+#define SHADER_UNIFORM_COLOR0_TYPE									"vec4"
 
 #include <stdint.h>
+
+#include "math.h"
 
 typedef uint16_t MaterialID;
 typedef uint32_t MaterialVertexAttributeLoc;
@@ -68,6 +71,12 @@ static constexpr MaterialVertexAttributeLoc POSITION_MATERIAL_VERTEX_ATTRIBUTE_L
 static constexpr MaterialVertexAttributeLoc NORMAL_MATERIAL_VERTEX_ATTRIBUTE_LOC	{ 1 };
 static constexpr MaterialVertexAttributeLoc TEXCOORD_MATERIAL_VERTEX_ATTRIBUTE_LOC	{ 2 };
 static constexpr MaterialVertexAttributeLoc COLOR_MATERIAL_VERTEX_ATTRIBUTE_LOC		{ 3 };
+
+ 
+using Color3f  = glm::vec3;
+using Color4f  = glm::vec4;
+using Color3ui = glm::uvec3;
+using Color4ui = glm::uvec4;
 
 class IMaterial
 {
@@ -136,6 +145,10 @@ public:
 	virtual const MaterialVertexAttributeLoc GetTexCoordVertexAttributeLocation() const = 0;
 
 	virtual const MaterialVertexAttributeLoc GetColorVertexAttributeLocation() const = 0;
+
+
+	virtual void SetUniform4fv(const char* uniformName, const float* vec4) = 0;
+	virtual void SetUniformMatrix4fv(const char* uniformName, const float* mat4) = 0;
 };
 
 #endif // __I_MATERIAL_H__
