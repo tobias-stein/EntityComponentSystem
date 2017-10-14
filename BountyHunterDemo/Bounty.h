@@ -21,16 +21,8 @@ class Bounty : public GameObject<Bounty>
 {
 public:
 
-	template<class... ARGS>
-	Bounty(ARGS&... args) : GameObject(std::forward<ARGS>(args)...)
-	{
-		AddComponent<ShapeComponent>(ShapeGenerator::CreateShape<QuadShape>());
-		AddComponent<MaterialComponent>(MaterialGenerator::CreateMaterial<DefaultMaterial>());
-		AddComponent<RespawnComponent>(DEFAULT_COLLECTOR_RESPAWNTIME);
-	}
-
-	virtual ~Bounty()
-	{}
+	Bounty(GameObjectId spawnId);
+	virtual ~Bounty();
 
 }; // class Bounty
 

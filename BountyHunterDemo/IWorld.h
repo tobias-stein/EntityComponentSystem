@@ -10,80 +10,8 @@
 
 #include <ECS/ECS.h>
 
-#include "math.h"
+#include "Bounds.h"
 
-
-typedef glm::vec3 Point;
-typedef glm::vec3 Position;
-
-
-/// Summary:	Defines an inavlid position.
-static const Position INVALID_POSITION = glm::vec3(std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity());
-
-struct Bounds
-{
-	Point minBound;
-	Point maxBound;
-
-	///-------------------------------------------------------------------------------------------------
-	/// Fn:	Bounds(const Point& boundMin, const Point& boundMax)
-	///
-	/// Summary:	Contruct bound from min and max point.
-	///
-	/// Author:	Tobias Stein
-	///
-	/// Date:	12/10/2017
-	///
-	/// Parameters:
-	/// boundMin - 	The bound minimum.
-	/// boundMax - 	The bound maximum.
-	///-------------------------------------------------------------------------------------------------
-
-	Bounds(const Point& boundMin, const Point& boundMax) :
-		minBound(boundMin),
-		maxBound(boundMax)
-	{}
-
-	///-------------------------------------------------------------------------------------------------
-	/// Fn:	Bounds(const Point& boundCenter, const float radius)
-	///
-	/// Summary:	Construct bounds from center point and radius
-	///
-	/// Author:	Tobias Stein
-	///
-	/// Date:	12/10/2017
-	///
-	/// Parameters:
-	/// boundCenter - 	The bound center.
-	/// radius - 	  	The radius.
-	///-------------------------------------------------------------------------------------------------
-
-	Bounds(const Point& boundCenter, const float radius) :
-		minBound(boundCenter.x - radius, boundCenter.y - radius, boundCenter.z - radius),
-		maxBound(boundCenter.x + radius, boundCenter.y + radius, boundCenter.z + radius)
-	{}
-
-	///-------------------------------------------------------------------------------------------------
-	/// Fn:	inline const bool contains(const Point& point) const
-	///
-	/// Summary:	Determines if a given point is contained by this bound
-	///
-	/// Author:	Tobias Stein
-	///
-	/// Date:	12/10/2017
-	///
-	/// Parameters:
-	/// point - 	The const Point&amp; to test for containment.
-	///
-	/// Returns:	A const bool.
-	///-------------------------------------------------------------------------------------------------
-
-	inline const bool contains(const Point& point) const
-	{
-		return (this->minBound.x < point.x && point.x < this->maxBound.x) && (this->minBound.y < point.y && point.y < this->maxBound.y) && (this->minBound.z < point.z && point.z < this->maxBound.z);
-	}
-
-}; // struct Bounds
 
 
 using GameObjectQuery = std::vector<ECS::EntityId>;

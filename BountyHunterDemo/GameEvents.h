@@ -11,6 +11,7 @@
 
 // allias for entity
 using GameObjectId = ECS::EntityId;
+using GameObjectTypeId = ECS::EntityTypeId;
 static const GameObjectId INVALID_GAMEOBJECT_ID = ECS::INVALID_ENTITY_ID;
 
 #include "Transform.h"
@@ -161,9 +162,12 @@ struct EnterWindowModeEvent : public ECS::Event::Event<EnterWindowModeEvent>
 
 struct GameObjectCreated : public ECS::Event::Event<GameObjectCreated>
 {
-	GameObjectId	m_EntityID;
+	GameObjectId		m_EntityID;
+	GameObjectTypeId	m_EntityTypeID;
 
-	GameObjectCreated(GameObjectId id) : m_EntityID(id)
+	GameObjectCreated(GameObjectId id, GameObjectTypeId typeId) : 
+		m_EntityID(id),
+		m_EntityTypeID(typeId)
 	{}
 };
 
@@ -172,8 +176,11 @@ struct GameObjectCreated : public ECS::Event::Event<GameObjectCreated>
 struct GameObjectDestroyed : public ECS::Event::Event<GameObjectDestroyed>
 {
 	GameObjectId	m_EntityID;
+	GameObjectTypeId	m_EntityTypeID;
 
-	GameObjectDestroyed(GameObjectId id) : m_EntityID(id)
+	GameObjectDestroyed(GameObjectId id, GameObjectTypeId typeId) :
+		m_EntityID(id),
+		m_EntityTypeID(typeId)
 	{}
 };
 

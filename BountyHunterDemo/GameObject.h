@@ -25,18 +25,18 @@ public:
 	GameObject()
 	{
 		AddComponent<TransformComponent>(Transform());
-		ECS::ECS_Engine->SendEvent<GameObjectCreated>(this->GetEntityID());
+		ECS::ECS_Engine->SendEvent<GameObjectCreated>(this->GetEntityID(), this->GetStaticEntityTypeID());
 	}
 
 	GameObject(const Transform& transform)
 	{		
 		AddComponent<TransformComponent>(transform);
-		ECS::ECS_Engine->SendEvent<GameObjectCreated>(this->GetEntityID());
+		ECS::ECS_Engine->SendEvent<GameObjectCreated>(this->GetEntityID(), this->GetStaticEntityTypeID());
 	}
 
 	virtual ~GameObject()
 	{
-		ECS::ECS_Engine->SendEvent<GameObjectDestroyed>(this->GetEntityID());
+		ECS::ECS_Engine->SendEvent<GameObjectDestroyed>(this->GetEntityID(), this->GetStaticEntityTypeID());
 	}
 
 }; // class GameObject

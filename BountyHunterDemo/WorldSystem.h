@@ -121,7 +121,7 @@ public:
 
 
 	template<class T, class... ARGS>
-	void SpawnGameObject(Transform transform, ARGS&&... args)
+	GameObjectId AddGameObject(Transform transform, ARGS&&... args)
 	{
 		// create entity
 		ECS::EntityId entityId = ECS::ECS_Engine->GetEntityManager()->CreateEntity<T>(std::forward<ARGS>(args)...);
@@ -135,7 +135,6 @@ public:
 		// set initial transform
 		*entityTransformComponent = transform;
 
-
 		// add Gameobject to list
 		size_t i = 0;
 		for (; i < this->m_WorldObjects.size(); ++i)
@@ -143,12 +142,14 @@ public:
 			if (this->m_WorldObjects[i].m_GameObjectID == INVALID_GAMEOBJECT_ID)
 			{
 				this->m_WorldObjects[i] = WorldObjectInfo(entityId, entity->GetStaticEntityTypeID());
-				return;
+				return entityId;
 			}
 		}
 
 		this->m_WorldObjects.resize(this->m_WorldObjects.size() * 2);
 		this->m_WorldObjects[i] = WorldObjectInfo(entityId, entity->GetStaticEntityTypeID());
+
+		return entityId;
 	}
 
 	///-------------------------------------------------------------------------------------------------

@@ -67,7 +67,7 @@ private:
 
 public:
 
-	static constexpr Type MATERIAL_TYPE{ DEFAULT_MATERIAL };
+	static constexpr Type MATERIAL_TYPE { DEFAULT_MATERIAL };
 
 	DefaultMaterial();
 

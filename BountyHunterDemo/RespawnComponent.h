@@ -8,7 +8,7 @@
 #ifndef __RESPAWN_COMPONENT_H__
 #define __RESPAWN_COMPONENT_H__
 
-#include "ECS/ECS.h"
+#include "GameObject.h"
 
 #include "IWorld.h"
 
@@ -27,18 +27,33 @@ class RespawnComponent : public ECS::Component<RespawnComponent>
 {
 public:
 
-	// time in seconds
-	float		m_RespawnTime;
+	/// Summary:	True to automatically respawn on death.
+	bool			m_AutoRespawn;
 
-	Position	m_RespawnPosition;
+	// time in seconds
+	float			m_RespawnTime;
+
+	Position		m_RespawnPosition;
 
 	// yaw, pitch, roll
-	glm::vec3	m_RespawnOrientation;
+	glm::vec3		m_RespawnOrientation;
 
-	RespawnComponent(float respawnTime, const Position& respawnPosition = INVALID_POSITION, const glm::vec3& respawnOrientation = glm::vec3(0.0f)) :
+	GameObjectId	m_SpawnId;
+
+	RespawnComponent(float respawnTime, const GameObjectId spawnId, bool autoRespawn = false) :
+		m_AutoRespawn(autoRespawn),
+		m_RespawnTime(respawnTime),
+		m_RespawnPosition(INVALID_POSITION),
+		m_RespawnOrientation(0.0f),
+		m_SpawnId(spawnId)
+	{}
+
+	RespawnComponent(float respawnTime, bool autoRespawn = false, const Position& respawnPosition = INVALID_POSITION, const glm::vec3& respawnOrientation = glm::vec3(0.0f)) :
+		m_AutoRespawn(autoRespawn),
 		m_RespawnTime(respawnTime),
 		m_RespawnPosition(respawnPosition),
-		m_RespawnOrientation(respawnOrientation)
+		m_RespawnOrientation(respawnOrientation),
+		m_SpawnId(INVALID_GAMEOBJECT_ID)
 	{}
 
 }; // class RespawnComponent

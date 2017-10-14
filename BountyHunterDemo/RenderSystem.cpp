@@ -79,12 +79,19 @@ void RenderSystem::InitializeOpenGL()
 
 	glEnable(GL_DEPTH_TEST);
 
+	// transparency
+	glEnable(GL_BLEND); 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	// Check for errors.
 	glGetLastError();
 }
 
 void RenderSystem::TerminateOpenGL()
 {
+
+	glUseProgram(0);
+
 	// Destroy OpenGL context
 	if (this->m_Context)
 		SDL_GL_DeleteContext(this->m_Context);

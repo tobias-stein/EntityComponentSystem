@@ -32,13 +32,16 @@ public:
 
 
 	void SetPosition(const glm::vec3& position);
-	void SetRotation(const glm::vec3& rotation_xyz);
+	void SetRotation(const glm::vec3& rotation_euler);
+	void SetScale(const glm::vec3& scale);
 
 	inline glm::vec3 GetPosition() { glm::vec3(this->m_Transform[3]); }
 
 
 	// conversion to float array
 	inline operator const float*() const { return &(this->m_Transform[0][0]); }
+
+	inline static Transform IDENTITY() { return Transform(); }
 
 }; // class Transform
 

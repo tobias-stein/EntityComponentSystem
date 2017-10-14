@@ -166,8 +166,11 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bounty.cpp" />
     <ClCompile Include="BountyHunterDemo.cpp" />
+    <ClCompile Include="BountySpawn.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collector.cpp" />
     <ClCompile Include="DefaultMaterial.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GLShader.cpp" />
@@ -180,11 +183,15 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="MenuSystem.cpp" />
     <ClCompile Include="OpenGL.cpp" />
     <ClCompile Include="OrthoCamera.cpp" />
+    <ClCompile Include="PlayerSpawn.cpp" />
+    <ClCompile Include="PointSpawn.cpp" />
+    <ClCompile Include="RegionSpawn.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="RespawnSystem.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="ShapeComponent.cpp" />
     <ClCompile Include="ShapeGenerator.cpp" />
+    <ClCompile Include="SpawnComponent.cpp" />
     <ClCompile Include="TabletopCamera.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
@@ -192,21 +199,27 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="WorldSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bounds.h" />
     <ClInclude Include="Bounty.h" />
+    <ClInclude Include="BountySpawn.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collector.h" />
     <ClInclude Include="DefaultMaterial.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectSpawn.h" />
     <ClInclude Include="GLBuffer.h" />
     <ClInclude Include="GLShader.h" />
     <ClInclude Include="IMaterial.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="ISpawn.h" />
     <ClInclude Include="IWorld.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialComponent.h" />
     <ClInclude Include="MaterialGenerator.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="OrthoCamera.h" />
+    <ClInclude Include="PlayerSpawn.h" />
+    <ClInclude Include="PointSpawn.h" />
     <ClInclude Include="QuadShape.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameConfiguration.h" />
@@ -215,6 +228,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="IShape.h" />
     <ClInclude Include="MenuSystem.h" />
     <ClInclude Include="OpenGL.h" />
+    <ClInclude Include="RegionSpawn.h" />
     <ClInclude Include="RenderableGroup.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="RespawnComponent.h" />
@@ -224,6 +238,8 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="ShapeComponent.h" />
     <ClInclude Include="ShapeGenerator.h" />
     <ClInclude Include="SimpleFSM.h" />
+    <ClInclude Include="Spawn.h" />
+    <ClInclude Include="SpawnComponent.h" />
     <ClInclude Include="TabletopCamera.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TransformComponent.h" />

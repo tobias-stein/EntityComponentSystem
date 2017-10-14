@@ -65,7 +65,7 @@ void Transform::SetPosition(const glm::vec3 & position)
 	this->m_Transform[3] = glm::vec4(position, this->m_Transform[3].w);
 }
 
-void Transform::SetRotation(const glm::vec3 & rotation_xyz)
+void Transform::SetRotation(const glm::vec3 & rotation_euler)
 {
 	glm::vec3 Sc(0.0f);
 	glm::quat Or(0.0f, glm::vec3(0.0f));
@@ -76,7 +76,23 @@ void Transform::SetRotation(const glm::vec3 & rotation_xyz)
 	assert(glm::decompose(this->m_Transform, Sc, Or, Tr, Sk, Pe) != false && "Matrix decomposition failed!");
 
 	auto T = glm::translate(glm::mat4(1.0f), Tr);
-	auto R = glm::yawPitchRoll(rotation_xyz.x, rotation_xyz.y, rotation_xyz.z);
+	auto R = glm::yawPitchRoll(rotation_euler.x, rotation_euler.y, rotation_euler.z);
 
 	this->m_Transform = T * R * glm::scale(Sc);
+}
+
+void Transform::SetScale(const glm::vec3 & scale)
+{
+	glm::vec3 Sc(0.0f);
+	glm::quat Or(0.0f, glm::vec3(0.0f));
+	glm::vec3 Tr(0.0f);
+	glm::vec3 Sk(0.0f);
+	glm::vec4 Pe(0.0f);
+
+	assert(glm::decompose(this->m_Transform, Sc, Or, Tr, Sk, Pe) != false && "Matrix decomposition failed!");
+
+	auto T = glm::translate(glm::mat4(1.0f), Tr);
+	auto R = glm::toMat4(Or);
+
+	this->m_Transform = T * R * glm::scale(scale);
 }

@@ -88,6 +88,24 @@
     <Filter Include="Source Files\World">
       <UniqueIdentifier>{fd2691c1-70bc-43b6-b0a5-bdcf98ba8e0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Spawn">
+      <UniqueIdentifier>{972ad7b5-3b22-457e-b35d-3869dd4bb544}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Spawn\Spawns">
+      <UniqueIdentifier>{b4376079-2391-4a2e-8164-27445bc05933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Spawn">
+      <UniqueIdentifier>{c68f2631-6703-47e9-910e-3085d758eb72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Spawn\Spawns">
+      <UniqueIdentifier>{66be0c52-b09f-4e71-bdfe-6c23b9cf84bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Spawn">
+      <UniqueIdentifier>{54e0e3c8-df18-4cd0-9946-e2a325988b33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Spawn">
+      <UniqueIdentifier>{18ba01e1-daf2-4d75-985e-2be7f819896d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -164,6 +182,27 @@
     </ClCompile>
     <ClCompile Include="RespawnSystem.cpp">
       <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="PointSpawn.cpp">
+      <Filter>Source Files\Spawn\Spawns</Filter>
+    </ClCompile>
+    <ClCompile Include="RegionSpawn.cpp">
+      <Filter>Source Files\Spawn\Spawns</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerSpawn.cpp">
+      <Filter>Source Files\Entities\Spawn</Filter>
+    </ClCompile>
+    <ClCompile Include="BountySpawn.cpp">
+      <Filter>Source Files\Entities\Spawn</Filter>
+    </ClCompile>
+    <ClCompile Include="Collector.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Bounty.cpp">
+      <Filter>Source Files\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -280,6 +319,33 @@
     </ClInclude>
     <ClInclude Include="RespawnSystem.h">
       <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="ISpawn.h">
+      <Filter>Header Files\Spawn</Filter>
+    </ClInclude>
+    <ClInclude Include="Bounds.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Spawn.h">
+      <Filter>Header Files\Spawn</Filter>
+    </ClInclude>
+    <ClInclude Include="PointSpawn.h">
+      <Filter>Header Files\Spawn\Spawns</Filter>
+    </ClInclude>
+    <ClInclude Include="RegionSpawn.h">
+      <Filter>Header Files\Spawn\Spawns</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSpawn.h">
+      <Filter>Header Files\Entities\Spawn</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BountySpawn.h">
+      <Filter>Header Files\Entities\Spawn</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectSpawn.h">
+      <Filter>Header Files\Entities\Spawn</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

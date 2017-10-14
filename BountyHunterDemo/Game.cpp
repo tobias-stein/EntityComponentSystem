@@ -227,8 +227,8 @@ void Game::Resume() {
 #include "TabletopCamera.h"
 #include "Collector.h"
 #include "Bounty.h"
-
-
+#include "PlayerSpawn.h"
+#include "BountySpawn.h"
 
 
 void Game::Run()
@@ -241,25 +241,40 @@ void Game::Run()
 
 	// create test dummies
 	WorldSystem* worldSystem = ECS::ECS_Engine->GetSystemManager()->GetSystem<WorldSystem>();
+	RespawnSystem* respawnSystem = ECS::ECS_Engine->GetSystemManager()->GetSystem<RespawnSystem>();
 
-
-	// spawn max. number of player in a circle
+	// spawn max. number of player in a circle also create player spawns
 	const float STEP = glm::two_pi<float>() / max(1.0f, (float)MAX_PLAYER);
 	const float R = (WORLD_BOUND_MAX[0] - WORLD_BOUND_MIN[0]) * 0.5f;
 
 	for (size_t i = 0; i < MAX_PLAYER; ++i)
 	{
 		const float angle = i * STEP;
-		const float xR = glm::cos(angle);
-		const float yR = glm::sin(angle);
+		const float xR = glm::cos(angle) * R;
+		const float yR = glm::sin(angle) * R;
 
-		Position spawnPosition(xR * R, yR * R, 0.0f);
+
+		Position spawnPosition(xR, yR, 0.0f);
 
 		Transform initialTransform = glm::translate(glm::mat4(1.0f), spawnPosition) * glm::rotate(angle + glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		
-		worldSystem->SpawnGameObject<Collector>(initialTransform, spawnPosition, angle + glm::radians(90.0f));
-	}
+		// spawn player spawn
+		GameObjectId playerSpawn = worldSystem->AddGameObject<PlayerSpawn>(Transform(Position(xR, yR, 1.0f)), spawnPosition, angle + glm::radians(90.0f));
 
+		// spawn player
+		worldSystem->AddGameObject<Collector>(initialTransform, playerSpawn);	
+	}
+	
+	// create bounty spawn
+	const float bountyHalfSpawnSize = R * 0.9f;
+	GameObjectId bountySpawn = worldSystem->AddGameObject<BountySpawn>(Transform(Position(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), 0.0f, glm::vec3(bountyHalfSpawnSize, bountyHalfSpawnSize, 0.0f)), Position(0.0f, 0.0f, 0.0f), glm::vec2(bountyHalfSpawnSize, bountyHalfSpawnSize), 0.0f);
+	
+	// spawn bounty
+	for (size_t i = 0; i < MAX_BOUNTY; ++i)
+	{
+		GameObjectId bounty = worldSystem->AddGameObject<Bounty>(Transform::IDENTITY(), bountySpawn);
+		worldSystem->KillGameObject(bounty);
+	}
 
 	// create a camera
 	ECS::ECS_Engine->GetEntityManager()->CreateEntity<TabletopCamera>(glm::vec2(0.0f, 0.0f), -10.0f, 5.0f);

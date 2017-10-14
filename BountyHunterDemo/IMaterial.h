@@ -72,11 +72,6 @@ static constexpr MaterialVertexAttributeLoc NORMAL_MATERIAL_VERTEX_ATTRIBUTE_LOC
 static constexpr MaterialVertexAttributeLoc TEXCOORD_MATERIAL_VERTEX_ATTRIBUTE_LOC	{ 2 };
 static constexpr MaterialVertexAttributeLoc COLOR_MATERIAL_VERTEX_ATTRIBUTE_LOC		{ 3 };
 
- 
-using Color3f  = glm::vec3;
-using Color4f  = glm::vec4;
-using Color3ui = glm::uvec3;
-using Color4ui = glm::uvec4;
 
 class IMaterial
 {

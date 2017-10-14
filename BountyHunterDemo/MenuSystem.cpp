@@ -7,6 +7,7 @@
 #include "MenuSystem.h"
 
 #include "Collector.h"
+#include "Bounty.h"
 #include "WorldSystem.h"
 
 MenuSystem::MenuSystem()
@@ -51,10 +52,17 @@ void MenuSystem::OnKeyDownEvent(const KeyDownEvent* event)
 			ECS::ECS_Engine->SendEvent<ToggleFullscreenEvent>();
 			break;
 
-		// cheat: kill all game objects in the world
+		// cheat: kill all player
 		case SDLK_F9:
 		{
 			ECS::ECS_Engine->GetSystemManager()->GetSystem<WorldSystem>()->KillAllGameObjects<Collector>();
+			break;
+		}
+
+		// cheat: kill all bounty
+		case SDLK_F10:
+		{
+			ECS::ECS_Engine->GetSystemManager()->GetSystem<WorldSystem>()->KillAllGameObjects<Bounty>();
 			break;
 		}
 	}
