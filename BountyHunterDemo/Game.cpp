@@ -279,11 +279,17 @@ void Game::Run()
 	// create a camera
 	ECS::ECS_Engine->GetEntityManager()->CreateEntity<TabletopCamera>(glm::vec2(0.0f, 0.0f), -10.0f, 5.0f);
 
+
+
+
 	while (mAppState < ABOUT_TO_TERMINATE) 
 	{
 		ProcessWindowEvent();
 
 		ECS::ECS_Engine->Update(DELTA_TIME_STEP);
+
+		this->m_FPS.Update();
+		SDL_SetWindowTitle(this->mWindow, std::to_string(this->m_FPS.GetFPS()).c_str());
 
 	}; // MAIN GAME LOOP!
 }

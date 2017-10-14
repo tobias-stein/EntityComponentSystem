@@ -12,6 +12,8 @@
 #include "GameConfiguration.h"
 #include "GameEvents.h"
 
+#include "FPS.h"
+
 #include <SDL.h> 
 #include <ECS/ECS.h>
 
@@ -22,7 +24,6 @@
 class Game : protected ECS::Event::IEventListener {
 
 public:
-
 
 	enum State {
 
@@ -78,6 +79,9 @@ private:
 	State				mAppState;
 
 
+	/// Summary:	A simple frame counter.
+	FPS					m_FPS;
+	
 private:
 
 	void InitializeECS();

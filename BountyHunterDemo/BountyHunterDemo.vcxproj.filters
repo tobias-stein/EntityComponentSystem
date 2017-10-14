@@ -204,6 +204,9 @@
     <ClCompile Include="Bounty.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="FPS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="GameObjectSpawn.h">
       <Filter>Header Files\Entities\Spawn</Filter>
+    </ClInclude>
+    <ClInclude Include="FPS.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

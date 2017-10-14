@@ -172,6 +172,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collector.cpp" />
     <ClCompile Include="DefaultMaterial.cpp" />
+    <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GLShader.cpp" />
     <ClCompile Include="IMaterial.cpp" />
@@ -205,6 +206,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collector.h" />
     <ClInclude Include="DefaultMaterial.h" />
+    <ClInclude Include="FPS.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectSpawn.h" />
     <ClInclude Include="GLBuffer.h" />
