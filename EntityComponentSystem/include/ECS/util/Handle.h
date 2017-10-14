@@ -154,8 +154,10 @@ namespace ECS { namespace util {
 			// grow table
 			this->GrowTable();
 
-			this->m_Table[i].second = rawObject;
-			return Handle(i, this->m_Table[i].first++);
+			this->m_Table[i].first = 1;
+			this->m_Table[i].second = rawObject;		
+
+			return Handle(i, this->m_Table[i].first);
 		}
 
 		void ReleaseHandle(Handle handle)

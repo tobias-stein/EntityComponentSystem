@@ -9,6 +9,7 @@
 
 #include "API.h"
 
+#include "Event/EventHandler.h"
 #include "Event/EventDelegate.h"
 
 namespace ECS
@@ -42,8 +43,6 @@ namespace ECS
 		friend class Event::IEventListener;
 
 		friend class EntityManager;
-		friend class ComponentManager;
-		friend class SystemManager;
 
 	private:
 

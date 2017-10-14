@@ -23,40 +23,6 @@
 
 namespace ECS
 {
-	///-------------------------------------------------------------------------------------------------
-	/// Struct:	SystemCreated
-	///
-	/// Summary:	Sent when new system was created.
-	///
-	/// Author:	Tobias Stein
-	///
-	/// Date:	30/09/2017
-	///-------------------------------------------------------------------------------------------------
-
-	struct SystemCreated : public Event::Event<SystemCreated>
-	{
-		SystemTypeId m_SystemTypeID;
-
-		SystemCreated(SystemTypeId systemTypeId) :
-			m_SystemTypeID(systemTypeId)
-		{}
-
-	}; // struct SystemCreated 
-
-	struct SystemPriorityChanged : public Event::Event<SystemPriorityChanged>
-	{
-		SystemTypeId	m_SystemTypeID;
-		SystemPriority	m_oldPriority;
-		SystemPriority	m_newPriority;
-
-		SystemPriorityChanged(SystemTypeId systemTypeId, SystemPriority oldPriority, SystemPriority newPriority) :
-			m_SystemTypeID(systemTypeId),
-			m_oldPriority(oldPriority),
-			m_newPriority(newPriority)
-		{}
-
-	}; // struct SystemPriorityChanged 
-
 	using SystemWorkStateMask	= std::vector<bool>;
 
 
@@ -164,10 +130,7 @@ namespace ECS
 
 			// add to work list
 			this->m_SystemWorkOrder.push_back(system);
-
-			// Broadcast SystemCreated event
-			ECS_Engine->ECS_EventHandler->Send<SystemCreated>(STID);
-
+			
 			return system;
 		}
 
@@ -253,9 +216,6 @@ namespace ECS
 
 				// enable system
 				it->second->m_Enabled = true;
-
-				// broadcast event
-				ECS_Engine->ECS_EventHandler->Send<SystemEnabled>(STID);
 			}
 			else
 			{
@@ -278,9 +238,6 @@ namespace ECS
 
 				// enable system
 				it->second->m_Enabled = false;
-
-				// broadcast event
-				ECS_Engine->ECS_EventHandler->Send<SystemDisabled>(STID);
 			}
 			else
 			{
@@ -320,9 +277,6 @@ namespace ECS
 					return;
 				
 				it->second->m_Priority = newPriority;
-
-				// broadcast event
-				ECS_Engine->ECS_EventHandler->Send<SystemPriorityChanged>(STID, oldPriority, newPriority);
 
 				// re-build system work order
 				this->UpdateSystemWorkOrder();

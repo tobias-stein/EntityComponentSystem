@@ -13,9 +13,6 @@
 
 #include "API.h"
 
-#include "Event/Event.h"
-#include "Event/EventHandler.h"
-
 namespace ECS
 {
 	template<class T>
@@ -43,29 +40,6 @@ namespace ECS
 	static const SystemPriority VERY_HIGH_SYSTEM_PRIORITY	= 401;
 
 	static const SystemPriority HIGHEST_SYSTEM_PRIORITY		= std::numeric_limits<SystemPriority>::max();
-
-
-
-	struct SystemEnabled : public Event::Event<SystemEnabled>
-	{
-		SystemTypeId m_SystemTypeID;
-
-		SystemEnabled(SystemTypeId systemTypeId) :
-			m_SystemTypeID(systemTypeId)
-		{}
-
-	}; // struct SystemEnabled
-
-
-	struct SystemDisabled : public Event::Event<SystemDisabled>
-	{
-		SystemTypeId m_SystemTypeID;
-
-		SystemDisabled(SystemTypeId systemTypeId) :
-			m_SystemTypeID(systemTypeId)
-		{}
-
-	}; // struct SystemDisabled
 
 
 	class ECS_API ISystem

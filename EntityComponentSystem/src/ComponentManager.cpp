@@ -66,7 +66,7 @@ namespace ECS {
 	{
 		static const size_t NUM_COMPONENTS { util::Internal::FamilyTypeID<IComponent>::Get() };
 
-		if (this->m_EntityComponentMap.size() < entityId.index)
+		if ((this->m_EntityComponentMap.size() - 1) < entityId.index)
 		{
 			size_t oldSize = this->m_EntityComponentMap.size();
 

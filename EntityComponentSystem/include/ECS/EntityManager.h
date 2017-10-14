@@ -17,9 +17,6 @@
 #include "IEntity.h"
 #include "ComponentManager.h"
 
-#include "Event/Event.h"
-#include "Event/EventHandler.h"
-
 #include "Memory/MemoryChunkAllocator.h"
 
 #include "util/Handle.h"
@@ -31,52 +28,7 @@
 #pragma warning(disable: 4291)
 
 namespace ECS
-{
-	///-------------------------------------------------------------------------------------------------
-	/// Struct:	ECS_API
-	///
-	/// Summary:	Sent when new entity object was created.
-	///
-	/// Author:	Tobias Stein
-	///
-	/// Date:	30/09/2017
-	///-------------------------------------------------------------------------------------------------
-
-	struct EntityCreated : public Event::Event<EntityCreated>
-	{
-		EntityId		m_EntityID;
-		EntityTypeId	m_EntityTypeID;
-
-		EntityCreated(EntityId entityId, EntityTypeId entityTypeId) :
-			m_EntityID(entityId),
-			m_EntityTypeID(entityTypeId)
-		{}
-
-	}; // struct EntityCreated 
-
-	   ///-------------------------------------------------------------------------------------------------
-	   /// Struct:	ECS_API
-	   ///
-	   /// Summary:	Sent when entity object was destroyed.
-	   ///
-	   /// Author:	Tobias Stein
-	   ///
-	   /// Date:	30/09/2017
-	   ///-------------------------------------------------------------------------------------------------
-
-	struct EntityDestroyed : public Event::Event<EntityDestroyed>
-	{
-		EntityId		m_EntityID;
-		EntityTypeId	m_EntityTypeID;
-
-		EntityDestroyed(EntityId entityId, EntityTypeId entityTypeId) :
-			m_EntityID(entityId),
-			m_EntityTypeID(entityTypeId)
-		{}
-
-	}; // struct EntityDestroyed
-
-	
+{	
 	using EntityHandleTable = util::HandleTable<IEntity, EntityId>;
 
 
@@ -260,9 +212,6 @@ namespace ECS
 			// create entity inplace
 			IEntity* entity = new (pObjectMemory)T(std::forward<ARGS>(args)...);	
 
-			// Broadcast CreateEntity event
-			ECS_Engine->ECS_EventHandler->Send<EntityCreated>(entity->GetEntityID(), entity->GetStaticEntityTypeID());
-
 			return entity->GetEntityID();
 		}
 
@@ -272,9 +221,6 @@ namespace ECS
 			IEntity* entity = this->m_EntityHandleTable[entityId];
 		
 			const EntityTypeId ETID = entity->GetStaticEntityTypeID();
-
-			// Broadcast EntityDestroyed event
-			ECS_Engine->ECS_EventHandler->Send<EntityDestroyed>(entityId, ETID);
 
 			if (this->m_NumPendingDestroyedEntities < this->m_PendingDestroyedEntities.size())
 			{
