@@ -55,7 +55,10 @@ void RespawnSystem::Update(float dt)
 
 			assert(spawnInfo.m_SpawnPosition != INVALID_POSITION && "Failed to respawn game object!");
 			
-			Transform transform = glm::translate(glm::mat4(1.0f), spawnInfo.m_SpawnPosition) * glm::yawPitchRoll(spawnInfo.m_SpawnOrientation[0], spawnInfo.m_SpawnOrientation[1], spawnInfo.m_SpawnOrientation[2]);
+			// maintain old game object scale
+			glm::vec3 oldScale = ECS::ECS_Engine->GetComponentManager()->GetComponent<TransformComponent>(s->m_spawnableID)->GetScale();
+
+			Transform transform = glm::translate(glm::mat4(1.0f), spawnInfo.m_SpawnPosition) * glm::yawPitchRoll(spawnInfo.m_SpawnOrientation[0], spawnInfo.m_SpawnOrientation[1], spawnInfo.m_SpawnOrientation[2]) * glm::scale(oldScale);
 
 			// spawn object
 			ECS::ECS_Engine->GetSystemManager()->GetSystem<WorldSystem>()->SpawnGameObject(s->m_spawnableID, transform);

@@ -141,7 +141,7 @@ void RenderSystem::Update(float dt)
 		{
 			// ignore disables renderables
 			if (renderable.m_EntityId->IsActive() == false && renderable.m_MaterialComponent->IsActive() == true && renderable.m_ShapeComponent->IsActive() == true)
-				return;
+				continue;
 			
 			// apply material
 			renderable.m_MaterialComponent->Apply();

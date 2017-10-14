@@ -18,6 +18,7 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtx/matrix_decompose.hpp>
+#include <glm/gtx/matrix_interpolation.hpp>
 #include <glm/gtc/random.hpp>
 
 using Color3f = glm::vec3;

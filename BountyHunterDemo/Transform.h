@@ -13,8 +13,9 @@ class Transform
 {
 private:
 
-	glm::mat4 m_Transform;
+	glm::mat4	m_Transform;
 
+	
 public:
 
 	Transform();
@@ -26,17 +27,33 @@ public:
 	Transform(const glm::vec3& position, const glm::quat rotation, const glm::vec3& scale);
 	Transform(const glm::vec3& position, const glm::vec3 axis, const float angle, const glm::vec3& scale);
 
-	inline void Zero() { this->m_Transform = glm::mat4(0.0f); }
-	inline void One() { this->m_Transform = glm::mat4(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f); }
-	inline void Identity() { this->m_Transform = glm::mat4(1.0f); }
+	inline void Zero()		{ this->m_Transform = glm::mat4(0.0f); }
+	inline void One()		{ this->m_Transform = glm::mat4(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f); }
+	inline void Identity()	{ this->m_Transform = glm::mat4(1.0f); }
 
 
 	void SetPosition(const glm::vec3& position);
 	void SetRotation(const glm::vec3& rotation_euler);
 	void SetScale(const glm::vec3& scale);
 
-	inline glm::vec3 GetPosition() { glm::vec3(this->m_Transform[3]); }
 
+	inline glm::vec3 GetPosition() { return glm::vec3(this->m_Transform[3]); }
+
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:	glm::vec3 Transform::GetRotation();
+	///
+	/// Summary:	Returns euler angles.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	14/10/2017
+	///
+	/// Returns:	The rotation.
+	///-------------------------------------------------------------------------------------------------
+
+	glm::vec3 GetRotation();
+
+	glm::vec3 GetScale();
 
 	// conversion to float array
 	inline operator const float*() const { return &(this->m_Transform[0][0]); }
