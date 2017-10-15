@@ -6,11 +6,19 @@
 
 #include "Collector.h"
 
-Collector::Collector(GameObjectId spawnId)
+#include "ShapeComponent.h"
+#include "MaterialComponent.h"
+#include "RespawnComponent.h"
+
+#include "ShapeGenerator.h"
+#include "MaterialGenerator.h"
+
+Collector::Collector(GameObjectId spawnId, IController* controller)
 {
 	AddComponent<ShapeComponent>(ShapeGenerator::CreateShape<TriangleShape>());
 	AddComponent<MaterialComponent>(MaterialGenerator::CreateMaterial<DefaultMaterial>());
-	AddComponent<RespawnComponent>(DEFAULT_COLLECTOR_RESPAWNTIME, spawnId, true);
+	AddComponent<RespawnComponent>(COLLECTOR_RESPAWNTIME, spawnId, true);
+	AddComponent<ControllerComponent>(controller);
 }
 
 Collector::~Collector()

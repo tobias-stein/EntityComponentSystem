@@ -10,7 +10,7 @@ Bounty::Bounty(GameObjectId spawnId)
 {
 	AddComponent<ShapeComponent>(ShapeGenerator::CreateShape<QuadShape>());
 	AddComponent<MaterialComponent>(MaterialGenerator::CreateMaterial<DefaultMaterial>());
-	AddComponent<RespawnComponent>(DEFAULT_BOUNTY_RESPAWNTIME, spawnId, true);
+	AddComponent<RespawnComponent>(BOUNTY_RESPAWNTIME, spawnId, true);
 }
 
 Bounty::~Bounty()

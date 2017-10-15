@@ -170,7 +170,10 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="BountyHunterDemo.cpp" />
     <ClCompile Include="BountySpawn.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CheatSystem.cpp" />
     <ClCompile Include="Collector.cpp" />
+    <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="ControllerSystem.cpp" />
     <ClCompile Include="DefaultMaterial.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -204,13 +207,18 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="Bounty.h" />
     <ClInclude Include="BountySpawn.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CheatSystem.h" />
     <ClInclude Include="Collector.h" />
+    <ClInclude Include="Controller.h" />
+    <ClInclude Include="ControllerComponent.h" />
+    <ClInclude Include="ControllerSystem.h" />
     <ClInclude Include="DefaultMaterial.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectSpawn.h" />
     <ClInclude Include="GLBuffer.h" />
     <ClInclude Include="GLShader.h" />
+    <ClInclude Include="IController.h" />
     <ClInclude Include="IMaterial.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="ISpawn.h" />
@@ -220,6 +228,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="MaterialGenerator.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="OrthoCamera.h" />
+    <ClInclude Include="PlayerController.h" />
     <ClInclude Include="PlayerSpawn.h" />
     <ClInclude Include="PointSpawn.h" />
     <ClInclude Include="QuadShape.h" />

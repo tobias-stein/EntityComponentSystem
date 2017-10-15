@@ -11,6 +11,10 @@
 /// Summary:	The game title.
 static constexpr const char*		GAME_TITLE							{ "BountyHunter Demo" };
 
+
+
+// <<<< GAME WINDOW SETTINGS >>>>
+
 /// Summary:	Width of the game window.
 static constexpr unsigned int		GAME_WINDOW_WIDTH					{ 1024 };
 
@@ -20,6 +24,10 @@ static constexpr unsigned int		GAME_WINDOW_HEIGHT					{ 1024 };
 /// Summary:	True if game should start in fullscreen mode.
 static constexpr bool				GAME_WINDOW_FULLSCREEN				{ false };
 
+
+
+// <<<< GAME WORLD SETTINGS >>>>
+ 
 /// Summary:	Defines the delta time step the game simulation will be advanced per update.
 static constexpr float				DELTA_TIME_STEP						{ 1.0f / 60.0f };
 
@@ -30,22 +38,25 @@ static constexpr float				WORLD_UP_VECTOR[2]					{ 0.0f, 1.0f };
 static constexpr float				WORLD_BOUND_MIN[2]					{ -100.0f, -100.0f };
 static constexpr float				WORLD_BOUND_MAX[2]					{  100.0f,  100.0f };
 
+
+
+// <<<< GAME META SETTINGS >>>>
+
 /// Summary:	The max. player amount.
 static constexpr size_t				MAX_PLAYER							{ 12 };
 
 /// Summary:	The max. amount of spawned bounty.
-static constexpr size_t				MAX_BOUNTY							{ 120 };
+static constexpr size_t				MAX_BOUNTY							{ 64 };
 
 /// Summary:	The default collector respawntime.
-static constexpr float				DEFAULT_COLLECTOR_RESPAWNTIME		{ 5.0f }; // seconds
+static constexpr float				COLLECTOR_RESPAWNTIME				{ 5.0f }; // seconds
 
 /// Summary:	The default bounty respawntime.
-static constexpr float				DEFAULT_BOUNTY_RESPAWNTIME			{ 2.0f }; // seconds
+static constexpr float				BOUNTY_RESPAWNTIME					{ 2.0f }; // seconds
 
 
 
-
-// <<<< DEBUG FLAGS >>>>
+// <<<< DEBUG SETTINGS >>>>
 
 ///-------------------------------------------------------------------------------------------------
 /// Def:	DEBUG_SHOW_SPAWNS
@@ -58,5 +69,8 @@ static constexpr float				DEFAULT_BOUNTY_RESPAWNTIME			{ 2.0f }; // seconds
 ///-------------------------------------------------------------------------------------------------
 
 #define DEBUG_SHOW_SPAWNS												1
+
+/// Summary:	Enable/Disable CheatSystem
+static constexpr bool				ALLOW_CHEATS						{ true };
 
 #endif // __GAME_CONFIG_H__

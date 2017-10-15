@@ -11,6 +11,8 @@
 #include "RenderSystem.h"
 #include "WorldSystem.h"
 #include "RespawnSystem.h"
+#include "ControllerSystem.h"
+#include "CheatSystem.h"
 
 Game::Game() :
 	mAppState(NOT_INITIALIZED),
@@ -32,6 +34,12 @@ void Game::InitializeECS()
 
 	// Create and initialize systems
 
+	if (ALLOW_CHEATS == true)
+	{
+		// CheatSystem
+		CheatSystem* CHEATS = ECS::ECS_Engine->GetSystemManager()->AddSystem<CheatSystem>();
+	}
+
 	// InputSystem
 	InputSystem* IS = ECS::ECS_Engine->GetSystemManager()->AddSystem<InputSystem>();
 	ECS::ECS_Engine->GetSystemManager()->SetSystemPriority<InputSystem>(ECS::HIGH_SYSTEM_PRIORITY);
@@ -46,9 +54,15 @@ void Game::InitializeECS()
 	IWorld* world = new World2D(Bounds2D(Point2D(WORLD_BOUND_MIN[0], WORLD_BOUND_MIN[1]), Point2D(WORLD_BOUND_MAX[0], WORLD_BOUND_MAX[1])), glm::vec2(WORLD_UP_VECTOR[0], WORLD_UP_VECTOR[1]));
 	WorldSystem* WS = ECS::ECS_Engine->GetSystemManager()->AddSystem<WorldSystem>(world);
 
+	// RespawnSystem
 	RespawnSystem* RSS = ECS::ECS_Engine->GetSystemManager()->AddSystem<RespawnSystem>();
 
+	// ControllerSystem
+	ControllerSystem* CS = ECS::ECS_Engine->GetSystemManager()->AddSystem<ControllerSystem>();
+
+
 	// Add system dependencies
+	CS->AddDependencies(IS);
 }
 
 void Game::InitializeSDL(const char* title, int width, int height, bool fullscreen)
@@ -230,7 +244,6 @@ void Game::Resume() {
 #include "PlayerSpawn.h"
 #include "BountySpawn.h"
 
-
 void Game::Run()
 {
 
@@ -266,7 +279,7 @@ void Game::Run()
 	}
 	
 	// create bounty spawn
-	const float bountyHalfSpawnSize = R * 0.9f;
+	const float bountyHalfSpawnSize = R * 0.75f;
 	GameObjectId bountySpawn = worldSystem->AddGameObject<BountySpawn>(Transform(Position(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), 0.0f, glm::vec3(bountyHalfSpawnSize, bountyHalfSpawnSize, 0.0f)), Position(0.0f, 0.0f, 0.0f), glm::vec2(bountyHalfSpawnSize, bountyHalfSpawnSize), 0.0f);
 	
 	// spawn bounty
@@ -278,8 +291,6 @@ void Game::Run()
 
 	// create a camera
 	ECS::ECS_Engine->GetEntityManager()->CreateEntity<TabletopCamera>(glm::vec2(0.0f, 0.0f), -10.0f, 5.0f);
-
-
 
 
 	while (mAppState < ABOUT_TO_TERMINATE) 

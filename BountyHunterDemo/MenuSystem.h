@@ -16,6 +16,7 @@ class MenuSystem : public ECS::System<MenuSystem>, protected ECS::Event::IEventL
 private:
 
 	void RegisterEventCallbacks();
+	void UnregisterEventCallbacks();
 
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	void MenuSystem::OnKeyDownEvent(const KeyDownEvent* event);

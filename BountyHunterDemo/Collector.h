@@ -10,18 +10,14 @@
 
 #include "GameObject.h"
 
-#include "ShapeComponent.h"
-#include "MaterialComponent.h"
-#include "RespawnComponent.h"
+#include "ControllerComponent.h"
 
-#include "ShapeGenerator.h"
-#include "MaterialGenerator.h"
 
 class Collector : public GameObject<Collector>
 {
 public:
 
-	Collector(GameObjectId spawnId);
+	Collector(GameObjectId spawnId, IController* controller = nullptr);
 	virtual ~Collector();
 
 }; // class Collector

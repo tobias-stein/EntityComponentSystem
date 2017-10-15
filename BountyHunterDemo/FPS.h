@@ -11,20 +11,13 @@
 #include <vector>
 class FPS
 {
-	static constexpr size_t MAX_SAMPLES { 3 };
-
-	using Samples		= std::vector<uint32_t>;
-
 	using Clock			= std::chrono::steady_clock;
-
 	using FrameCount	= uint32_t;
 
 private:
-
-	Samples				m_Samples;
-	size_t				m_SampleIndex;
-
+	
 	FrameCount			m_FrameCount;
+	FrameCount			m_LastFPS;
 	Clock::time_point	m_LastUpdate;
 
 

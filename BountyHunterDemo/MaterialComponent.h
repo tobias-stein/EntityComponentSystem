@@ -13,6 +13,7 @@
 
 class MaterialComponent : public Material, public ECS::Component<MaterialComponent>
 {
+public:
 	static const Color4f DEFAULT_COLOR0;
 
 private:
@@ -26,6 +27,11 @@ public:
 	virtual ~MaterialComponent();
 
 	void Apply();
+
+	inline void SetColor(const Color4f& color) { this->m_Color0 = color; }
+	void SetColor(float r, float g, float b, float a = 1.0f);
+
+	inline Color4f GetColor() const { return this->m_Color0; }
 
 }; // class MaterialComponent
 
