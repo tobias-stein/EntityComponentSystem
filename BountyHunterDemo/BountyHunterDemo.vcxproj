@@ -166,6 +166,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AICollectorController.cpp" />
     <ClCompile Include="Bounty.cpp" />
     <ClCompile Include="BountyHunterDemo.cpp" />
     <ClCompile Include="BountySpawn.cpp" />
@@ -187,7 +188,10 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="MenuSystem.cpp" />
     <ClCompile Include="OpenGL.cpp" />
     <ClCompile Include="OrthoCamera.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerCollectorController.cpp" />
     <ClCompile Include="PlayerSpawn.cpp" />
+    <ClCompile Include="PlayerSystem.cpp" />
     <ClCompile Include="PointSpawn.cpp" />
     <ClCompile Include="RegionSpawn.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
@@ -203,6 +207,8 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="WorldSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AICollectorController.h" />
+    <ClInclude Include="AIController.h" />
     <ClInclude Include="Bounds.h" />
     <ClInclude Include="Bounty.h" />
     <ClInclude Include="BountySpawn.h" />
@@ -216,11 +222,13 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectSpawn.h" />
+    <ClInclude Include="GameTypes.h" />
     <ClInclude Include="GLBuffer.h" />
     <ClInclude Include="GLShader.h" />
     <ClInclude Include="IController.h" />
     <ClInclude Include="IMaterial.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="ISpawn.h" />
     <ClInclude Include="IWorld.h" />
     <ClInclude Include="Material.h" />
@@ -228,8 +236,10 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="MaterialGenerator.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="OrthoCamera.h" />
+    <ClInclude Include="PlayerCollectorController.h" />
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="PlayerSpawn.h" />
+    <ClInclude Include="PlayerSystem.h" />
     <ClInclude Include="PointSpawn.h" />
     <ClInclude Include="QuadShape.h" />
     <ClInclude Include="Game.h" />

@@ -16,7 +16,7 @@ ControllerSystem::~ControllerSystem()
 	UnregisterEventCallbacks();
 }
 
-void ControllerSystem::PreUpdate(float dt)
+void ControllerSystem::Update(float dt)
 {
 	for (auto C : this->m_Controller)
 	{

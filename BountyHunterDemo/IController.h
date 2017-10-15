@@ -32,9 +32,11 @@ class IController
 {
 public:
 
-	IController();
+	IController()
+	{}
 
-	virtual ~IController();
+	virtual ~IController()
+	{}
 
 	virtual bool Possess(const GameObjectId gameObjectId) = 0;
 

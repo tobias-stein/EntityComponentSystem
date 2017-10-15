@@ -10,9 +10,13 @@
 
 #include "ControllerSystem.h"
 #include "WorldSystem.h"
+#include "PlayerSystem.h"
 
 #include "Collector.h"
 #include "Bounty.h"
+
+#include "AICollectorController.h"
+#include "PlayerCollectorController.h"
 
 #include "MaterialComponent.h"
 
@@ -22,7 +26,7 @@ CheatSystem::CheatSystem()
 
 	RegisterEventCallbacks();
 
-	this->m_ActivePlayerController = this->m_Controller.end();
+	this->m_SelectedPlayer = this->m_Players.end();
 }
 
 CheatSystem::~CheatSystem()
@@ -35,6 +39,9 @@ void CheatSystem::RegisterEventCallbacks()
 	RegisterEventCallback(&CheatSystem::OnGameObjectCreated);
 	RegisterEventCallback(&CheatSystem::OnGameObjectDestroyed);
 
+	RegisterEventCallback(&CheatSystem::OnPlayerJoined);
+	RegisterEventCallback(&CheatSystem::OnPlayerLeft);
+
 	RegisterEventCallback(&CheatSystem::OnKeyDownEvent);
 }
 
@@ -43,29 +50,31 @@ void CheatSystem::UnregisterEventCallbacks()
 	UnregisterEventCallback(&CheatSystem::OnGameObjectCreated);
 	UnregisterEventCallback(&CheatSystem::OnGameObjectDestroyed);
 	
+	UnregisterEventCallback(&CheatSystem::OnPlayerJoined);
+	UnregisterEventCallback(&CheatSystem::OnPlayerLeft);
+
 	UnregisterEventCallback(&CheatSystem::OnKeyDownEvent);
 }
 
-void CheatSystem::OnGameObjectCreated(const GameObjectCreated * event)
+void CheatSystem::OnGameObjectCreated(const GameObjectCreated* event)
 {
-	// store controller
-	ControllerComponent* entityControllerComponent = ECS::ECS_Engine->GetComponentManager()->GetComponent<ControllerComponent>(event->m_EntityID);
-	if (entityControllerComponent != nullptr)
-	{
-		this->m_Controller.push_back(entityControllerComponent);
-	}
 }
 
-void CheatSystem::OnGameObjectDestroyed(const GameObjectDestroyed * event)
+void CheatSystem::OnGameObjectDestroyed(const GameObjectDestroyed* event)
 {
-	ControllerComponent* entityControllerComponent = ECS::ECS_Engine->GetComponentManager()->GetComponent<ControllerComponent>(event->m_EntityID);
-	if (entityControllerComponent != nullptr)
-	{
-		this->m_Controller.remove(entityControllerComponent);
-	}
 }
 
-void CheatSystem::OnKeyDownEvent(const KeyDownEvent * event)
+void CheatSystem::OnPlayerJoined(const PlayerJoined* event)
+{
+	this->m_Players.push_back(event->playerID);
+}
+
+void CheatSystem::OnPlayerLeft(const PlayerLeft* event)
+{
+	this->m_Players.remove(event->playerID);
+}
+
+void CheatSystem::OnKeyDownEvent(const KeyDownEvent* event)
 {
 	switch (event->keyCode)
 	{
@@ -95,10 +104,10 @@ void CheatSystem::KillAllBountyGameObjects()
 void CheatSystem::PossessCollector()
 {
 	// already possesses a collector?
-	if (this->m_ActivePlayerController != this->m_Controller.end())
+	if (this->m_SelectedPlayer != this->m_Players.end())
 		return;
 
-	this->m_ActivePlayerController = this->m_Controller.begin();
+	this->m_SelectedPlayer = this->m_Players.begin();
 
 	DoPossessCollector();
 }
@@ -106,27 +115,27 @@ void CheatSystem::PossessCollector()
 void CheatSystem::UnpossessCollector()
 {
 	// no collector possessed?
-	if (this->m_ActivePlayerController == this->m_Controller.end())
+	if (this->m_SelectedPlayer == this->m_Players.end())
 		return;
 
 	DoUnpossessCollector();
 
-	this->m_ActivePlayerController = this->m_Controller.end();
+	this->m_SelectedPlayer = this->m_Players.end();
 }
 
 void CheatSystem::PossessNextCollector()
 {
 	// no collector possessed?
-	if (this->m_ActivePlayerController == this->m_Controller.end())
+	if (this->m_SelectedPlayer == this->m_Players.end())
 		return;
 
 	// unpossess current
 	DoUnpossessCollector();
 
 	// circle clock-wise
-	this->m_ActivePlayerController++;
-	if (this->m_ActivePlayerController == this->m_Controller.end())
-		this->m_ActivePlayerController = this->m_Controller.begin();
+	this->m_SelectedPlayer++;
+	if (this->m_SelectedPlayer == this->m_Players.end())
+		this->m_SelectedPlayer = this->m_Players.begin();
 
 	// possess next
 	DoPossessCollector();
@@ -135,17 +144,17 @@ void CheatSystem::PossessNextCollector()
 void CheatSystem::PossessPrevCollector()
 {
 	// no collector possessed?
-	if (this->m_ActivePlayerController == this->m_Controller.end())
+	if (this->m_SelectedPlayer == this->m_Players.end())
 		return;
 
 	// unpossess current
 	DoUnpossessCollector();
 
 	// circle counter-clock-wise
-	if (this->m_ActivePlayerController == this->m_Controller.begin())
-		this->m_ActivePlayerController = this->m_Controller.end();
+	if (this->m_SelectedPlayer == this->m_Players.begin())
+		this->m_SelectedPlayer = this->m_Players.end();
 
-	--this->m_ActivePlayerController;
+	--this->m_SelectedPlayer;
 
 	// possess next
 	DoPossessCollector();
@@ -153,18 +162,38 @@ void CheatSystem::PossessPrevCollector()
 
 void CheatSystem::DoPossessCollector()
 {
+	Player* player = ECS::ECS_Engine->GetSystemManager()->GetSystem<PlayerSystem>()->GetPlayer(*this->m_SelectedPlayer);
+
+	GameObjectId pawn = player->GetController().GetPossessed();
+
 	// Indicate possessed Collector by changing its color
-	MaterialComponent* collectorMaterialComponent = ECS::ECS_Engine->GetComponentManager()->GetComponent<MaterialComponent>((*this->m_ActivePlayerController)->GetOwner());
+	MaterialComponent* collectorMaterialComponent = ECS::ECS_Engine->GetComponentManager()->GetComponent<MaterialComponent>(pawn);
 	assert(collectorMaterialComponent != nullptr && "Unable to retrieve collectors material component!");
 
 	collectorMaterialComponent->SetColor(1.0f, 0.0f, 0.0f);
+
+	// Release old controller
+	player->GetController().Release();
+
+	// give player controll
+	player->GetController().SetController(new PlayerCollectorController(pawn));
 }
 
 void CheatSystem::DoUnpossessCollector()
 {
+	Player* player = ECS::ECS_Engine->GetSystemManager()->GetSystem<PlayerSystem>()->GetPlayer(*this->m_SelectedPlayer);
+
+	GameObjectId pawn = player->GetController().GetPossessed();
+
 	// Reset color to default
-	MaterialComponent* collectorMaterialComponent = ECS::ECS_Engine->GetComponentManager()->GetComponent<MaterialComponent>((*this->m_ActivePlayerController)->GetOwner());
+	MaterialComponent* collectorMaterialComponent = ECS::ECS_Engine->GetComponentManager()->GetComponent<MaterialComponent>(pawn);
 	assert(collectorMaterialComponent != nullptr && "Unable to retrieve collectors material component!");
 
 	collectorMaterialComponent->SetColor(MaterialComponent::DEFAULT_COLOR0);
+
+	// Release old controller
+	player->GetController().Release();
+
+	// let AI take controll
+	player->GetController().SetController(new AICollectorController(pawn));
 }

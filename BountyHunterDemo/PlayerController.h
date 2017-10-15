@@ -14,25 +14,57 @@ class PlayerController : public IController, ECS::Event::IEventListener
 {
 protected:
 
-	T*	m_Pawn;
+	T*		m_Pawn;
+
+private:
+
+	void OnKeyDownInternal(const KeyDownEvent* event)
+	{
+		this->OnKeyDown(event);
+	}
+
+	void OnKeyUpInternal(const KeyUpEvent* event)
+	{
+		this->OnKeyUp(event);
+	}
+
+	void OnKeyPressedInternal(const KeyPressedEvent* event)
+	{
+		this->OnKeyPressed(event);
+	}
+
+	void OnGamePaused(const GamePausedEvent* event)
+	{
+		UnregisterEventCallback(&PlayerController<T>::OnKeyDownInternal);
+		UnregisterEventCallback(&PlayerController<T>::OnKeyUpInternal);
+		UnregisterEventCallback(&PlayerController<T>::OnKeyPressedInternal);
+	}
+
+	void OnGameResumed(const GameResumedEvent* event)
+	{
+		RegisterEventCallback(&PlayerController<T>::OnKeyDownInternal);
+		RegisterEventCallback(&PlayerController<T>::OnKeyUpInternal);
+		RegisterEventCallback(&PlayerController<T>::OnKeyPressedInternal);
+	}
 
 public:
 
-	PlayerController() :
+	PlayerController(const GameObjectId gameObjectId = INVALID_GAMEOBJECT_ID) :
 		m_Pawn(nullptr)
 	{
-		RegisterEventCallback(&PlayerController<T>::OnKeyDown);
-		RegisterEventCallback(&PlayerController<T>::OnKeyUp);
-		RegisterEventCallback(&PlayerController<T>::OnKeyPressed);
+		if (gameObjectId != INVALID_GAMEOBJECT_ID)
+			this->Possess(gameObjectId);
+
+		RegisterEventCallback(&PlayerController<T>::OnGamePaused);
+		RegisterEventCallback(&PlayerController<T>::OnGameResumed);
 	}
 
 	virtual ~PlayerController()
 	{
-		this->m_Pawn = nullptr;
+		UnregisterEventCallback(&PlayerController<T>::OnGamePaused);
+		UnregisterEventCallback(&PlayerController<T>::OnGameResumed);
 
-		UnregisterEventCallback(&PlayerController<T>::OnKeyDown);
-		UnregisterEventCallback(&PlayerController<T>::OnKeyUp);
-		UnregisterEventCallback(&PlayerController<T>::OnKeyPressed);
+		this->Unpossess();
 	}
 
 	virtual bool Possess(const GameObjectId gameObjectId) override
@@ -46,12 +78,20 @@ public:
 		if (this->m_Pawn == nullptr)
 			return false;
 
+		RegisterEventCallback(&PlayerController<T>::OnKeyDownInternal);
+		RegisterEventCallback(&PlayerController<T>::OnKeyUpInternal);
+		RegisterEventCallback(&PlayerController<T>::OnKeyPressedInternal);
+
 		return true;
 	}
 
 	virtual void Unpossess() override
 	{
 		this->m_Pawn = nullptr;
+
+		UnregisterEventCallback(&PlayerController<T>::OnKeyDownInternal);
+		UnregisterEventCallback(&PlayerController<T>::OnKeyUpInternal);
+		UnregisterEventCallback(&PlayerController<T>::OnKeyPressedInternal);
 	}
 
 	virtual GameObjectId GetPossessed() const override
@@ -61,8 +101,6 @@ public:
 
 		return INVALID_GAMEOBJECT_ID;
 	}
-
-
 
 	virtual void Update(float dt) = 0;
 

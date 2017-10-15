@@ -15,6 +15,15 @@ Controller::~Controller()
 	this->m_ControllerImpl = nullptr;
 }
 
+void Controller::Release()
+{
+	if (this->m_ControllerImpl != nullptr)
+	{
+		delete this->m_ControllerImpl;
+		this->m_ControllerImpl = nullptr;
+	}
+}
+
 void Controller::SetController(IController* controllerImpl)
 {
 	if(this->m_ControllerImpl != nullptr)
@@ -65,7 +74,7 @@ GameObjectId Controller::GetPossessed()
 	if (this->m_ControllerImpl == nullptr)
 		return INVALID_GAMEOBJECT_ID;
 
-	this->m_ControllerImpl->GetPossessed(); 
+	return this->m_ControllerImpl->GetPossessed(); 
 }
 
 void Controller::Update(float dt) 

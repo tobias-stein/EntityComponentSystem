@@ -25,9 +25,9 @@
 
 class CheatSystem : public ECS::System<CheatSystem>, public ECS::Event::IEventListener
 {
-	using RegisteredController = std::list<ControllerComponent*>;
+	using ActivePlayers		= std::list<PlayerId>;
 
-	using ActivePlayerController = RegisteredController::iterator;
+	using SelectedPlayers	= ActivePlayers::iterator;
 
 private:
 
@@ -38,11 +38,14 @@ private:
 	void OnGameObjectCreated(const GameObjectCreated* event);
 	void OnGameObjectDestroyed(const GameObjectDestroyed* event);
 
+	void OnPlayerJoined(const PlayerJoined* event);
+	void OnPlayerLeft(const PlayerLeft* event);
+
 	void OnKeyDownEvent(const KeyDownEvent* event);
 
 
-	RegisteredController	m_Controller;
-	ActivePlayerController	m_ActivePlayerController;
+	ActivePlayers	m_Players;
+	SelectedPlayers	m_SelectedPlayer;
 
 public:
 

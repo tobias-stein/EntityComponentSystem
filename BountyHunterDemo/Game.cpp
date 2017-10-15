@@ -10,6 +10,7 @@
 #include "MenuSystem.h"
 #include "RenderSystem.h"
 #include "WorldSystem.h"
+#include "PlayerSystem.h"
 #include "RespawnSystem.h"
 #include "ControllerSystem.h"
 #include "CheatSystem.h"
@@ -60,6 +61,8 @@ void Game::InitializeECS()
 	// ControllerSystem
 	ControllerSystem* CS = ECS::ECS_Engine->GetSystemManager()->AddSystem<ControllerSystem>();
 
+	// PlayerSystem
+	PlayerSystem* PS = ECS::ECS_Engine->GetSystemManager()->AddSystem<PlayerSystem>();
 
 	// Add system dependencies
 	CS->AddDependencies(IS);
@@ -212,7 +215,6 @@ void Game::ProcessWindowEvent()
 	}
 }
 
-
 void Game::ToggleFullscreen() {
 
 	if(mFullscreen == false)
@@ -243,6 +245,8 @@ void Game::Resume() {
 #include "Bounty.h"
 #include "PlayerSpawn.h"
 #include "BountySpawn.h"
+#include "AICollectorController.h"
+#include "PlayerCollectorController.h"
 
 void Game::Run()
 {
@@ -255,6 +259,7 @@ void Game::Run()
 	// create test dummies
 	WorldSystem* worldSystem = ECS::ECS_Engine->GetSystemManager()->GetSystem<WorldSystem>();
 	RespawnSystem* respawnSystem = ECS::ECS_Engine->GetSystemManager()->GetSystem<RespawnSystem>();
+	PlayerSystem* playerSystem = ECS::ECS_Engine->GetSystemManager()->GetSystem<PlayerSystem>();
 
 	// spawn max. number of player in a circle also create player spawns
 	const float STEP = glm::two_pi<float>() / max(1.0f, (float)MAX_PLAYER);
@@ -269,13 +274,28 @@ void Game::Run()
 
 		Position spawnPosition(xR, yR, 0.0f);
 
-		Transform initialTransform = glm::translate(glm::mat4(1.0f), spawnPosition) * glm::rotate(angle + glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)) * glm::scale(glm::vec3(1.5f));
-		
-		// spawn player spawn
-		GameObjectId playerSpawn = worldSystem->AddGameObject<PlayerSpawn>(Transform(Position(xR, yR, 1.0f)), spawnPosition, angle + glm::radians(90.0f));
+		Transform initialTransform = glm::translate(glm::mat4(1.0f), spawnPosition) * glm::rotate(angle + glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)) * glm::scale(glm::vec3(1.5f));		
 
-		// spawn player
-		worldSystem->AddGameObject<Collector>(initialTransform, playerSpawn);	
+		// spawn collector spawn
+		GameObjectId collectorSpawn = worldSystem->AddGameObject<PlayerSpawn>(Transform(Position(xR, yR, 1.0f)), spawnPosition, angle + glm::radians(90.0f));
+
+		// spawn collector
+		GameObjectId collector = worldSystem->AddGameObject<Collector>(initialTransform, collectorSpawn);
+
+		if ((i == 0) && (HAS_HUMAN_PLAYER == true))
+		{
+			// Indicate possessed Collector by changing its color
+			MaterialComponent* collectorMaterialComponent = ECS::ECS_Engine->GetComponentManager()->GetComponent<MaterialComponent>(collector);
+			assert(collectorMaterialComponent != nullptr && "Unable to retrieve collectors material component!");
+			collectorMaterialComponent->SetColor(1.0f, 0.0f, 0.0f);
+
+			// create human player
+			playerSystem->AddNewPlayer(DEFAULT_PLAYER_NAME, new PlayerCollectorController(collector));
+			continue;
+		}
+
+		// create ai player
+		playerSystem->AddNewPlayer(("Player #" + std::to_string(i)).c_str(), new AICollectorController(collector));
 	}
 	
 	// create bounty spawn

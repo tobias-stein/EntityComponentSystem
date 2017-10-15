@@ -8,7 +8,7 @@
 #define __CONTROLLER_H__
 
 #include "PlayerController.h"
-//#include "AIController.h"
+#include "AIController.h"
 
 class Controller
 {
@@ -21,6 +21,8 @@ public:
 	Controller(IController* controllerImpl);
 
 	~Controller();
+
+	void Release();
 
 	void SetController(IController* controllerImpl);
 

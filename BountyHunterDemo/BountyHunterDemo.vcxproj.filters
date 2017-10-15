@@ -112,15 +112,36 @@
     <Filter Include="Source Files\Controller">
       <UniqueIdentifier>{f10d09ef-efc5-4c1e-8fb5-ebefd7be0625}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Player">
+      <UniqueIdentifier>{d904ab90-bc74-4844-8a96-aed97f174f7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Player">
+      <UniqueIdentifier>{febc4556-47b7-4270-8791-2f6acac1e8dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game">
+      <UniqueIdentifier>{c49f6a9f-93da-45b2-a444-770850c5359c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{3542f671-482e-4cb8-98f2-5b7dab586504}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{f8e39cc4-363e-47b1-9895-4bf06d74ba16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{99296bc8-5d90-4977-8f6f-5d5eea2f0aa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controller\Controllers">
+      <UniqueIdentifier>{960d7493-1e93-4def-b9a7-03c8c64749a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controller\Controllers">
+      <UniqueIdentifier>{ae6e702f-95db-422e-89d3-7cbedfaf6ff8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BountyHunterDemo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem.cpp">
@@ -210,29 +231,35 @@
     <ClCompile Include="Bounty.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="FPS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ControllerSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Controller.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllerSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
     <ClCompile Include="CheatSystem.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="FPS.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCollectorController.cpp">
+      <Filter>Source Files\Controller\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="AICollectorController.cpp">
+      <Filter>Source Files\Controller\Controllers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameConfiguration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameEvents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MenuSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
@@ -365,9 +392,6 @@
     <ClInclude Include="GameObjectSpawn.h">
       <Filter>Header Files\Entities\Spawn</Filter>
     </ClInclude>
-    <ClInclude Include="FPS.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IController.h">
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
@@ -385,6 +409,36 @@
     </ClInclude>
     <ClInclude Include="CheatSystem.h">
       <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEvents.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameConfiguration.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="FPS.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTypes.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="AIController.h">
+      <Filter>Header Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCollectorController.h">
+      <Filter>Header Files\Controller\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="AICollectorController.h">
+      <Filter>Header Files\Controller\Controllers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

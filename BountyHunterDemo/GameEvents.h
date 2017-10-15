@@ -9,10 +9,7 @@
 
 #include <ECS/ECS.h>
 
-// allias for entity
-using GameObjectId = ECS::EntityId;
-using GameObjectTypeId = ECS::EntityTypeId;
-static const GameObjectId INVALID_GAMEOBJECT_ID = ECS::INVALID_ENTITY_ID;
+#include "GameTypes.h"
 
 #include "Transform.h"
 
@@ -171,8 +168,6 @@ struct GameObjectCreated : public ECS::Event::Event<GameObjectCreated>
 	{}
 };
 
-
-
 struct GameObjectDestroyed : public ECS::Event::Event<GameObjectDestroyed>
 {
 	GameObjectId	m_EntityID;
@@ -250,5 +245,30 @@ struct WindowResizedEvent : public ECS::Event::Event<WindowResizedEvent>
 		height(h)
 	{}
 };
+
+
+///-------------------------------------------------------------------------------------------------
+/// Summary:	Game events.
+/// Author:	Tobias Stein
+///
+/// Date:	15/10/2017
+///-------------------------------------------------------------------------------------------------
+ 
+struct PlayerJoined : public ECS::Event::Event<PlayerJoined>
+{
+	PlayerId playerID;
+
+	PlayerJoined(PlayerId id) : playerID(id)
+	{}
+};
+
+struct PlayerLeft : public ECS::Event::Event<PlayerLeft>
+{
+	PlayerId playerID;
+
+	PlayerLeft(PlayerId id) : playerID(id)
+	{}
+};
+
 
 #endif // __GAME_EVENTS_H__

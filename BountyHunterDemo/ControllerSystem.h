@@ -30,7 +30,7 @@ public:
 	ControllerSystem();
 	virtual ~ControllerSystem();
 
-	virtual void PreUpdate(float dt) override;
+	virtual void Update(float dt) override;
 
 }; // class ControllerSystem
 

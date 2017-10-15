@@ -11,6 +11,11 @@
 /// Summary:	The game title.
 static constexpr const char*		GAME_TITLE							{ "BountyHunter Demo" };
 
+/// Summary:	True if first player is human
+static constexpr bool				HAS_HUMAN_PLAYER					{ true };
+
+/// Summary:	The default player name.
+static constexpr const char*		DEFAULT_PLAYER_NAME					{ "BountyHunter" };
 
 
 // <<<< GAME WINDOW SETTINGS >>>>
