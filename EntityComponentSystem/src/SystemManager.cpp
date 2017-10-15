@@ -136,7 +136,10 @@ namespace ECS
 				}
 
 				group.push_back(index);
-				groupPriority = std::max(this->m_Systems[index]->m_Priority, groupPriority);
+
+
+				ISystem* sys = this->m_Systems[index];
+				groupPriority = std::max((sys != nullptr ? sys->m_Priority : NORMAL_SYSTEM_PRIORITY), groupPriority);
 			}
 
 			VERTEX_GROUPS.push_back(group);
@@ -179,8 +182,12 @@ namespace ECS
 		{
 			for (auto m : group.second)
 			{
-				this->m_SystemWorkOrder.push_back(this->m_Systems[m]);
-				LogInfo("\t%s", this->m_Systems[m]->GetSystemTypeName())
+				ISystem* sys = this->m_Systems[m];
+				if (sys != nullptr)
+				{
+					this->m_SystemWorkOrder.push_back(sys);
+					LogInfo("\t%s", sys->GetSystemTypeName())
+				}
 			}
 		}
 	}

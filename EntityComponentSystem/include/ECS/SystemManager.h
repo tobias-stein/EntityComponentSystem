@@ -101,7 +101,7 @@ namespace ECS
 
 			// avoid multiple registrations of the same system
 			auto it = this->m_Systems.find(STID);
-			if (this->m_Systems.find(STID) != this->m_Systems.end())
+			if ((this->m_Systems.find(STID) != this->m_Systems.end()) && (it->second != nullptr))
 				return (T*)it->second;
 
 			T* system = nullptr;
