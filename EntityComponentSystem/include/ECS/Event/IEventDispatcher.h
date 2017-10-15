@@ -54,7 +54,7 @@ namespace ECS
 
 					EventDelegateList::const_iterator it = this->m_EventCallbacks.find(id);
 
-					assert(it == this->m_EventCallbacks.end() && "Event callback already registered.");
+					// no duplicate
 					if (it != this->m_EventCallbacks.end())
 						return;
 

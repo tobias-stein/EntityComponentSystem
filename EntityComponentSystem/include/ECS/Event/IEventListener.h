@@ -83,13 +83,14 @@ namespace ECS
 			template<class E, class C>
 			inline void UnregisterEventCallback(void(C::*Callback)(const E* const))
 			{
-				Internal::EventDelegateId eventDelegateId = (Internal::EventDelegateId)&(*static_cast<C*>(this));
+				
+				Internal::EventDelegateId delegateId = Internal::EventDelegate<C, E>(static_cast<C*>(this), Callback).GetDelegateId();
 
 				for (auto cb : this->m_RegisteredCallbacks)
 				{
-					if (cb->GetDelegateId() == eventDelegateId)
+					if (cb->GetDelegateId() == delegateId)
 					{
-						ECS_Engine->UnsubscribeEvent(cb->GetStaticEventTypeId(), eventDelegateId);
+						ECS_Engine->UnsubscribeEvent(cb->GetStaticEventTypeId(), delegateId);
 
 						this->m_RegisteredCallbacks.remove(cb);
 						delete cb;

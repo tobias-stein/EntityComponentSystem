@@ -38,7 +38,7 @@ namespace ECS { namespace Event {
 		class EventDelegate : public IEventDelegate
 		{
 			typedef void(Class::*Callback)(const EventType* const);
-	
+
 			Class* m_Receiver;
 			Callback m_Callback;
 	
@@ -48,20 +48,22 @@ namespace ECS { namespace Event {
 				m_Receiver(receiver),
 				m_Callback(callbackFunction)
 			{}
-	
+
 			virtual inline void invoke(const IEvent* const e) override
 			{
 				(m_Receiver->*m_Callback)(reinterpret_cast<const EventType* const>(e));
 			}
 	
 			virtual inline EventDelegateId GetDelegateId() const override
-			{
-				return (EventDelegateId)&(*m_Receiver);
+			{			
+				static const EventDelegateId DELEGATE_ID { typeid(Callback).hash_code() };
+				return DELEGATE_ID;
 			}
+
 
 			virtual inline u64 GetStaticEventTypeId() const override
 			{
-				static const u64 SEID = { EventType::STATIC_EVENT_TYPE_ID };
+				static const u64 SEID { EventType::STATIC_EVENT_TYPE_ID };
 				return SEID;
 			}
 
