@@ -9,6 +9,9 @@
 TransformComponent::TransformComponent()
 {}
 
+TransformComponent::TransformComponent(const glm::mat4 & transform) : Transform(transform)
+{}
+
 TransformComponent::TransformComponent(const Transform& transform) : Transform(transform)
 {}
 

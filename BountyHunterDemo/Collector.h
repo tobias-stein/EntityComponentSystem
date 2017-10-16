@@ -15,10 +15,18 @@
 
 class Collector : public GameObject<Collector>
 {
+private:
+
+	TransformComponent*	m_ThisTransform;
+
 public:
 
-	Collector(GameObjectId spawnId, IController* controller = nullptr);
+	Collector(GameObjectId spawnId);
 	virtual ~Collector();
+
+	void MoveForward(float speed);
+	void TurnLeft(float degrees);
+	void TurnRight(float degrees);
 
 }; // class Collector
 

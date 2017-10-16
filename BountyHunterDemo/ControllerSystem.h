@@ -9,19 +9,16 @@
 
 #include <ECS/ECS.h>
 
-#include "ControllerComponent.h"
+#include "Controller.h"
 
 class ControllerSystem : public ECS::System<ControllerSystem>, public ECS::Event::IEventListener
 {
-	using RegisteredController = std::list<ControllerComponent*>;
+	using RegisteredController = std::list<Controller*>;
 
 private:
 
 	void RegisterEventCallbacks();
 	void UnregisterEventCallbacks();
-
-	void OnGameObjectCreated(const GameObjectCreated* event);
-	void OnGameObjectDestroyed(const GameObjectDestroyed* event);
 
 	RegisteredController m_Controller;
 
@@ -31,6 +28,9 @@ public:
 	virtual ~ControllerSystem();
 
 	virtual void Update(float dt) override;
+
+	void RegisterController(Controller* controller);
+	void UnregisterController(Controller* controller);
 
 }; // class ControllerSystem
 

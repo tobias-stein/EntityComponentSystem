@@ -17,10 +17,12 @@ class TransformComponent : public Transform, public ECS::Component<TransformComp
 public:
 
 	TransformComponent();
+	TransformComponent(const glm::mat4& transform);
 	TransformComponent(const Transform& transform);
 	virtual ~TransformComponent();
 
-	inline const float* GetTranformPtr() const { return *this; }
+	inline const float*		AsFloat() const { return *this; }
+	inline const glm::mat4& AsMat4() const { return *this; }
 
 }; // class TransformComponent
 

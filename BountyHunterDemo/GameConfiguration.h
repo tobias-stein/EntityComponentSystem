@@ -59,7 +59,12 @@ static constexpr float				COLLECTOR_RESPAWNTIME				{ 5.0f }; // seconds
 /// Summary:	The default bounty respawntime.
 static constexpr float				BOUNTY_RESPAWNTIME					{ 2.0f }; // seconds
 
+/// Summary:	Collector max move speed.
+static constexpr float				COLLECTOR_MAX_MOVE_SPEED			{ 10.0f }; // units per second
 
+/// Summary:	Collector max turn speed.
+static constexpr float				RADIANS								{ 0.017453292f };
+static constexpr float				COLLECTOR_MAX_TURN_SPEED			{ 360.0f * RADIANS }; // degrees per second
 
 // <<<< DEBUG SETTINGS >>>>
 

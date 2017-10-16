@@ -14,7 +14,6 @@ class Transform
 private:
 
 	glm::mat4	m_Transform;
-
 	
 public:
 
@@ -36,8 +35,13 @@ public:
 	void SetRotation(const glm::vec3& rotation_euler);
 	void SetScale(const glm::vec3& scale);
 
+	inline glm::vec3 GetRight() const { return glm::vec3(this->m_Transform[0]); }
+	inline glm::vec3 GetUp() const { return glm::vec3(this->m_Transform[1]); }
+	inline glm::vec3 GetForward() const { return glm::vec3(this->m_Transform[2]); }
 
-	inline glm::vec3 GetPosition() { return glm::vec3(this->m_Transform[3]); }
+	inline glm::vec3 GetPosition() const { return glm::vec3(this->m_Transform[3]); }
+
+	
 
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	glm::vec3 Transform::GetRotation();
@@ -57,6 +61,7 @@ public:
 
 	// conversion to float array
 	inline operator const float*() const { return &(this->m_Transform[0][0]); }
+	inline operator const glm::mat4&() const { return this->m_Transform; }
 
 	inline static Transform IDENTITY() { return Transform(); }
 

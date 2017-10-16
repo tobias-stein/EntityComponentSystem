@@ -401,9 +401,6 @@
     <ClInclude Include="Controller.h">
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="ControllerComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="ControllerSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>

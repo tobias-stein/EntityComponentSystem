@@ -147,7 +147,7 @@ void RenderSystem::Update(float dt)
 			renderable.m_MaterialComponent->Apply();
 
 			// Set model transform uniform
-			renderable.m_MaterialComponent->SetModelTransform(renderable.m_TransformComponent->GetTranformPtr());
+			renderable.m_MaterialComponent->SetModelTransform(renderable.m_TransformComponent->AsFloat());
 
 			// draw shape
 			if (renderable.m_ShapeComponent->IsIndexed() == true)

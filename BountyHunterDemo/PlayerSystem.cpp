@@ -5,6 +5,7 @@
 ///-------------------------------------------------------------------------------------------------
 
 #include "PlayerSystem.h"
+#include "ControllerSystem.h"
 
 PlayerSystem::PlayerSystem() :
 	m_Players(MAX_PLAYER, nullptr)
@@ -31,6 +32,7 @@ PlayerId PlayerSystem::AddNewPlayer(const char* playerName, const Controller& co
 			this->m_Players[i] = new Player(i, playerName, controller);
 
 			ECS::ECS_Engine->SendEvent<PlayerJoined>(i);
+			ECS::ECS_Engine->GetSystemManager()->GetSystem<ControllerSystem>()->RegisterController(&this->m_Players[i]->GetController());
 			return i;
 		}
 	}
@@ -44,6 +46,7 @@ void PlayerSystem::RemovePlayer(PlayerId playerId)
 
 	if (this->m_Players[playerId] != nullptr)
 	{
+		ECS::ECS_Engine->GetSystemManager()->GetSystem<ControllerSystem>()->RegisterController(&this->m_Players[playerId]->GetController());
 		delete this->m_Players[playerId];
 		this->m_Players[playerId] = nullptr;
 

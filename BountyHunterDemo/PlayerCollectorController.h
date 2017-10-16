@@ -12,6 +12,13 @@
 
 class PlayerCollectorController : public PlayerController<Collector>
 {
+private:
+
+	uint8_t m_MoveForward	: 1;
+	uint8_t m_TurnLeft		: 1;
+	uint8_t m_TurnRight		: 1;
+	uint8_t __padding		: 5;
+
 public:
 
 	PlayerCollectorController(const GameObjectId gameObjectId);
