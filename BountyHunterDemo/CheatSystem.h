@@ -11,8 +11,6 @@
 
 #include "GameObject.h"
 
-#include "ControllerComponent.h"
-
 ///-------------------------------------------------------------------------------------------------
 /// Class:	CheatSystem
 ///

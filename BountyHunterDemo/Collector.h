@@ -10,8 +10,6 @@
 
 #include "GameObject.h"
 
-#include "ControllerComponent.h"
-
 
 class Collector : public GameObject<Collector>
 {
