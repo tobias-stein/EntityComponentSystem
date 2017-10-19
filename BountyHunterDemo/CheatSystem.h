@@ -65,6 +65,8 @@ private:
 	void DoPossessCollector();
 	void DoUnpossessCollector();
 
+	void DumpPhysics();
+
 }; // class CheatSystem
 
 #endif // __CHEAT_SYSTEM_H__

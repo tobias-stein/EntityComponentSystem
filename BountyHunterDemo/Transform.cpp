@@ -33,10 +33,10 @@ Transform::Transform(const glm::vec3& position, const glm::quat rotation)
 	this->m_Transform	= P * R;
 }
 
-Transform::Transform(const glm::vec3& position, const glm::vec3 axis, const float angle)
+Transform::Transform(const glm::vec3& position, const glm::vec3 axis, const float angle_radians)
 {
 	glm::mat4 P			= glm::translate(glm::mat4(1.0f), position);
-	glm::mat4 PR		= glm::rotate(P, angle, axis);
+	glm::mat4 PR		= glm::rotate(P, angle_radians, axis);
 
 	this->m_Transform	= PR;
 }
@@ -51,10 +51,10 @@ Transform::Transform(const glm::vec3& position, const glm::quat rotation, const 
 	this->m_Transform	= PRS;
 }
 
-Transform::Transform(const glm::vec3& position, const glm::vec3 axis, const float angle, const glm::vec3& scale)
+Transform::Transform(const glm::vec3& position, const glm::vec3 axis, const float angle_radians, const glm::vec3& scale)
 {
 	glm::mat4 P			= glm::translate(glm::mat4(1.0f), position);
-	glm::mat4 PR		= glm::rotate(P, angle, axis);
+	glm::mat4 PR		= glm::rotate(P, angle_radians, axis);
 	glm::mat4 PRS		= glm::scale(PR, scale);
 
 	this->m_Transform	= PRS;
@@ -65,13 +65,13 @@ void Transform::SetPosition(const glm::vec3 & position)
 	this->m_Transform[3] = glm::vec4(position, this->m_Transform[3].w);
 }
 
-void Transform::SetRotation(const glm::vec3 & rotation_euler)
+void Transform::SetRotation(const glm::vec3 & rotation_euler_radians)
 {
 	glm::vec3 Tr = this->GetPosition();
 	glm::vec3 Sc = this->GetScale();
 
 	auto T = glm::translate(glm::mat4(1.0f), Tr);
-	auto R = glm::yawPitchRoll(rotation_euler.x, rotation_euler.y, rotation_euler.z);
+	auto R = glm::yawPitchRoll(rotation_euler_radians.x, rotation_euler_radians.y, rotation_euler_radians.z);
 
 	this->m_Transform = T * R * glm::scale(Sc);
 }
@@ -87,7 +87,7 @@ void Transform::SetScale(const glm::vec3& scale)
 	this->m_Transform = T * R * glm::scale(scale);
 }
 
-glm::vec3 Transform::GetRotation()
+glm::vec3 Transform::GetRotation() const
 {
 	glm::vec3 euler_angles;
 	glm::extractEulerAngleXYZ(this->m_Transform, euler_angles[0], euler_angles[1], euler_angles[2]);
@@ -95,7 +95,7 @@ glm::vec3 Transform::GetRotation()
 	return euler_angles;
 }
 
-glm::vec3 Transform::GetScale()
+glm::vec3 Transform::GetScale() const
 {
 	glm::vec3 row[3];
 	for (size_t i = 0; i < 3; ++i)

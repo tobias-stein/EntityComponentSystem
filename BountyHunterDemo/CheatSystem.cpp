@@ -87,6 +87,8 @@ void CheatSystem::OnKeyDownEvent(const KeyDownEvent* event)
 
 		case SDLK_F9:	KillAllCollectorGameObjects(); break;
 		case SDLK_F10:	KillAllBountyGameObjects(); break;
+
+		case SDLK_F11:	DumpPhysics(); break;
 	}
 }
 
@@ -196,4 +198,9 @@ void CheatSystem::DoUnpossessCollector()
 
 	// let AI take controll
 	player->GetController().SetController(new AICollectorController(pawn));
+}
+
+void CheatSystem::DumpPhysics()
+{
+	ECS::ECS_Engine->GetSystemManager()->GetSystem<WorldSystem>()->DumpPhysics();
 }

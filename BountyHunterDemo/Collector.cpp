@@ -9,18 +9,20 @@
 #include "ShapeComponent.h"
 #include "MaterialComponent.h"
 #include "RespawnComponent.h"
-
+#include "CollisionComponent2D.h"
 #include "ShapeGenerator.h"
 #include "MaterialGenerator.h"
 
 Collector::Collector(GameObjectId spawnId)
 {
-	AddComponent<ShapeComponent>(ShapeGenerator::CreateShape<TriangleShape>());
-	AddComponent<MaterialComponent>(MaterialGenerator::CreateMaterial<DefaultMaterial>());
-	AddComponent<RespawnComponent>(COLLECTOR_RESPAWNTIME, spawnId, true);
+	Shape shape = ShapeGenerator::CreateShape<TriangleShape>();
 
+	AddComponent<ShapeComponent>(shape);
+	AddComponent<MaterialComponent>(MaterialGenerator::CreateMaterial<DefaultMaterial>());
+	AddComponent<RespawnComponent>(COLLECTOR_RESPAWNTIME, spawnId, true);	
 	this->m_ThisTransform = GetComponent<TransformComponent>();
-	assert(this->m_ThisTransform != nullptr && "Failed to get transform");
+	this->m_ThisRigidbody = AddComponent<RigidbodyComponent>();
+	AddComponent<CollisionComponent2D>(shape, this->m_ThisTransform->GetScale());
 }
 
 Collector::~Collector()
@@ -28,15 +30,32 @@ Collector::~Collector()
 
 void Collector::MoveForward(float speed)
 {
-	*this->m_ThisTransform = glm::translate(glm::mat4(1.0f), this->m_ThisTransform->GetUp() * speed) * this->m_ThisTransform->AsMat4();
+	glm::vec2 vel = this->m_ThisTransform->GetUp() * speed;
+	this->m_ThisRigidbody->m_Box2DBody->SetLinearVelocity(b2Vec2(vel.x, vel.y));
 }
 
-void Collector::TurnLeft(float degrees)
+void Collector::TurnLeft(float degrees_sec)
 {
-	*this->m_ThisTransform = glm::rotate(this->m_ThisTransform->AsMat4(), degrees, glm::vec3(0.0f, 0.0f, 1.0f));
+	this->m_ThisRigidbody->m_Box2DBody->SetAngularVelocity(degrees_sec);
 }
 
-void Collector::TurnRight(float degrees)
+void Collector::TurnRight(float degrees_sec)
 {
-	*this->m_ThisTransform = glm::rotate(this->m_ThisTransform->AsMat4(), -degrees, glm::vec3(0.0f, 0.0f, 1.0f));
+	this->m_ThisRigidbody->m_Box2DBody->SetAngularVelocity(-degrees_sec);
+}
+
+void Collector::Stop()
+{
+	this->m_ThisRigidbody->m_Box2DBody->SetLinearVelocity(b2Vec2_zero);
+	this->m_ThisRigidbody->m_Box2DBody->SetAngularVelocity(0.0f);
+}
+
+void Collector::StopTurning()
+{
+	this->m_ThisRigidbody->m_Box2DBody->SetAngularVelocity(0.0f);
+}
+
+void Collector::StopMoving()
+{
+	this->m_ThisRigidbody->m_Box2DBody->SetLinearVelocity(b2Vec2_zero);
 }

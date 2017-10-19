@@ -51,6 +51,7 @@ class WorldSystem : public ECS::System<WorldSystem>
 	using KillQueue		= std::vector<GameObjectId>;
 
 	using WorldObjects	= std::vector<WorldObjectInfo>;
+
 private:
 
 	IWorld*			m_World;
@@ -124,7 +125,7 @@ public:
 	GameObjectId AddGameObject(Transform transform, ARGS&&... args)
 	{
 		// create entity
-		ECS::EntityId entityId = ECS::ECS_Engine->GetEntityManager()->CreateEntity<T>(std::forward<ARGS>(args)...);
+		GameObjectId entityId = ECS::ECS_Engine->GetEntityManager()->CreateEntity<T>(std::forward<ARGS>(args)...);
 
 		ECS::IEntity* entity = ECS::ECS_Engine->GetEntityManager()->GetEntity(entityId);
 
@@ -134,6 +135,9 @@ public:
 
 		// set initial transform
 		*entityTransformComponent = transform;
+
+		this->m_World->AddGameObject(entityId);
+
 
 		// add Gameobject to list
 		size_t i = 0;
@@ -189,6 +193,15 @@ public:
 	{
 		for (auto wo : this->m_WorldObjects)
 			KillGameObject(wo.m_GameObjectID);
+	}
+
+	void DumpPhysics()
+	{
+		World2D* w2d = static_cast<World2D*>(this->m_World);
+		if (w2d != nullptr)
+		{
+			w2d->DumpPhysics();
+		}
 	}
 
 }; // class WorldSystem

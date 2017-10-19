@@ -19,7 +19,7 @@ class Shape
 {
 private:
 
-	const IShape* m_ShapeData;
+	const IShape* m_ShapeImpl;
 
 public:
 
@@ -27,27 +27,28 @@ public:
 	Shape(const IShape* shapeData);
 	~Shape();
 
-	inline const ShapeID				GetShapeID() const { return this->m_ShapeData->GetShapeID(); }
+	inline const ShapeID				GetShapeID() const { return this->m_ShapeImpl->GetShapeID(); }
 
+	inline bool							IsValid() const { return this->m_ShapeImpl != nullptr; }
 	// >>> Forward methods to real shape data >>> 
 
-	inline const size_t					GetVertexCount() const { return this->m_ShapeData->GetVertexCount(); }
+	inline const size_t					GetVertexCount() const { return this->m_ShapeImpl->GetVertexCount(); }
 
-	inline const size_t					GetTriangleCount() const { return this->m_ShapeData->GetTriangleCount(); }
+	inline const size_t					GetTriangleCount() const { return this->m_ShapeImpl->GetTriangleCount(); }
 
-	inline const size_t					GetIndexCount() const { return this->m_ShapeData->GetIndexCount(); }
+	inline const size_t					GetIndexCount() const { return this->m_ShapeImpl->GetIndexCount(); }
 
-	inline const bool					IsIndexed() const { return this->m_ShapeData->GetIndex() != nullptr; }
+	inline const bool					IsIndexed() const { return this->m_ShapeImpl->GetIndex() != nullptr; }
 
-	inline const VertexPositionData*	GetPosition() const { return this->m_ShapeData->GetPosition(); }
+	inline const VertexPositionData*	GetPosition() const { return this->m_ShapeImpl->GetPosition(); }
 
-	inline const VertexIndexData*		GetIndex() const { return this->m_ShapeData->GetIndex(); }
+	inline const VertexIndexData*		GetIndex() const { return this->m_ShapeImpl->GetIndex(); }
 
-	inline const VertexNormalData*		GetNormal() const { return this->m_ShapeData->GetNormal(); }
+	inline const VertexNormalData*		GetNormal() const { return this->m_ShapeImpl->GetNormal(); }
 
-	inline const VertexTexCoordData*	GetTexCoord() const { return this->m_ShapeData->GetTexCoord(); }
+	inline const VertexTexCoordData*	GetTexCoord() const { return this->m_ShapeImpl->GetTexCoord(); }
 
-	inline const VertexColorData*		GetColor() const { return this->m_ShapeData->GetColor(); }
+	inline const VertexColorData*		GetColor() const { return this->m_ShapeImpl->GetColor(); }
 
 }; // class Shape
 

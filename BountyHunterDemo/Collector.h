@@ -10,12 +10,14 @@
 
 #include "GameObject.h"
 
+#include "RigidbodyComponent.h"
 
 class Collector : public GameObject<Collector>
 {
 private:
 
 	TransformComponent*	m_ThisTransform;
+	RigidbodyComponent* m_ThisRigidbody;
 
 public:
 
@@ -25,6 +27,10 @@ public:
 	void MoveForward(float speed);
 	void TurnLeft(float degrees);
 	void TurnRight(float degrees);
+
+	void Stop();
+	void StopTurning();
+	void StopMoving();
 
 }; // class Collector
 

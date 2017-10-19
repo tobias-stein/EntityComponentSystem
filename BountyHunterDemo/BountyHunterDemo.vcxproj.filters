@@ -408,6 +408,15 @@
     <ClCompile Include="..\3rdParty\Box2D\Box2D\Dynamics\b2WorldCallbacks.cpp">
       <Filter>Source Files\Physics\Box2D</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionComponent2D.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidbodyComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MenuSystem.h">
@@ -728,5 +737,17 @@
     <ClInclude Include="..\3rdParty\Box2D\Box2D\Box2D.h">
       <Filter>Header Files\Physics\Box2D</Filter>
     </ClInclude>
+    <ClInclude Include="RigidbodyComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionComponent2D.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

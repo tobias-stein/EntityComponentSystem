@@ -13,6 +13,7 @@
 #include "PlayerSystem.h"
 #include "RespawnSystem.h"
 #include "ControllerSystem.h"
+#include "PhysicsSystem.h"
 #include "CheatSystem.h"
 
 Game::Game() :
@@ -51,9 +52,16 @@ void Game::InitializeECS()
 	// RenderSystem
 	RenderSystem* RS = ECS::ECS_Engine->GetSystemManager()->AddSystem<RenderSystem>(this->mWindow);
 
-	// WorldSystem
-	IWorld* world = new World2D(Bounds2D(Point2D(WORLD_BOUND_MIN[0], WORLD_BOUND_MIN[1]), Point2D(WORLD_BOUND_MAX[0], WORLD_BOUND_MAX[1])), glm::vec2(WORLD_UP_VECTOR[0], WORLD_UP_VECTOR[1]));
-	WorldSystem* WS = ECS::ECS_Engine->GetSystemManager()->AddSystem<WorldSystem>(world);
+
+	// ATTENTION: The order how the Physics and World System are added matters!
+	
+		// PhysicsSystem
+		PhysicsSystem* PyS = ECS::ECS_Engine->GetSystemManager()->AddSystem<PhysicsSystem>();
+
+		// WorldSystem
+		IWorld* world = new World2D(Bounds2D(Point2D(WORLD_BOUND_MIN[0], WORLD_BOUND_MIN[1]), Point2D(WORLD_BOUND_MAX[0], WORLD_BOUND_MAX[1])), glm::vec2(WORLD_UP_VECTOR[0], WORLD_UP_VECTOR[1]));
+		WorldSystem* WS = ECS::ECS_Engine->GetSystemManager()->AddSystem<WorldSystem>(world);
+	
 
 	// RespawnSystem
 	RespawnSystem* RSS = ECS::ECS_Engine->GetSystemManager()->AddSystem<RespawnSystem>();
@@ -66,6 +74,9 @@ void Game::InitializeECS()
 
 	// Add system dependencies
 	CS->AddDependencies(IS);
+	WS->AddDependencies(IS);
+	PyS->AddDependencies(IS, WS);
+	RS->AddDependencies(PyS);
 }
 
 void Game::InitializeSDL(const char* title, int width, int height, bool fullscreen)
@@ -274,7 +285,7 @@ void Game::Run()
 
 		Position spawnPosition(xR, yR, 0.0f);
 
-		Transform initialTransform = glm::translate(glm::mat4(1.0f), spawnPosition) * glm::rotate(angle + glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)) * glm::scale(glm::vec3(1.5f));		
+		Transform initialTransform = glm::translate(glm::mat4(1.0f), spawnPosition) * glm::rotate(angle + glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)) * glm::scale(glm::vec3(2.0f));		
 
 		// spawn collector spawn
 		GameObjectId collectorSpawn = worldSystem->AddGameObject<PlayerSpawn>(Transform(Position(xR, yR, 1.0f)), spawnPosition, angle + glm::radians(90.0f));
@@ -297,7 +308,7 @@ void Game::Run()
 		// create ai player
 		playerSystem->AddNewPlayer(("Player #" + std::to_string(i)).c_str(), new AICollectorController(collector));
 	}
-	
+
 	// create bounty spawn
 	const float bountyHalfSpawnSize = R * 0.75f;
 	GameObjectId bountySpawn = worldSystem->AddGameObject<BountySpawn>(Transform(Position(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), 0.0f, glm::vec3(bountyHalfSpawnSize, bountyHalfSpawnSize, 0.0f)), Position(0.0f, 0.0f, 0.0f), glm::vec2(bountyHalfSpawnSize, bountyHalfSpawnSize), 0.0f);
@@ -308,6 +319,7 @@ void Game::Run()
 		GameObjectId bounty = worldSystem->AddGameObject<Bounty>(Transform::IDENTITY(), bountySpawn);
 		worldSystem->KillGameObject(bounty);
 	}
+
 
 	// create a camera
 	ECS::ECS_Engine->GetEntityManager()->CreateEntity<TabletopCamera>(glm::vec2(0.0f, 0.0f), -10.0f, 5.0f);

@@ -55,9 +55,9 @@ public:
 	/// Returns:	The rotation.
 	///-------------------------------------------------------------------------------------------------
 
-	glm::vec3 GetRotation();
+	glm::vec3 GetRotation() const;
 
-	glm::vec3 GetScale();
+	glm::vec3 GetScale() const;
 
 	// conversion to float array
 	inline operator const float*() const { return &(this->m_Transform[0][0]); }

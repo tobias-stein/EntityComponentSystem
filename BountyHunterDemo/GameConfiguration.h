@@ -43,15 +43,23 @@ static constexpr float				WORLD_UP_VECTOR[2]					{ 0.0f, 1.0f };
 static constexpr float				WORLD_BOUND_MIN[2]					{ -100.0f, -100.0f };
 static constexpr float				WORLD_BOUND_MAX[2]					{  100.0f,  100.0f };
 
+// <<<< GAME PHYSICS >>>>
+ 
+/// Summary:	The world gravity.
+static constexpr float				WORLD_GRAVITY[2]					{ 0.0f, 0.0f };
+
+static constexpr size_t				PHYSICS_VELOCITY_ITERATIONS			{ 8 };
+
+static constexpr size_t				PHYSICS_POSITION_ITERATIONS			{ 6 };
 
 
 // <<<< GAME META SETTINGS >>>>
 
 /// Summary:	The max. player amount.
-static constexpr size_t				MAX_PLAYER							{ 12 };
+static constexpr size_t				MAX_PLAYER							{ 2 };
 
 /// Summary:	The max. amount of spawned bounty.
-static constexpr size_t				MAX_BOUNTY							{ 64 };
+static constexpr size_t				MAX_BOUNTY							{ 3 };
 
 /// Summary:	The default collector respawntime.
 static constexpr float				COLLECTOR_RESPAWNTIME				{ 5.0f }; // seconds
@@ -60,11 +68,12 @@ static constexpr float				COLLECTOR_RESPAWNTIME				{ 5.0f }; // seconds
 static constexpr float				BOUNTY_RESPAWNTIME					{ 2.0f }; // seconds
 
 /// Summary:	Collector max move speed.
-static constexpr float				COLLECTOR_MAX_MOVE_SPEED			{ 10.0f }; // units per second
+static constexpr float				COLLECTOR_MAX_MOVE_SPEED			{ 25.0f }; // 25m/s
 
 /// Summary:	Collector max turn speed.
-static constexpr float				RADIANS								{ 0.017453292f };
-static constexpr float				COLLECTOR_MAX_TURN_SPEED			{ 360.0f * RADIANS }; // degrees per second
+static constexpr float				RADIANS								{ 0.0174533f };
+static constexpr float				TURN								{ 360.0f * RADIANS }; // 360 = 1 turn
+static constexpr float				COLLECTOR_MAX_TURN_SPEED			{ TURN };
 
 // <<<< DEBUG SETTINGS >>>>
 

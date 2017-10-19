@@ -219,6 +219,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CheatSystem.cpp" />
     <ClCompile Include="Collector.cpp" />
+    <ClCompile Include="CollisionComponent2D.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="ControllerSystem.cpp" />
     <ClCompile Include="DefaultMaterial.cpp" />
@@ -234,6 +235,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="MenuSystem.cpp" />
     <ClCompile Include="OpenGL.cpp" />
     <ClCompile Include="OrthoCamera.cpp" />
+    <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerCollectorController.cpp" />
     <ClCompile Include="PlayerSpawn.cpp" />
@@ -242,6 +244,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="RegionSpawn.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="RespawnSystem.cpp" />
+    <ClCompile Include="RigidbodyComponent.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="ShapeComponent.cpp" />
     <ClCompile Include="ShapeGenerator.cpp" />
@@ -308,6 +311,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CheatSystem.h" />
     <ClInclude Include="Collector.h" />
+    <ClInclude Include="CollisionComponent2D.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="ControllerSystem.h" />
     <ClInclude Include="DefaultMaterial.h" />
@@ -320,6 +324,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="IController.h" />
     <ClInclude Include="IMaterial.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ISpawn.h" />
     <ClInclude Include="IWorld.h" />
@@ -346,6 +351,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="RespawnComponent.h" />
     <ClInclude Include="RespawnSystem.h" />
+    <ClInclude Include="RigidbodyComponent.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="ShapeBufferIndex.h" />
     <ClInclude Include="ShapeComponent.h" />
@@ -359,6 +365,9 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="TriangleShape.h" />
     <ClInclude Include="World2D.h" />
     <ClInclude Include="WorldSystem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

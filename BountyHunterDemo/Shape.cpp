@@ -7,10 +7,10 @@
 #include "Shape.h"
 
 Shape::Shape(const IShape* shapeData) :
-	m_ShapeData(shapeData)
+	m_ShapeImpl(shapeData)
 {}
 
 Shape::~Shape()
 {
-	this->m_ShapeData = nullptr;
+	this->m_ShapeImpl = nullptr;
 }

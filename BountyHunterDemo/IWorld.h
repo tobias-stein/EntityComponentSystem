@@ -10,6 +10,7 @@
 
 #include <ECS/ECS.h>
 
+#include "GameTypes.h"
 #include "Bounds.h"
 
 
@@ -72,6 +73,12 @@ public:
 	///-------------------------------------------------------------------------------------------------
 
 	inline const glm::vec3&			GetWorldUp() const { return this->m_WorldUp; }
+
+	virtual void Update(float dt) = 0;
+
+	virtual void AddGameObject(GameObjectId gameObjectId) = 0;
+
+	virtual void RemoveGameObject(GameObjectId gameObjectId) = 0;
 
 }; // class IWorld
 

@@ -19,6 +19,7 @@ WorldSystem::WorldSystem(IWorld* world) :
 
 WorldSystem::~WorldSystem()
 {
+
 	// destroy the world.
 	if (this->m_World != nullptr)
 	{
@@ -53,7 +54,9 @@ void WorldSystem::PreUpdate(float dt)
 }
 
 void WorldSystem::Update(float dt)
-{}
+{
+	this->m_World->Update(dt);
+}
 
 void WorldSystem::PostUpdate(float dt)
 {
@@ -103,6 +106,8 @@ void WorldSystem::KillGameObject(GameObjectId gameObjectId)
 
 void WorldSystem::RemoveGameObject(GameObjectId gameObjectId)
 {
+	this->m_World->RemoveGameObject(gameObjectId);
+
 	ECS::ECS_Engine->GetEntityManager()->DestroyEntity(gameObjectId);
 
 

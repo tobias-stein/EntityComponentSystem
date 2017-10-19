@@ -10,15 +10,17 @@
 
 #include "GameObject.h"
 
-#include "ShapeComponent.h"
-#include "MaterialComponent.h"
-#include "RespawnComponent.h"
+#include "RigidbodyComponent.h"
 
-#include "ShapeGenerator.h"
-#include "MaterialGenerator.h"
-
-class Bounty : public GameObject<Bounty>
+class Bounty : public GameObject<Bounty>, public ECS::Event::IEventListener
 {
+private:
+
+	TransformComponent*		m_ThisTransform;
+	RigidbodyComponent*		m_ThisRigidbody;
+
+	void OnGameObjectSpawned(const GameObjectSpawned* event);
+
 public:
 
 	Bounty(GameObjectId spawnId);

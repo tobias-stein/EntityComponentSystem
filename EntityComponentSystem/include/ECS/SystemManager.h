@@ -153,29 +153,34 @@ namespace ECS
 		/// dependencies - 	Variable arguments providing [in,out] The dependencies.
 		///-------------------------------------------------------------------------------------------------
 
-		template<class System_, class... Dependencies>
-		void AddSystemDependency(System_ target, Dependencies&&... dependencies)
+		template<class System_, class Dependency_>
+		void AddSystemDependency(System_ target, Dependency_ dependency)
 		{
 			const u64 TARGET_ID = target->GetStaticSystemTypeID();
+			const u64 DEPEND_ID = dependency->GetStaticSystemTypeID();
 
-			auto D = { dependencies... };
-
-			bool changed = false;
-
-			for (auto d : D)
+			if (this->m_SystemDependencyMatrix[TARGET_ID][DEPEND_ID] != true)
 			{
-				if (this->m_SystemDependencyMatrix[TARGET_ID][d->GetStaticSystemTypeID()] == true)
-					continue;
-
-				this->m_SystemDependencyMatrix[TARGET_ID][d->GetStaticSystemTypeID()] = true;
-				LogInfo("added '%s' as dependency to '%s'", d->GetSystemTypeName(), target->GetSystemTypeName())
-				
-				changed = true;
+				this->m_SystemDependencyMatrix[TARGET_ID][DEPEND_ID] = true;
+				LogInfo("added '%s' as dependency to '%s'", dependency->GetSystemTypeName(), target->GetSystemTypeName())
 			}
 
-			// update work order
-			if(changed == true)
-				this->UpdateSystemWorkOrder();
+			this->UpdateSystemWorkOrder();
+		}
+
+		template<class Target_, class Dependency_, class... Dependencies>
+		void AddSystemDependency(Target_ target, Dependency_ dependency, Dependencies&&... dependencies)
+		{
+			const u64 TARGET_ID = target->GetStaticSystemTypeID();
+			const u64 DEPEND_ID = dependency->GetStaticSystemTypeID();
+
+			if (this->m_SystemDependencyMatrix[TARGET_ID][DEPEND_ID] != true)
+			{
+				this->m_SystemDependencyMatrix[TARGET_ID][DEPEND_ID] = true;
+				LogInfo("added '%s' as dependency to '%s'", dependency->GetSystemTypeName(), target->GetSystemTypeName())
+			}
+
+			this->AddSystemDependency(target, std::forward<Dependencies>(dependencies)...);
 		}
 
 		///-------------------------------------------------------------------------------------------------

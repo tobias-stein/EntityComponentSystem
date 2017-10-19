@@ -39,6 +39,7 @@ public:
 		ECS::ECS_Engine->SendEvent<GameObjectDestroyed>(this->GetEntityID(), this->GetStaticEntityTypeID());
 	}
 
+	 
 }; // class GameObject
 
 #endif // __GAME_OBJECT_H__

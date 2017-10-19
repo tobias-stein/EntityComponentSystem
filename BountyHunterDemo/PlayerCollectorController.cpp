@@ -19,21 +19,30 @@ PlayerCollectorController::~PlayerCollectorController()
 
 void PlayerCollectorController::Update(float dt)
 {
+	// note: we do note scale move and turn speed by dt, the physics engine is taking care of that
 	if (this->m_MoveForward == true)
 	{
 		// move collector at max speed
-		this->m_Pawn->MoveForward(COLLECTOR_MAX_MOVE_SPEED * dt);
+		this->m_Pawn->MoveForward(COLLECTOR_MAX_MOVE_SPEED);
+	}
+	else
+	{
+		this->m_Pawn->StopMoving();
 	}
 
 	if (this->m_TurnLeft == true)
 	{
 		// turn collector at max speed
-		this->m_Pawn->TurnLeft(COLLECTOR_MAX_TURN_SPEED * dt);
+		this->m_Pawn->TurnLeft(COLLECTOR_MAX_TURN_SPEED);
 	}
 	else if (this->m_TurnRight == true)
 	{
 		// turn collector at max speed
-		this->m_Pawn->TurnRight(COLLECTOR_MAX_TURN_SPEED * dt);
+		this->m_Pawn->TurnRight(COLLECTOR_MAX_TURN_SPEED);
+	}
+	else
+	{
+		this->m_Pawn->StopTurning();
 	}
 }
 
