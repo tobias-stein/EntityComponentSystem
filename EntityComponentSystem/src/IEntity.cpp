@@ -28,4 +28,21 @@ namespace ECS
 		// release id so it can be reused
 		ECS_Engine->ECS_EntityManager->ReleaseEntityId(this->m_EntityID);
 	}
+
+	void IEntity::SetActive(bool active)
+	{
+		if (this->m_Active == active)
+			return;
+
+		if (active == false)
+		{
+			this->OnDisable();
+		}
+		else
+		{
+			this->OnEnable();
+		}
+
+		this->m_Active = active;
+	}
 }

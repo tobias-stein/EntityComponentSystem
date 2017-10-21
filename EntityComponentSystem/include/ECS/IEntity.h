@@ -69,8 +69,12 @@ namespace ECS
 		
 		inline const EntityId GetEntityID() const { return this->m_EntityID; }
 		
-		inline void SetActive(bool active) { this->m_Active = active; }
+		void SetActive(bool active);
+
 		inline bool IsActive() const { return this->m_Active; }
+
+		virtual void OnEnable() {}
+		virtual void OnDisable() {}
 	};	
 
 } // namespace ECS
