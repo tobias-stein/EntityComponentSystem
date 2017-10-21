@@ -87,11 +87,15 @@ namespace ECS { namespace Memory {
 				iterator(typename MemoryChunks::iterator begin, typename MemoryChunks::iterator end) :
 					m_CurrentChunk(begin),
 					m_End(end)
-				{
+				{				
 					if (begin != end)
-					{
+					{	
 						assert((*m_CurrentChunk) != nullptr);
 						m_CurrentObject = (*m_CurrentChunk)->objects.begin();
+					}
+					else
+					{
+						m_CurrentObject = (*std::prev(m_End))->objects.end();
 					}
 				}
 				
@@ -120,8 +124,12 @@ namespace ECS { namespace Memory {
 				inline OBJECT_TYPE& operator*() const { return *m_CurrentObject; }
 				inline OBJECT_TYPE* operator->() const { return *m_CurrentObject; }
 
-				inline bool operator==(iterator& other) { return this->m_CurrentChunk == other.m_CurrentChunk; }
-				inline bool operator!=(iterator& other) { return this->m_CurrentChunk != other.m_CurrentChunk; }
+				inline bool operator==(iterator& other) { return ((this->m_CurrentChunk == other.m_CurrentChunk) && (this->m_CurrentObject == other.m_CurrentObject));
+				}
+				inline bool operator!=(iterator& other) 
+				{ 
+					return ((this->m_CurrentChunk != other.m_CurrentChunk) && (this->m_CurrentObject != other.m_CurrentObject));
+				}
 
 		}; // ComponentContainer::iterator
 
