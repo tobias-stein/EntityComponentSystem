@@ -137,12 +137,12 @@ namespace ECS { namespace Event {
 					LogError("Skip corrupted event.", event->GetEventTypeID());
 					continue;
 				}
-	
-				Internal::IEventDispatcher* dispatcher = this->m_EventDispatcherMap[event->GetEventTypeID()];
-				if (dispatcher == nullptr)
+
+				auto it = this->m_EventDispatcherMap.find(event->GetEventTypeID());
+				if (it == this->m_EventDispatcherMap.end())
 					continue;
 	
-				dispatcher->Dispatch(event);
+				it->second->Dispatch(event);
 
 				// update last index, after dispatch operation there could be new events
 				lastIndex = this->m_EventStorage.size();
