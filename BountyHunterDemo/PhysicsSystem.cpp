@@ -5,6 +5,9 @@
 ///-------------------------------------------------------------------------------------------------
 
 #include "PhysicsSystem.h"
+#include "GameEvents.h"
+
+#include "Box2D/Box2D.h"
 
 #include "TransformComponent.h"
 #include "RigidbodyComponent.h"
@@ -22,7 +25,7 @@ void PhysicsSystem::PreUpdate(float dt)
 	// Sync physics rigidbody transformation and TransformComponent
 	for (auto RB = ECS::ECS_Engine->GetComponentManager()->begin<RigidbodyComponent>(); RB != ECS::ECS_Engine->GetComponentManager()->end<RigidbodyComponent>(); ++RB)
 	{
-		if (RB->m_Box2DBody->IsAwake() == true)
+		if ((RB->m_Box2DBody->IsAwake() == true) && (RB->m_Box2DBody->IsActive() == true))
 		{
 			TransformComponent* TFC = ECS::ECS_Engine->GetComponentManager()->GetComponent<TransformComponent>(RB->GetOwner());
 
@@ -44,10 +47,16 @@ void PhysicsSystem::PostUpdate(float dt)
 
 void PhysicsSystem::BeginContact(b2Contact* contact)
 {
-	fprintf(stdout, "BEGIN CONTACT!\n");
+	GameObjectId A = ((RigidbodyComponent*)contact->GetFixtureA()->GetUserData())->GetOwner();
+	GameObjectId B = ((RigidbodyComponent*)contact->GetFixtureB()->GetUserData())->GetOwner();
+
+	ECS::ECS_Engine->SendEvent<CollisionBegin>(A, B);
 }
 
 void PhysicsSystem::EndContact(b2Contact* contact)
 {
-	fprintf(stdout, "END CONTACT!\n");
+	GameObjectId A = ((RigidbodyComponent*)contact->GetFixtureA()->GetUserData())->GetOwner();
+	GameObjectId B = ((RigidbodyComponent*)contact->GetFixtureB()->GetUserData())->GetOwner();
+
+	ECS::ECS_Engine->SendEvent<CollisionEnd>(A, B);
 }

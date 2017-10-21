@@ -23,12 +23,13 @@ public:
 	float		m_AngularDamping;
 	float		m_Friction;
 	float		m_Restitution;
+	float		m_Density;
 
 	/// Summary:	The box2D physics body object. This member will be set by World2D class.
 	b2Body*		m_Box2DBody;
 
 	RigidbodyComponent();
-	RigidbodyComponent(float friction, float restitution, float linearDamping, float angularDamping);
+	RigidbodyComponent(float friction, float restitution, float linearDamping, float angularDamping, float density);
 	virtual ~RigidbodyComponent();
 
 	void SetTransform(const Transform& transform);

@@ -12,7 +12,7 @@
 
 #include "RigidbodyComponent.h"
 
-class Collector : public GameObject<Collector>
+class Collector : public GameObject<Collector>, public ECS::Event::IEventListener
 {
 private:
 
@@ -23,6 +23,9 @@ public:
 
 	Collector(GameObjectId spawnId);
 	virtual ~Collector();
+
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
 
 	void MoveForward(float speed);
 	void TurnLeft(float degrees);

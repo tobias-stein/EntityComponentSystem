@@ -22,10 +22,13 @@ public:
 
 	b2Shape::Type		shapeType;
 
-	b2CircleShape	asCircleShape;
-	b2PolygonShape	asPolygonShape;
+	b2CircleShape		asCircleShape;
+	b2PolygonShape		asPolygonShape;
 
-	CollisionComponent2D(const Shape& shape, const glm::vec2& scale = glm::vec2(1.0f));
+	uint16				collisionCategory;
+	uint16				collisionMask;
+
+	CollisionComponent2D(const Shape& shape, const glm::vec2& scale = glm::vec2(1.0f), uint16 category = 0x0001, uint16 mask = 0xffff);
 	virtual ~CollisionComponent2D();
 
 }; // class CollisionComponent

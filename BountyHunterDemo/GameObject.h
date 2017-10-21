@@ -9,8 +9,7 @@
 #ifndef __GAME_OBJECT_H__
 #define __GAME_OBJECT_H__
 
-#include <ECS/ECS.h>
-
+#include "GameTypes.h"
 #include "GameEvents.h"
 #include "GameConfiguration.h"
 
@@ -29,7 +28,7 @@ public:
 	}
 
 	GameObject(const Transform& transform)
-	{		
+	{
 		AddComponent<TransformComponent>(transform);
 		ECS::ECS_Engine->SendEvent<GameObjectCreated>(this->GetEntityID(), this->GetStaticEntityTypeID());
 	}
@@ -39,7 +38,6 @@ public:
 		ECS::ECS_Engine->SendEvent<GameObjectDestroyed>(this->GetEntityID(), this->GetStaticEntityTypeID());
 	}
 
-	 
 }; // class GameObject
 
 #endif // __GAME_OBJECT_H__

@@ -22,11 +22,28 @@ Collector::Collector(GameObjectId spawnId)
 	AddComponent<RespawnComponent>(COLLECTOR_RESPAWNTIME, spawnId, true);	
 	this->m_ThisTransform = GetComponent<TransformComponent>();
 	this->m_ThisRigidbody = AddComponent<RigidbodyComponent>();
-	AddComponent<CollisionComponent2D>(shape, this->m_ThisTransform->GetScale());
+	AddComponent<CollisionComponent2D>(shape, this->m_ThisTransform->GetScale(), PLAYER_COLLSION_CATEGORY, PLAYER_COLLSION);
 }
 
 Collector::~Collector()
-{}
+{
+}
+
+
+
+void Collector::OnEnable()
+{
+	this->m_ThisRigidbody->SetTransform(*this->m_ThisTransform);
+	this->m_ThisRigidbody->m_Box2DBody->SetLinearVelocity(b2Vec2_zero);
+	this->m_ThisRigidbody->m_Box2DBody->SetAngularVelocity(0.0f);
+	this->m_ThisRigidbody->m_Box2DBody->SetActive(true);
+}
+
+void Collector::OnDisable()
+{
+	this->m_ThisRigidbody->m_Box2DBody->SetActive(false);
+}
+
 
 void Collector::MoveForward(float speed)
 {

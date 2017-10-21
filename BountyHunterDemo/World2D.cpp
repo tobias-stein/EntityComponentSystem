@@ -72,10 +72,14 @@ void World2D::AddGameObject(GameObjectId gameObjectId)
 				}
 
 				fixtureDef.friction = rbComp->m_Friction;
+				fixtureDef.density = rbComp->m_Density;
+
+				fixtureDef.filter.categoryBits = coComp->collisionCategory;
+				fixtureDef.filter.maskBits = coComp->collisionMask;
 			}
 
-
-			rbComp->m_Box2DBody->CreateFixture(&fixtureDef);
+			// create new fixture and add reference to its component
+			rbComp->m_Box2DBody->CreateFixture(&fixtureDef)->SetUserData(rbComp);
 		}
 	}
 }

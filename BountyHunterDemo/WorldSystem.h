@@ -127,10 +127,10 @@ public:
 		// create entity
 		GameObjectId entityId = ECS::ECS_Engine->GetEntityManager()->CreateEntity<T>(std::forward<ARGS>(args)...);
 
-		ECS::IEntity* entity = ECS::ECS_Engine->GetEntityManager()->GetEntity(entityId);
+		ECS::IEntity* gameObject = ECS::ECS_Engine->GetEntityManager()->GetEntity(entityId);
 
 		// get entities transform
-		TransformComponent* entityTransformComponent = entity->GetComponent<TransformComponent>();
+		TransformComponent* entityTransformComponent = gameObject->GetComponent<TransformComponent>();
 		assert(entityTransformComponent != nullptr && "Failure! Spawned entity has no TransformComponent!");
 
 		// set initial transform
@@ -145,13 +145,13 @@ public:
 		{
 			if (this->m_WorldObjects[i].m_GameObjectID == INVALID_GAMEOBJECT_ID)
 			{
-				this->m_WorldObjects[i] = WorldObjectInfo(entityId, entity->GetStaticEntityTypeID());
+				this->m_WorldObjects[i] = WorldObjectInfo(entityId, gameObject->GetStaticEntityTypeID());
 				return entityId;
 			}
 		}
 
 		this->m_WorldObjects.resize(this->m_WorldObjects.size() * 2);
-		this->m_WorldObjects[i] = WorldObjectInfo(entityId, entity->GetStaticEntityTypeID());
+		this->m_WorldObjects[i] = WorldObjectInfo(entityId, gameObject->GetStaticEntityTypeID());
 
 		return entityId;
 	}

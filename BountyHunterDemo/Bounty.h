@@ -18,13 +18,14 @@ private:
 
 	TransformComponent*		m_ThisTransform;
 	RigidbodyComponent*		m_ThisRigidbody;
-
-	void OnGameObjectSpawned(const GameObjectSpawned* event);
-
+	
 public:
 
 	Bounty(GameObjectId spawnId);
 	virtual ~Bounty();
+
+	virtual void OnEnable() override;
+	virtual void OnDisable() override;
 
 }; // class Bounty
 

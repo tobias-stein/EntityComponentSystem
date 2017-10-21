@@ -6,7 +6,9 @@
 
 #include "CollisionComponent2D.h"
 
-CollisionComponent2D::CollisionComponent2D(const Shape& shape, const glm::vec2& scale)
+CollisionComponent2D::CollisionComponent2D(const Shape& shape, const glm::vec2& scale, uint16 category, uint16 mask) :
+	collisionCategory(category),
+	collisionMask(mask)
 {
 	if (shape.IsValid() == false)
 		return;

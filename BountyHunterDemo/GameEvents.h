@@ -271,4 +271,32 @@ struct PlayerLeft : public ECS::Event::Event<PlayerLeft>
 };
 
 
+///-------------------------------------------------------------------------------------------------
+/// Summary:	Collision events.
+/// Author:	Tobias Stein
+///
+/// Date:	21/10/2017
+///-------------------------------------------------------------------------------------------------
+
+struct CollisionBegin : public ECS::Event::Event<CollisionBegin>
+{
+	GameObjectId objectA;
+	GameObjectId objectB;
+
+	CollisionBegin(GameObjectId a, GameObjectId b) : objectA(a), objectB(b)
+	{}
+
+}; // struct CollisionBegin
+
+struct CollisionEnd : public ECS::Event::Event<CollisionEnd>
+{
+	GameObjectId objectA;
+	GameObjectId objectB;
+
+	CollisionEnd(GameObjectId a, GameObjectId b) : objectA(a), objectB(b)
+	{}
+
+}; // struct CollisionEnd
+
+
 #endif // __GAME_EVENTS_H__

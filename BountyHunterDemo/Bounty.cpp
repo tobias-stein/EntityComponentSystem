@@ -24,20 +24,25 @@ Bounty::Bounty(GameObjectId spawnId)
 	AddComponent<ShapeComponent>(shape);
 	AddComponent<MaterialComponent>(MaterialGenerator::CreateMaterial<DefaultMaterial>());
 	AddComponent<RespawnComponent>(BOUNTY_RESPAWNTIME, spawnId, true);
-	this->m_ThisRigidbody = AddComponent<RigidbodyComponent>(1.0f, 0.0f, 1.0f, 1.0f);
+	this->m_ThisRigidbody = AddComponent<RigidbodyComponent>(1.0f, 0.0f, 1.0f, 1.0f, 1.0f);
 	this->m_ThisTransform = GetComponent<TransformComponent>();
 
-	AddComponent<CollisionComponent2D>(shape, this->m_ThisTransform->GetScale());
-
-	RegisterEventCallback(&Bounty::OnGameObjectSpawned);
+	AddComponent<CollisionComponent2D>(shape, this->m_ThisTransform->GetScale(), BOUNTY_COLLSION_CATEGORY, BOUNTY_COLLSION);
 }
 
 Bounty::~Bounty()
 {
-	UnregisterEventCallback(&Bounty::OnGameObjectSpawned);
 }
 
-void Bounty::OnGameObjectSpawned(const GameObjectSpawned* event)
+void Bounty::OnEnable()
 {
-	this->m_ThisRigidbody->SetTransform(event->m_Transform);
+	this->m_ThisRigidbody->SetTransform(*this->m_ThisTransform);
+	this->m_ThisRigidbody->m_Box2DBody->SetLinearVelocity(b2Vec2_zero);
+	this->m_ThisRigidbody->m_Box2DBody->SetAngularVelocity(0.0f);
+	this->m_ThisRigidbody->m_Box2DBody->SetActive(true);
+}
+
+void Bounty::OnDisable()
+{
+	this->m_ThisRigidbody->m_Box2DBody->SetActive(false);
 }
