@@ -152,6 +152,15 @@ public:
 	void GS_TERMINATED_ENTER();
 	void GS_TERMINATED_LEAVE();
 
+	///-------------------------------------------------------------------------------------------------
+	/// EVENT HANDLER
+	///-------------------------------------------------------------------------------------------------
+
+	void OnPauseGame(const PauseGameEvent* event);
+	void OnResumeGame(const ResumeGameEvent* event);
+	void OnQuitGame(const QuitGameEvent* event);
+	void OnToggleFullscreen(const ToggleFullscreenEvent* event);
+
 private:
 
 	/** mWindow

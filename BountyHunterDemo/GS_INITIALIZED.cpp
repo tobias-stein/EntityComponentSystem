@@ -75,6 +75,8 @@ void Game::GS_INITIALIZED_ENTER()
 
 void Game::GS_INITIALIZED_LEAVE()
 {
+	RegisterEventCallback(&Game::OnToggleFullscreen);
+
 	// raise game initialized event
 	ECS::ECS_Engine->SendEvent<GameInitializedEvent>();
 }

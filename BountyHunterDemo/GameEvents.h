@@ -23,6 +23,9 @@
 struct GameInitializedEvent : public ECS::Event::Event<GameInitializedEvent>
 {};
 
+struct GameRestartedEvent : public ECS::Event::Event<GameRestartedEvent>
+{};
+
 struct GameStartedEvent : public ECS::Event::Event<GameStartedEvent>
 {};
 
@@ -30,6 +33,9 @@ struct GamePausedEvent : public ECS::Event::Event<GamePausedEvent>
 {};
 
 struct GameResumedEvent : public ECS::Event::Event<GameResumedEvent>
+{};
+
+struct GameoverEvent : public ECS::Event::Event<GameoverEvent>
 {};
 
 struct GameQuitEvent : public ECS::Event::Event<GameQuitEvent>

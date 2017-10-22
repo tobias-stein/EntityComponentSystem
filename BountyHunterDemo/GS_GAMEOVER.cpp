@@ -12,6 +12,10 @@ void Game::GS_GAMEOVER()
 
 void Game::GS_GAMEOVER_ENTER()
 {
+	UnregisterEventCallback(&Game::OnPauseGame);
+	UnregisterEventCallback(&Game::OnResumeGame);
+
+	ECS::ECS_Engine->SendEvent<GameoverEvent>();
 }
 
 void Game::GS_GAMEOVER_LEAVE()

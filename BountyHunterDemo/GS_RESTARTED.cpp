@@ -14,6 +14,10 @@ void Game::GS_RESTARTED()
 
 void Game::GS_RESTARTED_ENTER()
 {
+	UnregisterEventCallback(&Game::OnPauseGame);
+	UnregisterEventCallback(&Game::OnResumeGame);
+
+	ECS::ECS_Engine->SendEvent<GameRestartedEvent>();
 }
 
 void Game::GS_RESTARTED_LEAVE()

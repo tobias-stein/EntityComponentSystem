@@ -225,6 +225,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="DefaultMaterial.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameEventHandler.cpp" />
     <ClCompile Include="GLShader.cpp" />
     <ClCompile Include="GS_GAMEOVER.cpp" />
     <ClCompile Include="GS_INITIALIZED.cpp" />

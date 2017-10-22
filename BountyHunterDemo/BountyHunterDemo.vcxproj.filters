@@ -441,6 +441,9 @@
     <ClCompile Include="GS_TERMINATED.cpp">
       <Filter>Source Files\Game\Gamestates</Filter>
     </ClCompile>
+    <ClCompile Include="GameEventHandler.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MenuSystem.h">

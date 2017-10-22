@@ -81,6 +81,9 @@ void Game::GS_STARTED()
 
 void Game::GS_STARTED_ENTER()
 {
+	RegisterEventCallback(&Game::OnPauseGame);
+	RegisterEventCallback(&Game::OnResumeGame);
+
 	ECS::ECS_Engine->SendEvent<GameStartedEvent>();
 }
 

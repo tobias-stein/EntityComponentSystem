@@ -56,6 +56,9 @@ void Game::Initialize(int width, int height, bool fullscreen)
 
 void Game::Terminate()
 {
+	// Unregister
+	UnregisterAllEventCallbacks();
+
 	// Terminate ECS
 	ECS::Terminate();
 

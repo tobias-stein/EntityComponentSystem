@@ -12,8 +12,10 @@ void Game::GS_PAUSED()
 
 void Game::GS_PAUSED_ENTER()
 {
+	ECS::ECS_Engine->SendEvent<GamePausedEvent>();
 }
 
 void Game::GS_PAUSED_LEAVE()
 {
+	ECS::ECS_Engine->SendEvent<GameResumedEvent>();
 }
