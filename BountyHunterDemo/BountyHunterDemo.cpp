@@ -6,7 +6,7 @@
 
 #include "Game.h"
 
-Game* g_Application = new Game();
+Game* g_Application = new Game(GAME_TITLE);
 
 int main(int argc, const char* args[])
 {

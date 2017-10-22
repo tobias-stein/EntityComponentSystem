@@ -155,7 +155,11 @@ void Game::Run()
 
 		// Update FPS counter
 		this->m_FPS.Update();
-		SDL_SetWindowTitle(this->m_Window, std::to_string(this->m_FPS.GetFPS()).c_str());
+
+		// <Game Name> - <GameState> (<fps>)
+		char buffer[256] { 0 };
+		sprintf_s(buffer, "%s - %s (%.2f fps)", this->mGameTitle, GameState2String[(size_t)this->GetActiveState()], this->m_FPS.GetFPS());
+		SDL_SetWindowTitle(this->m_Window, buffer);
 
 	}; // MAIN GAME LOOP!
 

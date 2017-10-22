@@ -70,4 +70,16 @@ enum GameState {
 	TERMINATED
 }; // enum GameState
 
+static constexpr const char* GameState2String[]
+{
+	"NOT_INITIALIZED",
+	"INITIALIZED",
+	"RESTARTED",
+	"STARTED",
+	"RUNNING",
+	"PAUSED",
+	"GAMEOVER",
+	"TERMINATED",
+};
+
 #endif // __GAME_TYPES_H__
