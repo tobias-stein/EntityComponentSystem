@@ -100,6 +100,11 @@ public:
 		return this->m_ViewTransform;
 	}
 
+	inline void SetViewport(uint32_t x, uint32_t y, uint32_t w, uint32_t h)
+	{
+		this->m_Camera->SetViewport(glm::uvec4(x, y, w, h));
+	}
+
 }; // class GameCamera
 
 #endif // __GAME_CAMERA_H__

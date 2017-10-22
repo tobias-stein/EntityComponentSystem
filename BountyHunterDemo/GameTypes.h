@@ -52,5 +52,22 @@ B = bounty
 
 */
 
+///-------------------------------------------------------------------------------------------------
+/// Enum:	GameState
+///
+/// Summary:	Values that represent game states.
+///-------------------------------------------------------------------------------------------------
+
+enum GameState {
+
+	NOT_INITIALIZED = 0,
+	INITIALIZED,
+	RESTARTED,
+	STARTED,
+	RUNNING,
+	PAUSED,
+	GAMEOVER,
+	TERMINATED
+}; // enum GameState
 
 #endif // __GAME_TYPES_H__

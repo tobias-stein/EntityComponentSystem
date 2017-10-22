@@ -73,6 +73,10 @@ void RenderSystem::InitializeOpenGL()
 	GLenum glewError = glewInit();
 	assert(glewError == GLEW_OK  && glewGetErrorString(glewError));
 
+	// set viewport
+	int width, height;
+	SDL_GetWindowSize(this->m_Window, &width, &height);
+	glViewport(0, 0, width, height);
 
 	// Clear framebuffer with black
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

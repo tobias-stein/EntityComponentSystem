@@ -9,75 +9,186 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
-#include "GameConfiguration.h"
-#include "GameEvents.h"
-
-#include "FPS.h"
-
 #include <SDL.h> 
-#include <ECS/ECS.h>
 
 // to prevent:
 // Error	LNK2019	unresolved external symbol SDL_main referenced in function main_utf8	BountyHunterDemo	..\EntityComponentSystem\BountyHunterDemo\SDL2main.lib(SDL_windows_main.obj)	1
 #undef main 
 
-class Game : protected ECS::Event::IEventListener {
+
+#include "GameConfiguration.h"
+#include "GameEvents.h"
+#include "GameTypes.h"
+
+#include "FPS.h"
+
+#include "SimpleFSM.h"
+
+
+#include "InputSystem.h"
+#include "MenuSystem.h"
+#include "RenderSystem.h"
+#include "WorldSystem.h"
+#include "PlayerSystem.h"
+#include "RespawnSystem.h"
+#include "ControllerSystem.h"
+#include "PhysicsSystem.h"
+#include "CheatSystem.h"
+
+
+class Game : protected ECS::Event::IEventListener, public SimpleFSM {
 
 public:
 
-	enum State {
+	///-------------------------------------------------------------------------------------------------
+	/// Summary:	Game State Transitions.
+	///
+	///				+-----------------+
+	///				| NOT_INITIALIZED |
+	///				+-----------------+
+	///				         |
+	///				         v
+	///				  +-------------+
+	///				  | INITIALIZED |
+	///				  +-------------+
+	///				         |
+	///				         v
+	///				   +-----------+
+	///			  +--->| RESTARTED |<-------------+
+	///			  |    +-----------+              |
+	///			  |          |                    |
+	///			  |          v                    |
+	///			  |     +---------+               |
+	///			  |     | STARTED |-------------+ |
+	///			  |     +---------+             | |
+	///			  |          |   ^              v |
+	///			  |          |   |         +--------+
+	///			  |          |   +---------| PAUSED |
+	///			  |          |   |         +--------+
+	///			  |          v   v              ^ |
+	///			  |     +---------+             | |
+	///			  |     | RUNNING |-------------+ |
+	///			  |     +---------+               |
+	///			  |          |                    |
+	///			  |          v                    |
+	///			  |    +----------+               |
+	///			  +----| GAMEOVER |<--------------+
+	///			       +----------+               |
+	///			             |                    |
+	///			             v                    |
+	///			      +------------+              |    
+	///			      | TERMINATED |<-------------+
+	///			      +------------+
+	///-------------------------------------------------------------------------------------------------
 
-		NOT_INITIALIZED = 0,
-		INITIALIZED,
-		RUNNING,
-		PAUSED,
-		ABOUT_TO_TERMINATE,
-		TERMINATED
-	}; // enum State
+
+	// Define FSM Transition table
+	BEGIN_TRANSITION_TABLE
+
+		// Initial State
+		TRANSITION_ENTRY(NULL_STATE				, Game::GS_INITIALIZED	, Game::GS_INITIALIZED_ENTER, NO_ONLEAVE_PROC			, GameState::INITIALIZED)
+
+		// Transitions to 'RESTARTED'
+		TRANSITION_ENTRY(Game::GS_INITIALIZED	, Game::GS_RESTARTED	, Game::GS_RESTARTED_ENTER	, Game::GS_INITIALIZED_LEAVE, GameState::RESTARTED)
+		TRANSITION_ENTRY(Game::GS_PAUSED		, Game::GS_RESTARTED	, Game::GS_RESTARTED_ENTER	, Game::GS_PAUSED_LEAVE		, GameState::RESTARTED)
+		TRANSITION_ENTRY(Game::GS_GAMEOVER		, Game::GS_RESTARTED	, Game::GS_RESTARTED_ENTER	, Game::GS_GAMEOVER_LEAVE	, GameState::RESTARTED)
+
+		// Transitions to 'STARTED'
+		TRANSITION_ENTRY(Game::GS_RESTARTED		, Game::GS_STARTED		, Game::GS_STARTED_ENTER	, Game::GS_RESTARTED_LEAVE	, GameState::STARTED)
+		TRANSITION_ENTRY(Game::GS_PAUSED		, Game::GS_STARTED		, Game::GS_STARTED_ENTER	, Game::GS_PAUSED_LEAVE		, GameState::STARTED)
+
+		// Transitions to 'PAUSED'
+		TRANSITION_ENTRY(Game::GS_STARTED		, Game::GS_PAUSED		, Game::GS_PAUSED_ENTER		, Game::GS_STARTED_LEAVE	, GameState::PAUSED)
+		TRANSITION_ENTRY(Game::GS_RUNNING		, Game::GS_PAUSED		, Game::GS_PAUSED_ENTER		, Game::GS_RUNNING_LEAVE	, GameState::PAUSED)
+
+		// Transitions to 'RUNNING'
+		TRANSITION_ENTRY(Game::GS_STARTED		, Game::GS_RUNNING		, Game::GS_RUNNING_ENTER	, Game::GS_STARTED_LEAVE	, GameState::RUNNING)
+		TRANSITION_ENTRY(Game::GS_PAUSED		, Game::GS_RUNNING		, Game::GS_RUNNING_ENTER	, Game::GS_PAUSED_LEAVE		, GameState::RUNNING)
+
+		// Transitions to 'GAMEOVER'
+		TRANSITION_ENTRY(Game::GS_RUNNING		, Game::GS_GAMEOVER		, Game::GS_GAMEOVER_ENTER	, Game::GS_RUNNING_LEAVE	, GameState::GAMEOVER)
+
+		// Transitions to 'TERMINATED'
+		TRANSITION_ENTRY(Game::GS_GAMEOVER		, Game::GS_TERMINATED	, Game::GS_TERMINATED_ENTER	, Game::GS_GAMEOVER_LEAVE	, GameState::TERMINATED)
+		TRANSITION_ENTRY(Game::GS_PAUSED		, Game::GS_TERMINATED	, Game::GS_TERMINATED_ENTER	, Game::GS_PAUSED_LEAVE		, GameState::TERMINATED)
+
+	END_TRANSITION_TABLE
+
+
+	// FSM State callback functions
+
+	// 'RESTARTED' gamestate
+	void GS_INITIALIZED();
+	void GS_INITIALIZED_ENTER();
+	void GS_INITIALIZED_LEAVE();
+
+	// 'INITIALIZED' gamestate
+	void GS_RESTARTED();
+	void GS_RESTARTED_ENTER();
+	void GS_RESTARTED_LEAVE();
+
+	// 'STARTED' gamestate
+	void GS_STARTED();
+	void GS_STARTED_ENTER();
+	void GS_STARTED_LEAVE();
+
+	// 'PAUSED' gamestate
+	void GS_PAUSED();
+	void GS_PAUSED_ENTER();
+	void GS_PAUSED_LEAVE();
+
+	// 'RUNNING' gamestate
+	void GS_RUNNING();
+	void GS_RUNNING_ENTER();
+	void GS_RUNNING_LEAVE();
+
+	// 'GAMEOVER' gamestate
+	void GS_GAMEOVER();
+	void GS_GAMEOVER_ENTER();
+	void GS_GAMEOVER_LEAVE();
+
+	// 'TERMINATED' gamestate
+	void GS_TERMINATED();
+	void GS_TERMINATED_ENTER();
+	void GS_TERMINATED_LEAVE();
 
 private:
 
 	/** mWindow
 		The handle to the window instance.
 	*/
-	SDL_Window*			mWindow;
+	SDL_Window*			m_Window;
 
 	
 	/** mWindowX
 		The horizontal offset of the top-left corner of the applications window.
 	*/
-	int					mWindowX;
+	int					m_WindowPosX;
 
 	/** mWindowY
 		The vertical offset of the top-left corner of the applications window.
 	*/
-	int					mWindowY;
+	int					m_WindowPosY;
 
 	/** mWindowW
 		The width of the window.
 	*/
-	int					mWindowW;
+	int					m_WindowWidth;
 
 	/** mWindowH
 		The height of the window.
 	*/
-	int					mWindowH;
+	int					m_WindowHeight;
 
 	/** mFullscreen
 		The fullscreen flag is true if the application is running in fullscreen mode.
 	*/
-	bool				mFullscreen;
+	bool				m_Fullscreen;
 
 	/** mGameTitle
 		Game Title.
 	*/
 	const char*			mGameTitle;
-
-	/** mAppState
-		Indicates the current state the game application is in.
-	*/
-	State				mAppState;
-
 
 	/// Summary:	A simple frame counter.
 	FPS					m_FPS;
@@ -86,11 +197,7 @@ private:
 
 	void InitializeECS();
 
-	void InitializeSDL(const char* title, int width, int height, bool fullscreen);
-
-	void RegisterEventCallbacks();
-
-	void UnregisterEventCallbacks();
+	void InitializeSDL();
 
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	void Game::ProcessWindowEvent();
@@ -104,17 +211,13 @@ private:
 
 	void ProcessWindowEvent();
 
-
-	void OnPauseGameEvent(const PauseGameEvent* event);
-	void OnResumeGameEvent(const ResumeGameEvent* event);
-	void OnQuitGameEvent(const QuitGameEvent* event);
-	void OnToggleFullscreenEvent(const ToggleFullscreenEvent* event);
+	void Terminate();
 
 public:
 
 	/** C'tor
 	*/
-	Game();
+	Game(const char* name = "Game Name");
 
 	/** D'tor
 	*/
@@ -124,27 +227,12 @@ public:
 		The init method will conatin all code that will initialize the new game application
 		instance.
 	*/
-	void Init( const char* title, int width, int height, bool fullscreen = false );
+	void Initialize(int width, int height, bool fullscreen = false);
 
 	/** Run
 		Kicks off the main game loop.
 	*/
 	void Run();
-	
-	/** Pause
-		Pause the current running game and stop the game time.
-	*/
-	void Pause();
-
-	/** Resume
-		Resumes the current paused game and the game time.
-	*/
-	void Resume();
-
-	/** Terminate
-		The termine method will shutdown the game and terminate the application.
-	*/
-	void Terminate();
 
 	/** ToggleFullscreen
 		The togggle fullscreen method will change the application from running in fullscreen to
@@ -154,15 +242,20 @@ public:
 
 
 
+	inline SDL_Window*	GetWindow()				const { return this->m_Window; }
 
-	inline bool	IsFullscreenMode()	const { return mFullscreen; }
+	inline bool			IsFullscreenMode()		const { return m_Fullscreen; }
 
-	inline bool IsInitialized()		const { return (mAppState >  NOT_INITIALIZED); }
-	inline bool IsTerminated()		const { return (mAppState >= ABOUT_TO_TERMINATE); }
-	inline bool IsPaused()			const { return (mAppState == PAUSED); }
-	inline bool IsRunning()			const { return (mAppState == RUNNING); }
+	inline GameState	GetActiveGameState()	const { return (GameState)this->GetActiveState(); }
+	inline bool			IsInitialized()			const { return (this->GetActiveState() >  GameState::INITIALIZED); }
+	inline bool			IsRestarted()			const { return (this->GetActiveState() == GameState::RESTARTED); }
+	inline bool			IsStarted()				const { return (this->GetActiveState() == GameState::STARTED); }
+	inline bool			IsPaused()				const { return (this->GetActiveState() == GameState::PAUSED); }
+	inline bool			IsRunning()				const { return (this->GetActiveState() == GameState::RUNNING); }
+	inline bool			IsGameOver()			const { return (this->GetActiveState() == GameState::GAMEOVER); }
+	inline bool			IsTerminated()			const { return (this->GetActiveState() == GameState::TERMINATED); }
 
-	inline SDL_Window* GetWindow()	const { return this->mWindow; }
+	
 
 }; // class GameApp
 

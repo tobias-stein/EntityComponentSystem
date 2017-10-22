@@ -148,6 +148,9 @@
     <Filter Include="Source Files\Physics\Box2D">
       <UniqueIdentifier>{770e12ee-2640-4796-9aca-3b7535fab920}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Gamestates">
+      <UniqueIdentifier>{d4f66482-d122-4209-a335-0e52f5117039}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -416,6 +419,27 @@
     </ClCompile>
     <ClCompile Include="PhysicsSystem.cpp">
       <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="GS_INITIALIZED.cpp">
+      <Filter>Source Files\Game\Gamestates</Filter>
+    </ClCompile>
+    <ClCompile Include="GS_RESTARTED.cpp">
+      <Filter>Source Files\Game\Gamestates</Filter>
+    </ClCompile>
+    <ClCompile Include="GS_STARTED.cpp">
+      <Filter>Source Files\Game\Gamestates</Filter>
+    </ClCompile>
+    <ClCompile Include="GS_RUNNING.cpp">
+      <Filter>Source Files\Game\Gamestates</Filter>
+    </ClCompile>
+    <ClCompile Include="GS_PAUSED.cpp">
+      <Filter>Source Files\Game\Gamestates</Filter>
+    </ClCompile>
+    <ClCompile Include="GS_GAMEOVER.cpp">
+      <Filter>Source Files\Game\Gamestates</Filter>
+    </ClCompile>
+    <ClCompile Include="GS_TERMINATED.cpp">
+      <Filter>Source Files\Game\Gamestates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -746,8 +770,5 @@
     <ClInclude Include="CollisionComponent2D.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

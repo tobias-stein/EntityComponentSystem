@@ -6,22 +6,12 @@
 
 #include "Game.h"
 
-#include "InputSystem.h"
-#include "MenuSystem.h"
-#include "RenderSystem.h"
-#include "WorldSystem.h"
-#include "PlayerSystem.h"
-#include "RespawnSystem.h"
-#include "ControllerSystem.h"
-#include "PhysicsSystem.h"
-#include "CheatSystem.h"
-
-Game::Game() :
-	mAppState(NOT_INITIALIZED),
-	mWindow(nullptr),
-	mFullscreen(false),
-	mWindowX(-1), mWindowY(-1),
-	mWindowW(-1), mWindowH(-1)
+Game::Game(const char* name) :
+	mGameTitle(name),
+	m_Window(nullptr),
+	m_Fullscreen(false),
+	m_WindowPosX(-1), m_WindowPosY(-1),
+	m_WindowWidth(-1), m_WindowHeight(-1)
 {}
 
 Game::~Game()
@@ -32,142 +22,52 @@ void Game::InitializeECS()
 {
 	// start the engine
 	ECS::Initialize();
-
-
-	// Create and initialize systems
-
-	if (ALLOW_CHEATS == true)
-	{
-		// CheatSystem
-		CheatSystem* CHEATS = ECS::ECS_Engine->GetSystemManager()->AddSystem<CheatSystem>();
-	}
-
-	// InputSystem
-	InputSystem* IS = ECS::ECS_Engine->GetSystemManager()->AddSystem<InputSystem>();
-	ECS::ECS_Engine->GetSystemManager()->SetSystemPriority<InputSystem>(ECS::HIGH_SYSTEM_PRIORITY);
-
-	// MenuSystem
-	MenuSystem* MS = ECS::ECS_Engine->GetSystemManager()->AddSystem<MenuSystem>();
-
-	// RenderSystem
-	RenderSystem* RS = ECS::ECS_Engine->GetSystemManager()->AddSystem<RenderSystem>(this->mWindow);
-
-
-	// ATTENTION: The order how the Physics and World System are added matters!
-	
-		// PhysicsSystem
-		PhysicsSystem* PyS = ECS::ECS_Engine->GetSystemManager()->AddSystem<PhysicsSystem>();
-
-		// WorldSystem
-		IWorld* world = new World2D(Bounds2D(Point2D(WORLD_BOUND_MIN[0], WORLD_BOUND_MIN[1]), Point2D(WORLD_BOUND_MAX[0], WORLD_BOUND_MAX[1])), glm::vec2(WORLD_UP_VECTOR[0], WORLD_UP_VECTOR[1]));
-		WorldSystem* WS = ECS::ECS_Engine->GetSystemManager()->AddSystem<WorldSystem>(world);
-	
-
-	// RespawnSystem
-	RespawnSystem* RSS = ECS::ECS_Engine->GetSystemManager()->AddSystem<RespawnSystem>();
-
-	// ControllerSystem
-	ControllerSystem* CS = ECS::ECS_Engine->GetSystemManager()->AddSystem<ControllerSystem>();
-
-	// PlayerSystem
-	PlayerSystem* PS = ECS::ECS_Engine->GetSystemManager()->AddSystem<PlayerSystem>();
-
-	// Add system dependencies
-	CS->AddDependencies(IS);
-	WS->AddDependencies(IS);
-	PyS->AddDependencies(IS, WS);
-	RS->AddDependencies(PyS);
 }
 
-void Game::InitializeSDL(const char* title, int width, int height, bool fullscreen)
+void Game::InitializeSDL()
 {
 	// Initialize SDL 2.0
 	SDL_Init(SDL_INIT_VIDEO);
 
 	// Create a new window for OpenGL rendering prupose
-	mWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL | (fullscreen ? SDL_WINDOW_FULLSCREEN : (0)));
-	if (mWindow == 0) {
+	this->m_Window = SDL_CreateWindow(this->mGameTitle, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->m_WindowWidth, this->m_WindowHeight, SDL_WINDOW_OPENGL | (this->m_Fullscreen ? SDL_WINDOW_FULLSCREEN : (0)));
+	if (m_Window == 0) {
 
 		SDL_Log("Unable to create game application window! %s", SDL_GetError());
 		exit(-1);
 	}
 
-	mGameTitle = title;
-
-	// Save window properties
-	mFullscreen = fullscreen;
-
 	// Place and resize application window
-	SDL_GetWindowPosition(mWindow, &mWindowX, &mWindowY);
-	SDL_GetWindowSize(mWindow, &mWindowW, &mWindowH);	
+	SDL_GetWindowPosition(this->m_Window, &this->m_WindowPosX, &this->m_WindowPosY);
+	SDL_GetWindowSize(this->m_Window, &this->m_WindowWidth, &this->m_WindowHeight);
 }
 
-void Game::RegisterEventCallbacks()
+
+void Game::Initialize(int width, int height, bool fullscreen) 
 {
-	RegisterEventCallback(&Game::OnPauseGameEvent);
-	RegisterEventCallback(&Game::OnResumeGameEvent);
-	RegisterEventCallback(&Game::OnQuitGameEvent);
-	RegisterEventCallback(&Game::OnToggleFullscreenEvent);
+
+	this->m_WindowWidth		= width;
+	this->m_WindowHeight	= height;
+	this->m_Fullscreen		= fullscreen;
+
+	// Set initial FSM state
+	ChangeState(GameState::INITIALIZED);
 }
 
-void Game::UnregisterEventCallbacks()
+void Game::Terminate()
 {
-	UnregisterEventCallback(&Game::OnPauseGameEvent);
-	UnregisterEventCallback(&Game::OnResumeGameEvent);
-	UnregisterEventCallback(&Game::OnQuitGameEvent);
-	UnregisterEventCallback(&Game::OnToggleFullscreenEvent);
-}
-
-void Game::Init(const char* title, int width, int height, bool fullscreen) {
-
-	// Initialize SDL
-	InitializeSDL(title, width, height, fullscreen);
-
-	// Initialize ECS
-	InitializeECS();
-
-	// broadcast initial window state
-	ECS::ECS_Engine->SendEvent<WindowResizedEvent>(width, height);
-
-	if (fullscreen == false)
-		ECS::ECS_Engine->SendEvent<EnterFullscreenModeEvent>();
-	else
-		ECS::ECS_Engine->SendEvent<EnterWindowModeEvent>();
-
-
-	// Register Event Callbacks
-	RegisterEventCallbacks();
-
-	// Set new app state to initialized
-	mAppState = INITIALIZED;
-
-	ECS::ECS_Engine->SendEvent<GameInitializedEvent>();
-}
-
-void Game::Terminate() 
-{
-	if (mAppState == TERMINATED)
-		return;
-
-	// set new app state to about to termiante
-	mAppState = ABOUT_TO_TERMINATE;
-
-	// note: we need to release Game event callbacks before termination ECS or we might risk an exception due 
-	// enforcement of event callback unregistration through IEventListener d'tor
-	UnregisterEventCallbacks();
-
 	// Terminate ECS
 	ECS::Terminate();
 
 	// Destroy window
-	if (mWindow)
-		SDL_DestroyWindow(mWindow);
+	if (this->m_Window)
+		SDL_DestroyWindow(this->m_Window);
 
 	// Terminate SDL
-	SDL_Quit();	
+	SDL_Quit();
 
-	// set new app state to terminated
-	mAppState = TERMINATED;
+	// this will break the main game loop.
+	this->m_Window = nullptr;
 }
 
 void Game::ProcessWindowEvent()
@@ -213,8 +113,8 @@ void Game::ProcessWindowEvent()
 			case SDL_WINDOWEVENT_FOCUS_LOST:
 				break;
 			case SDL_WINDOWEVENT_CLOSE:
-				OnQuitGameEvent(nullptr);
-				break;
+				this->Terminate();
+				return;
 
 #if SDL_VERSION_ATLEAST(2, 0, 5)
 			case SDL_WINDOWEVENT_TAKE_FOCUS:
@@ -228,135 +128,36 @@ void Game::ProcessWindowEvent()
 
 void Game::ToggleFullscreen() {
 
-	if(mFullscreen == false)
+	if(m_Fullscreen == false)
 		ECS::ECS_Engine->SendEvent<EnterFullscreenModeEvent>();
 	else
 		ECS::ECS_Engine->SendEvent<EnterWindowModeEvent>();
 
-	mFullscreen = !mFullscreen;
-	SDL_SetWindowFullscreen(mWindow, mFullscreen);
+	m_Fullscreen = !m_Fullscreen;
+	SDL_SetWindowFullscreen(m_Window, m_Fullscreen);
 }
-
-void Game::Pause() {
-
-	// set new app state to paused
-	mAppState = PAUSED;
-	ECS::ECS_Engine->SendEvent<GamePausedEvent>();
-}
-
-void Game::Resume() {
-
-	// set new app state to running
-	mAppState = RUNNING;
-	ECS::ECS_Engine->SendEvent<GameResumedEvent>();
-}
-
-#include "TabletopCamera.h"
-#include "Collector.h"
-#include "Bounty.h"
-#include "PlayerSpawn.h"
-#include "BountySpawn.h"
-#include "AICollectorController.h"
-#include "PlayerCollectorController.h"
 
 void Game::Run()
 {
-
-	// set new app state to running
-	mAppState = RUNNING;
-
-	ECS::ECS_Engine->SendEvent<GameStartedEvent>();
-
-	// create test dummies
-	WorldSystem* worldSystem = ECS::ECS_Engine->GetSystemManager()->GetSystem<WorldSystem>();
-	RespawnSystem* respawnSystem = ECS::ECS_Engine->GetSystemManager()->GetSystem<RespawnSystem>();
-	PlayerSystem* playerSystem = ECS::ECS_Engine->GetSystemManager()->GetSystem<PlayerSystem>();
-
-	// spawn max. number of player in a circle also create player spawns
-	const float STEP = glm::two_pi<float>() / max(1.0f, (float)MAX_PLAYER);
-	const float R = (WORLD_BOUND_MAX[0] - WORLD_BOUND_MIN[0]) * 0.5f;
-
-	for (size_t i = 0; i < MAX_PLAYER; ++i)
+	// Window will be nulled, when Game changes to 'TERMINATED' game state
+	while (this->m_Window != nullptr)
 	{
-		const float angle = i * STEP;
-		const float xR = glm::cos(angle) * R;
-		const float yR = glm::sin(angle) * R;
-
-
-		Position spawnPosition(xR, yR, 0.0f);
-
-		Transform initialTransform = glm::translate(glm::mat4(1.0f), spawnPosition) * glm::rotate(angle + glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)) * glm::scale(glm::vec3(2.0f));		
-
-		// spawn collector spawn
-		GameObjectId collectorSpawn = worldSystem->AddGameObject<PlayerSpawn>(Transform(Position(xR, yR, 1.0f)), spawnPosition, angle + glm::radians(90.0f));
-
-		// spawn collector
-		GameObjectId collector = worldSystem->AddGameObject<Collector>(initialTransform, collectorSpawn);
-
-		if ((i == 0) && (HAS_HUMAN_PLAYER == true))
-		{
-			// Indicate possessed Collector by changing its color
-			MaterialComponent* collectorMaterialComponent = ECS::ECS_Engine->GetComponentManager()->GetComponent<MaterialComponent>(collector);
-			assert(collectorMaterialComponent != nullptr && "Unable to retrieve collectors material component!");
-			collectorMaterialComponent->SetColor(1.0f, 0.0f, 0.0f);
-
-			// create human player
-			playerSystem->AddNewPlayer(DEFAULT_PLAYER_NAME, new PlayerCollectorController(collector));
-			continue;
-		}
-
-		// create ai player
-		playerSystem->AddNewPlayer(("Player #" + std::to_string(i)).c_str(), new AICollectorController(collector));
-	}
-
-	// create bounty spawn
-	const float bountyHalfSpawnSize = R * 0.75f;
-	GameObjectId bountySpawn = worldSystem->AddGameObject<BountySpawn>(Transform(Position(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), 0.0f, glm::vec3(bountyHalfSpawnSize, bountyHalfSpawnSize, 0.0f)), Position(0.0f, 0.0f, 0.0f), glm::vec2(bountyHalfSpawnSize, bountyHalfSpawnSize), 0.0f);
-	
-	// spawn bounty
-	for (size_t i = 0; i < MAX_BOUNTY; ++i)
-	{
-		GameObjectId bounty = worldSystem->AddGameObject<Bounty>(Transform::IDENTITY(), bountySpawn);
-		worldSystem->KillGameObject(bounty);
-	}
-
-
-	// create a camera
-	ECS::ECS_Engine->GetEntityManager()->CreateEntity<TabletopCamera>(glm::vec2(0.0f, 0.0f), -10.0f, 5.0f);
-
-
-	while (mAppState < ABOUT_TO_TERMINATE) 
-	{
+		// Process game application window events
 		ProcessWindowEvent();
+		if (this->m_Window == nullptr)
+			return;
 
+		// Update the ECS
 		ECS::ECS_Engine->Update(DELTA_TIME_STEP);
 
+		// Update Game
+		this->UpdateStateMachine();
+
+		// Update FPS counter
 		this->m_FPS.Update();
-		SDL_SetWindowTitle(this->mWindow, std::to_string(this->m_FPS.GetFPS()).c_str());
+		SDL_SetWindowTitle(this->m_Window, std::to_string(this->m_FPS.GetFPS()).c_str());
 
 	}; // MAIN GAME LOOP!
-}
 
-
-void Game::OnPauseGameEvent(const PauseGameEvent* event)
-{
-	if(this->mAppState == RUNNING)
-		this->Pause();
-}
-
-void Game::OnResumeGameEvent(const ResumeGameEvent* event)
-{
-	if (this->mAppState == PAUSED)
-		this->Resume();
-}
-
-void Game::OnQuitGameEvent(const QuitGameEvent* event)
-{
-	if (this->mAppState < ABOUT_TO_TERMINATE)
-		this->mAppState = ABOUT_TO_TERMINATE;
-}
-
-void Game::OnToggleFullscreenEvent(const ToggleFullscreenEvent* event)
-{
-	this->ToggleFullscreen();
+	int i = 0;
 }

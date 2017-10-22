@@ -226,6 +226,13 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GLShader.cpp" />
+    <ClCompile Include="GS_GAMEOVER.cpp" />
+    <ClCompile Include="GS_INITIALIZED.cpp" />
+    <ClCompile Include="GS_PAUSED.cpp" />
+    <ClCompile Include="GS_RESTARTED.cpp" />
+    <ClCompile Include="GS_RUNNING.cpp" />
+    <ClCompile Include="GS_STARTED.cpp" />
+    <ClCompile Include="GS_TERMINATED.cpp" />
     <ClCompile Include="IMaterial.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="IShape.cpp" />
@@ -365,9 +372,6 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="TriangleShape.h" />
     <ClInclude Include="World2D.h" />
     <ClInclude Include="WorldSystem.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
