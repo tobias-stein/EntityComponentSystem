@@ -100,6 +100,8 @@ namespace ECS
 					}
 				}
 			}
+
+			void UnregisterAllEventCallbacks();
 		};
 
 	} // namespace Event

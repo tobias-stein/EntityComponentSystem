@@ -16,6 +16,12 @@ namespace ECS { namespace Event {
 	IEventListener::~IEventListener()
 	{
 		// unsubcribe from all subscribed events
+		UnregisterAllEventCallbacks();
+	}
+
+	void IEventListener::UnregisterAllEventCallbacks()
+	{
+		// unsubcribe from all subscribed events
 		for (auto cb : this->m_RegisteredCallbacks)
 		{
 			ECS_Engine->UnsubscribeEvent(cb->GetStaticEventTypeId(), cb->GetDelegateId());
