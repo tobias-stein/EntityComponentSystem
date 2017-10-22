@@ -56,16 +56,26 @@ static constexpr size_t				PHYSICS_POSITION_ITERATIONS			{ 6 };
 // <<<< GAME META SETTINGS >>>>
 
 /// Summary:	The max. player amount.
-static constexpr size_t				MAX_PLAYER							{ 2 };
+static constexpr size_t				MAX_PLAYER							{ 12 };
 
 /// Summary:	The max. amount of spawned bounty.
-static constexpr size_t				MAX_BOUNTY							{ 3 };
+static constexpr size_t				MAX_BOUNTY							{ 48 };
+
+/// Summary:	The default freeze time before game starts.
+static constexpr float				DEFAULT_FREEZE_TIME					{ 3.0f }; // seconds
+
+/// Summary:	The default play time.
+static constexpr float				DEFAULT_PLAY_TIME					{ 90.0f }; // seconds
 
 /// Summary:	The default collector respawntime.
 static constexpr float				COLLECTOR_RESPAWNTIME				{ 5.0f }; // seconds
 
 /// Summary:	The default bounty respawntime.
 static constexpr float				BOUNTY_RESPAWNTIME					{ 2.0f }; // seconds
+
+/// Summary:	The bounty life span.
+static constexpr float				BOUNTY_MIN_LIFETIME					{ 4.0f }; // seconds
+static constexpr float				BOUNTY_MAX_LIFETIME					{ 7.0f }; // seconds
 
 /// Summary:	Collector max move speed.
 static constexpr float				COLLECTOR_MAX_MOVE_SPEED			{ 25.0f }; // 25m/s
@@ -74,6 +84,17 @@ static constexpr float				COLLECTOR_MAX_MOVE_SPEED			{ 25.0f }; // 25m/s
 static constexpr float				RADIANS								{ 0.0174533f };
 static constexpr float				TURN								{ 360.0f * RADIANS }; // 360 = 1 turn
 static constexpr float				COLLECTOR_MAX_TURN_SPEED			{ TURN };
+
+/// Summary:	The minimum and maximum bounty value.
+static constexpr float				MIN_BOUNTY_VALUE					{  5.0f };
+static constexpr float				MAX_BOUNTY_VALUE					{ 30.0f };
+
+/// Summary:	The minimum and maximum bounty scale.
+static constexpr float				MIN_BOUNTY_SCALE					{ 1.0f };
+static constexpr float				MAX_BOUNTY_SCALE					{ 3.0f };
+
+/// Summary:	The default player pocket size, that is, how many bounty he/she can carry at a time.
+static constexpr float				PLAYER_POCKET_SIZE					{ 100.0f }; 
 
 // <<<< DEBUG SETTINGS >>>>
 
@@ -87,7 +108,7 @@ static constexpr float				COLLECTOR_MAX_TURN_SPEED			{ TURN };
 /// Date:	14/10/2017
 ///-------------------------------------------------------------------------------------------------
 
-#define DEBUG_SHOW_SPAWNS												1
+//#define DEBUG_SHOW_SPAWNS												1
 
 /// Summary:	Enable/Disable CheatSystem
 static constexpr bool				ALLOW_CHEATS						{ true };

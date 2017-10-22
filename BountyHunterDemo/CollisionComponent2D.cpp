@@ -7,13 +7,21 @@
 #include "CollisionComponent2D.h"
 
 CollisionComponent2D::CollisionComponent2D(const Shape& shape, const glm::vec2& scale, uint16 category, uint16 mask) :
+	shapeID(shape.GetShapeID()),
 	collisionCategory(category),
 	collisionMask(mask)
 {
-	if (shape.IsValid() == false)
-		return;
+	assert(shape.IsValid() != false && "Invalid shape!");
+	Rescale(scale);
+}
 
-	switch (shape.GetShapeID())
+CollisionComponent2D::~CollisionComponent2D()
+{
+}
+
+void CollisionComponent2D::Rescale(glm::vec2 scale)
+{
+	switch (this->shapeID)
 	{
 		case IShape::TRIANLGE:
 		{
@@ -21,8 +29,8 @@ CollisionComponent2D::CollisionComponent2D(const Shape& shape, const glm::vec2& 
 
 			static const b2Vec2 VDATA[3] =
 			{
-				{     0.0f,  scale.y },
-				{  scale.x,  scale.y },
+				{ 0.0f,  scale.y },
+				{ scale.x,  scale.y },
 				{ -scale.x, -scale.y }
 			};
 
@@ -33,7 +41,6 @@ CollisionComponent2D::CollisionComponent2D(const Shape& shape, const glm::vec2& 
 		case IShape::QUAD:
 		{
 			this->shapeType = b2Shape::e_polygon;
-
 			this->asPolygonShape.SetAsBox(scale.x, scale.y);
 			break;
 		}
@@ -41,8 +48,4 @@ CollisionComponent2D::CollisionComponent2D(const Shape& shape, const glm::vec2& 
 		default:
 			assert(false && "Unsupported collision shape.");
 	}
-}
-
-CollisionComponent2D::~CollisionComponent2D()
-{
 }

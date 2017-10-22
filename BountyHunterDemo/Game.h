@@ -20,20 +20,33 @@
 #include "GameEvents.h"
 #include "GameTypes.h"
 
+// utility
 #include "FPS.h"
-
 #include "SimpleFSM.h"
 
-
+// game systems
 #include "InputSystem.h"
 #include "MenuSystem.h"
 #include "RenderSystem.h"
 #include "WorldSystem.h"
 #include "PlayerSystem.h"
+#include "LifetimeSystem.h"
 #include "RespawnSystem.h"
 #include "ControllerSystem.h"
 #include "PhysicsSystem.h"
 #include "CheatSystem.h"
+
+// game entities
+#include "TabletopCamera.h"
+#include "Collector.h"
+#include "Bounty.h"
+#include "PlayerSpawn.h"
+#include "BountySpawn.h"
+
+// player controller
+#include "AICollectorController.h"
+#include "PlayerCollectorController.h"
+
 
 
 class Game : protected ECS::Event::IEventListener, public SimpleFSM {
@@ -161,6 +174,8 @@ public:
 	void OnQuitGame(const QuitGameEvent* event);
 	void OnToggleFullscreen(const ToggleFullscreenEvent* event);
 
+	void OnCollisionBegin(const CollisionBeginEvent* event);
+
 private:
 
 	/** mWindow
@@ -197,11 +212,18 @@ private:
 	/** mGameTitle
 		Game Title.
 	*/
-	const char*			mGameTitle;
+	const char*			m_GameTitle;
 
 	/// Summary:	A simple frame counter.
 	FPS					m_FPS;
 	
+
+	/// Summary:	The delta time in seconds.
+	float				m_DeltaTime;
+
+	/// Summary:	Context for the game.
+	GameContext			m_GameContext;
+
 private:
 
 	void InitializeECS();

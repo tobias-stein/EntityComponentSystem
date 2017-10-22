@@ -80,6 +80,8 @@ public:
 
 	virtual void RemoveGameObject(GameObjectId gameObjectId) = 0;
 
+	virtual void Clear() = 0;
+
 }; // class IWorld
 
 #endif // __I_WORLD_H__

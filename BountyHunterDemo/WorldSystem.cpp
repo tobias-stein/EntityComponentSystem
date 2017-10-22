@@ -110,13 +110,15 @@ void WorldSystem::RemoveGameObject(GameObjectId gameObjectId)
 
 	ECS::ECS_Engine->GetEntityManager()->DestroyEntity(gameObjectId);
 
-
 	for (size_t i = 0; i < this->m_WorldObjects.size(); ++i)
 	{
 		if (this->m_WorldObjects[i].m_GameObjectID == gameObjectId)
 		{
 			this->m_WorldObjects[i].m_GameObjectID = INVALID_GAMEOBJECT_ID;
 			this->m_WorldObjects[i].m_GameObjectType = ECS::INVALID_TYPE_ID;
+
+			ECS::ECS_Engine->SendEvent<GameObjectDestroyed>(gameObjectId, this->m_WorldObjects[i].m_GameObjectType);
+			break;
 		}
 	}
 
@@ -138,4 +140,24 @@ void WorldSystem::RemoveGameObject(GameObjectId gameObjectId)
 			return;
 		}
 	}
+}
+
+void WorldSystem::Clear()
+{
+	for (size_t i = 0; i < this->m_WorldObjects.size(); ++i)
+	{
+		if (this->m_WorldObjects[i].m_GameObjectID != INVALID_GAMEOBJECT_ID)
+		{
+			ECS::ECS_Engine->GetEntityManager()->DestroyEntity(this->m_WorldObjects[i].m_GameObjectID);
+			ECS::ECS_Engine->SendEvent<GameObjectDestroyed>(this->m_WorldObjects[i].m_GameObjectID, this->m_WorldObjects[i].m_GameObjectType);
+
+			this->m_WorldObjects[i].m_GameObjectID = INVALID_GAMEOBJECT_ID;
+			this->m_WorldObjects[i].m_GameObjectType = ECS::INVALID_TYPE_ID;
+		}
+	}
+
+	this->m_PendingKills = 0;
+	this->m_PendingSpawns = 0;
+
+	this->m_World->Clear();
 }

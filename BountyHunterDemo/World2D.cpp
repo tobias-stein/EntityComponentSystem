@@ -94,3 +94,17 @@ void World2D::RemoveGameObject(GameObjectId gameObjectId)
 	}
 }
 
+void World2D::Clear()
+{
+	b2Body* node = this->m_Box2DWorld.GetBodyList();
+	while (node)
+	{
+		b2Body* b = node;
+		node = node->GetNext();
+
+		this->m_Box2DWorld.DestroyBody(b);
+	}
+
+	this->m_Box2DWorld.ClearForces();
+}
+

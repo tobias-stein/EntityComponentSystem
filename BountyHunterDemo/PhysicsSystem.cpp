@@ -50,7 +50,7 @@ void PhysicsSystem::BeginContact(b2Contact* contact)
 	GameObjectId A = ((RigidbodyComponent*)contact->GetFixtureA()->GetUserData())->GetOwner();
 	GameObjectId B = ((RigidbodyComponent*)contact->GetFixtureB()->GetUserData())->GetOwner();
 
-	ECS::ECS_Engine->SendEvent<CollisionBegin>(A, B);
+	ECS::ECS_Engine->SendEvent<CollisionBeginEvent>(A, B);
 }
 
 void PhysicsSystem::EndContact(b2Contact* contact)
@@ -58,5 +58,5 @@ void PhysicsSystem::EndContact(b2Contact* contact)
 	GameObjectId A = ((RigidbodyComponent*)contact->GetFixtureA()->GetUserData())->GetOwner();
 	GameObjectId B = ((RigidbodyComponent*)contact->GetFixtureB()->GetUserData())->GetOwner();
 
-	ECS::ECS_Engine->SendEvent<CollisionEnd>(A, B);
+	ECS::ECS_Engine->SendEvent<CollisionEndEvent>(A, B);
 }

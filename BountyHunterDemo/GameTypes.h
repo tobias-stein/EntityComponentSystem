@@ -10,6 +10,8 @@
 #include <ECS/ECS.h>
 #include <stdint.h>
 
+#include "GameConfiguration.h"
+
 // allias for entity
 using GameObjectId										= ECS::EntityId;
 using GameObjectTypeId									= ECS::EntityTypeId;
@@ -58,8 +60,8 @@ B = bounty
 /// Summary:	Values that represent game states.
 ///-------------------------------------------------------------------------------------------------
 
-enum GameState {
-
+enum GameState 
+{
 	NOT_INITIALIZED = 0,
 	INITIALIZED,
 	RESTARTED,
@@ -81,5 +83,36 @@ static constexpr const char* GameState2String[]
 	"GAMEOVER",
 	"TERMINATED",
 };
+
+struct GameContext
+{
+	/// Summary:	Number of players (including bots).
+	size_t	PlayerCount;
+
+
+	/// Summary:	Number of bounties created.
+	size_t	BountyCount;
+
+
+	/// Summary:	Number of currently spawned bounty.
+	size_t	SpawnedBounty;
+
+
+	/// Summary:	The freeze time.
+	float	FreezeTime;
+
+
+	/// Summary:	The play time.
+	float	PlayTime;
+
+	GameContext() :
+		PlayerCount(0),
+		BountyCount(0),
+		SpawnedBounty(0),
+		FreezeTime(DEFAULT_FREEZE_TIME),
+		PlayTime(DEFAULT_PLAY_TIME)
+	{}
+
+}; // struct GameContext
 
 #endif // __GAME_TYPES_H__

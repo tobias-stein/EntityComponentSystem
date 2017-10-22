@@ -13,7 +13,8 @@
 #include "ShapeGenerator.h"
 #include "MaterialGenerator.h"
 
-Collector::Collector(GameObjectId spawnId)
+Collector::Collector(GameObjectId spawnId) :
+	m_PlayerId(INVALID_PLAYER_ID)
 {
 	Shape shape = ShapeGenerator::CreateShape<TriangleShape>();
 

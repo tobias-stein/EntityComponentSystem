@@ -6,22 +6,25 @@
 
 #include "Game.h"
 
-#include "TabletopCamera.h"
-#include "Collector.h"
-#include "Bounty.h"
-#include "PlayerSpawn.h"
-#include "BountySpawn.h"
-#include "AICollectorController.h"
-#include "PlayerCollectorController.h"
-
 void Game::GS_STARTED()
 {
-	// create test dummies
 	WorldSystem* worldSystem = ECS::ECS_Engine->GetSystemManager()->GetSystem<WorldSystem>();
 	RespawnSystem* respawnSystem = ECS::ECS_Engine->GetSystemManager()->GetSystem<RespawnSystem>();
 	PlayerSystem* playerSystem = ECS::ECS_Engine->GetSystemManager()->GetSystem<PlayerSystem>();
+
+	//------------------------------------------
+	// Create Camera
+	//------------------------------------------
 	
-	// spawn max. number of player in a circle also create player spawns
+	GameObjectId cameraId = ECS::ECS_Engine->GetEntityManager()->CreateEntity<TabletopCamera>(glm::vec2(0.0f, 0.0f), -10.0f, 5.0f);
+	TabletopCamera* camera = (TabletopCamera*)ECS::ECS_Engine->GetEntityManager()->GetEntity(cameraId);
+	camera->SetViewport(0, 0, this->m_WindowWidth, this->m_WindowHeight);
+
+
+	//------------------------------------------
+	// Create Player
+	//------------------------------------------
+ 
 	const float STEP = glm::two_pi<float>() / max(1.0f, (float)MAX_PLAYER);
 	const float R = (WORLD_BOUND_MAX[0] - WORLD_BOUND_MIN[0]) * 0.5f;
 
@@ -40,40 +43,40 @@ void Game::GS_STARTED()
 		GameObjectId collectorSpawn = worldSystem->AddGameObject<PlayerSpawn>(Transform(Position(xR, yR, 1.0f)), spawnPosition, angle + glm::radians(90.0f));
 
 		// spawn collector
-		GameObjectId collector = worldSystem->AddGameObject<Collector>(initialTransform, collectorSpawn);
+		GameObjectId collectorId = worldSystem->AddGameObject<Collector>(initialTransform, collectorSpawn);
 
 		if ((i == 0) && (HAS_HUMAN_PLAYER == true))
 		{
-			// Indicate possessed Collector by changing its color
-			MaterialComponent* collectorMaterialComponent = ECS::ECS_Engine->GetComponentManager()->GetComponent<MaterialComponent>(collector);
-			assert(collectorMaterialComponent != nullptr && "Unable to retrieve collectors material component!");
-			collectorMaterialComponent->SetColor(1.0f, 0.0f, 0.0f);
-
 			// create human player
-			playerSystem->AddNewPlayer(DEFAULT_PLAYER_NAME, new PlayerCollectorController(collector));
+			PlayerId playerId = playerSystem->AddNewPlayer(DEFAULT_PLAYER_NAME);
+			Player* player = playerSystem->GetPlayer(playerId);
+			player->SetController(new PlayerCollectorController(collectorId, playerId));
 			continue;
 		}
 
 		// create ai player
-		playerSystem->AddNewPlayer(("Player #" + std::to_string(i)).c_str(), new AICollectorController(collector));
+		PlayerId playerId = playerSystem->AddNewPlayer(("Player #" + std::to_string(i)).c_str());
+		Player* player = playerSystem->GetPlayer(playerId);
+		player->SetController(new AICollectorController(collectorId, playerId));
 	}
+
+
+	//------------------------------------------
+	// Create Bounty
+	//------------------------------------------
 
 	// create bounty spawn
 	const float bountyHalfSpawnSize = R * 0.75f;
-	GameObjectId bountySpawn = worldSystem->AddGameObject<BountySpawn>(Transform(Position(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), 0.0f, glm::vec3(bountyHalfSpawnSize, bountyHalfSpawnSize, 0.0f)), Position(0.0f, 0.0f, 0.0f), glm::vec2(bountyHalfSpawnSize, bountyHalfSpawnSize), 0.0f);
+	GameObjectId bountySpawnId = worldSystem->AddGameObject<BountySpawn>(Transform(Position(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), 0.0f, glm::vec3(bountyHalfSpawnSize, bountyHalfSpawnSize, 0.0f)), Position(0.0f, 0.0f, 0.0f), glm::vec2(bountyHalfSpawnSize, bountyHalfSpawnSize), 0.0f);
+	BountySpawn* bountySpawn = (BountySpawn*)ECS::ECS_Engine->GetEntityManager()->GetEntity(bountySpawnId);
 
 	// spawn bounty
 	for (size_t i = 0; i < MAX_BOUNTY; ++i)
 	{
-		GameObjectId bounty = worldSystem->AddGameObject<Bounty>(Transform::IDENTITY(), bountySpawn);
-		worldSystem->KillGameObject(bounty);
+		SpawnInfo spawnInfo = bountySpawn->GetSpawnInfo();
+		GameObjectId bountyId = worldSystem->AddGameObject<Bounty>(Transform(spawnInfo.m_SpawnPosition, glm::vec3(0.0f, 0.0f, 1.0f), spawnInfo.m_SpawnOrientation.z), bountySpawnId);
+		((Bounty*)ECS::ECS_Engine->GetEntityManager()->GetEntity(bountyId))->OnEnable(); // little hack to get the initial bounty size, color and value
 	}
-
-
-	// create a camera
-	GameObjectId cameraId = ECS::ECS_Engine->GetEntityManager()->CreateEntity<TabletopCamera>(glm::vec2(0.0f, 0.0f), -10.0f, 5.0f);
-	TabletopCamera* camera = (TabletopCamera*)ECS::ECS_Engine->GetEntityManager()->GetEntity(cameraId);
-	camera->SetViewport(0, 0, this->m_WindowWidth, this->m_WindowHeight);
 
 	// put game into game state 'RUNNING'
 	ChangeState(GameState::RUNNING);
@@ -83,8 +86,6 @@ void Game::GS_STARTED_ENTER()
 {
 	RegisterEventCallback(&Game::OnPauseGame);
 	RegisterEventCallback(&Game::OnResumeGame);
-
-	ECS::ECS_Engine->SendEvent<GameStartedEvent>();
 }
 
 void Game::GS_STARTED_LEAVE()

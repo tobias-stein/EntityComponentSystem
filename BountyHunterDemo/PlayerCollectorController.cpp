@@ -6,11 +6,12 @@
 
 #include "PlayerCollectorController.h"
 
-PlayerCollectorController::PlayerCollectorController(const GameObjectId gameObjectId) : PlayerController(gameObjectId),
+PlayerCollectorController::PlayerCollectorController(const GameObjectId collectorId, const PlayerId playerId) : PlayerController(collectorId),
 	m_MoveForward(0),
 	m_TurnLeft(0),
 	m_TurnRight(0)
 {
+	this->m_Pawn->SetPlayer(playerId);
 }
 
 PlayerCollectorController::~PlayerCollectorController()
@@ -19,6 +20,9 @@ PlayerCollectorController::~PlayerCollectorController()
 
 void PlayerCollectorController::Update(float dt)
 {
+	if (this->m_Pawn->IsActive() == false)
+		return;
+
 	// note: we do note scale move and turn speed by dt, the physics engine is taking care of that
 	if (this->m_MoveForward == true)
 	{

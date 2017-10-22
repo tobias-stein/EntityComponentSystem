@@ -178,7 +178,7 @@ void CheatSystem::DoPossessCollector()
 	player->GetController().Release();
 
 	// give player controll
-	player->GetController().SetController(new PlayerCollectorController(pawn));
+	player->GetController().SetController(new PlayerCollectorController(pawn, *this->m_SelectedPlayer));
 }
 
 void CheatSystem::DoUnpossessCollector()
@@ -197,7 +197,7 @@ void CheatSystem::DoUnpossessCollector()
 	player->GetController().Release();
 
 	// let AI take controll
-	player->GetController().SetController(new AICollectorController(pawn));
+	player->GetController().SetController(new AICollectorController(pawn, *this->m_SelectedPlayer));
 }
 
 void CheatSystem::DumpPhysics()

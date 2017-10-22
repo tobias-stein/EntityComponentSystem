@@ -74,7 +74,7 @@ public:
 	RespawnSystem();
 	virtual ~RespawnSystem();
 
-	virtual void Update(float dt);
+	virtual void Update(float dt) override;
 
 	void RespawnGameObject(const GameObjectId gameObjectId);
 

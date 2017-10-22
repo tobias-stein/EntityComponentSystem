@@ -120,6 +120,17 @@ public:
 
 	void RemoveGameObject(GameObjectId gameObjectId);
 
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:	void WorldSystem::Clear();
+	///
+	/// Summary:	Clears the entire world.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	22/10/2017
+	///-------------------------------------------------------------------------------------------------
+
+	void Clear();
 
 	template<class T, class... ARGS>
 	GameObjectId AddGameObject(Transform transform, ARGS&&... args)

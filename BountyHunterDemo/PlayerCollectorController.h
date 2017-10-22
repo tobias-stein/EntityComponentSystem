@@ -21,7 +21,7 @@ private:
 
 public:
 
-	PlayerCollectorController(const GameObjectId gameObjectId);
+	PlayerCollectorController(const GameObjectId collectorId, const PlayerId playerId);
 	virtual ~PlayerCollectorController();
 
 	// Inherited via PlayerController

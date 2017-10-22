@@ -7,9 +7,7 @@
 #include "Bounty.h"
 
 #include "ShapeComponent.h"
-#include "MaterialComponent.h"
 #include "RespawnComponent.h"
-#include "CollisionComponent2D.h"
 
 #include "ShapeGenerator.h"
 #include "MaterialGenerator.h"
@@ -22,12 +20,12 @@ Bounty::Bounty(GameObjectId spawnId)
 	Shape shape = ShapeGenerator::CreateShape<QuadShape>();
 
 	AddComponent<ShapeComponent>(shape);
-	AddComponent<MaterialComponent>(MaterialGenerator::CreateMaterial<DefaultMaterial>());
+	this->m_ThisMaterial = AddComponent<MaterialComponent>(MaterialGenerator::CreateMaterial<DefaultMaterial>());
 	AddComponent<RespawnComponent>(BOUNTY_RESPAWNTIME, spawnId, true);
-	this->m_ThisRigidbody = AddComponent<RigidbodyComponent>(1.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+	this->m_ThisRigidbody = AddComponent<RigidbodyComponent>(0.0f, 0.0f, 0.0f, 0.0f, 0.0001f);
 	this->m_ThisTransform = GetComponent<TransformComponent>();
-
-	AddComponent<CollisionComponent2D>(shape, this->m_ThisTransform->GetScale(), BOUNTY_COLLSION_CATEGORY, BOUNTY_COLLSION);
+	this->m_ThisCollision = AddComponent<CollisionComponent2D>(shape, this->m_ThisTransform->GetScale(), BOUNTY_COLLSION_CATEGORY, BOUNTY_COLLSION);
+	this->m_ThisLifetime = AddComponent<LifetimeComponent>(BOUNTY_MIN_LIFETIME, BOUNTY_MAX_LIFETIME);
 }
 
 Bounty::~Bounty()
@@ -36,6 +34,10 @@ Bounty::~Bounty()
 
 void Bounty::OnEnable()
 {
+	ShuffleBounty();
+
+	this->m_ThisLifetime->ResetLifetime();
+
 	this->m_ThisRigidbody->SetTransform(*this->m_ThisTransform);
 	this->m_ThisRigidbody->m_Box2DBody->SetLinearVelocity(b2Vec2_zero);
 	this->m_ThisRigidbody->m_Box2DBody->SetAngularVelocity(0.0f);
@@ -45,4 +47,17 @@ void Bounty::OnEnable()
 void Bounty::OnDisable()
 {
 	this->m_ThisRigidbody->m_Box2DBody->SetActive(false);
+}
+
+void Bounty::ShuffleBounty()
+{
+	float alpha = glm::linearRand(0.0f, 1.0f);
+
+	this->m_Value = glm::lerp(MIN_BOUNTY_VALUE, MAX_BOUNTY_VALUE, alpha);
+
+	float scale = glm::lerp(MIN_BOUNTY_SCALE, MAX_BOUNTY_SCALE, alpha);
+
+	this->m_ThisTransform->SetScale(glm::vec3(scale));
+	this->m_ThisMaterial->SetColor(1.0f, 1.0f - alpha, 0.0f);
+	this->m_ThisCollision->Rescale(glm::vec2(scale));
 }

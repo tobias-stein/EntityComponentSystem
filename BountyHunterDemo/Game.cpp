@@ -7,11 +7,12 @@
 #include "Game.h"
 
 Game::Game(const char* name) :
-	mGameTitle(name),
+	m_GameTitle(name),
 	m_Window(nullptr),
 	m_Fullscreen(false),
 	m_WindowPosX(-1), m_WindowPosY(-1),
-	m_WindowWidth(-1), m_WindowHeight(-1)
+	m_WindowWidth(-1), m_WindowHeight(-1),
+	m_DeltaTime(0.0f)
 {}
 
 Game::~Game()
@@ -30,7 +31,7 @@ void Game::InitializeSDL()
 	SDL_Init(SDL_INIT_VIDEO);
 
 	// Create a new window for OpenGL rendering prupose
-	this->m_Window = SDL_CreateWindow(this->mGameTitle, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->m_WindowWidth, this->m_WindowHeight, SDL_WINDOW_OPENGL | (this->m_Fullscreen ? SDL_WINDOW_FULLSCREEN : (0)));
+	this->m_Window = SDL_CreateWindow(this->m_GameTitle, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->m_WindowWidth, this->m_WindowHeight, SDL_WINDOW_OPENGL | (this->m_Fullscreen ? SDL_WINDOW_FULLSCREEN : (0)));
 	if (m_Window == 0) {
 
 		SDL_Log("Unable to create game application window! %s", SDL_GetError());
@@ -77,7 +78,7 @@ void Game::ProcessWindowEvent()
 {
 	// Pump all SDL events to queue
 	SDL_PumpEvents();
-
+	
 	SDL_Event event;
 	while (SDL_PeepEvents(&event, 1, SDL_GETEVENT, SDL_FIRSTEVENT, SDL_SYSWMEVENT)) {
 
@@ -157,11 +158,11 @@ void Game::Run()
 		this->UpdateStateMachine();
 
 		// Update FPS counter
-		this->m_FPS.Update();
+		this->m_DeltaTime = this->m_FPS.Update();
 
 		// <Game Name> - <GameState> (<fps>)
 		char buffer[256] { 0 };
-		sprintf_s(buffer, "%s - %s (%.2f fps)", this->mGameTitle, GameState2String[(size_t)this->GetActiveState()], this->m_FPS.GetFPS());
+		sprintf_s(buffer, "%s - %s (%.2f fps)", this->m_GameTitle, GameState2String[(size_t)this->GetActiveState()], this->m_FPS.GetFPS());
 		SDL_SetWindowTitle(this->m_Window, buffer);
 
 	}; // MAIN GAME LOOP!

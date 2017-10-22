@@ -38,6 +38,8 @@ public:
 
 	virtual void RemoveGameObject(GameObjectId gameObjectId) override;
 
+	virtual void Clear() override;
+
 	inline void DumpPhysics()
 	{
 		this->m_Box2DWorld.Dump();

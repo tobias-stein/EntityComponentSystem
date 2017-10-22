@@ -14,7 +14,7 @@ class AICollectorController : public AIController<Collector>
 {
 public:
 
-	AICollectorController(const GameObjectId gameObjectId);
+	AICollectorController(const GameObjectId collectorId, const PlayerId playerId);
 	virtual ~AICollectorController();
 
 

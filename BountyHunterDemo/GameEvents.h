@@ -176,7 +176,7 @@ struct GameObjectCreated : public ECS::Event::Event<GameObjectCreated>
 
 struct GameObjectDestroyed : public ECS::Event::Event<GameObjectDestroyed>
 {
-	GameObjectId	m_EntityID;
+	GameObjectId		m_EntityID;
 	GameObjectTypeId	m_EntityTypeID;
 
 	GameObjectDestroyed(GameObjectId id, GameObjectTypeId typeId) :
@@ -284,25 +284,25 @@ struct PlayerLeft : public ECS::Event::Event<PlayerLeft>
 /// Date:	21/10/2017
 ///-------------------------------------------------------------------------------------------------
 
-struct CollisionBegin : public ECS::Event::Event<CollisionBegin>
+struct CollisionBeginEvent : public ECS::Event::Event<CollisionBeginEvent>
 {
 	GameObjectId objectA;
 	GameObjectId objectB;
 
-	CollisionBegin(GameObjectId a, GameObjectId b) : objectA(a), objectB(b)
+	CollisionBeginEvent(GameObjectId a, GameObjectId b) : objectA(a), objectB(b)
 	{}
 
-}; // struct CollisionBegin
+}; // struct CollisionBeginEvent
 
-struct CollisionEnd : public ECS::Event::Event<CollisionEnd>
+struct CollisionEndEvent : public ECS::Event::Event<CollisionEndEvent>
 {
 	GameObjectId objectA;
 	GameObjectId objectB;
 
-	CollisionEnd(GameObjectId a, GameObjectId b) : objectA(a), objectB(b)
+	CollisionEndEvent(GameObjectId a, GameObjectId b) : objectA(a), objectB(b)
 	{}
 
-}; // struct CollisionEnd
+}; // struct CollisionEndEvent
 
 
 #endif // __GAME_EVENTS_H__

@@ -6,8 +6,9 @@
 
 #include "AICollectorController.h"
 
-AICollectorController::AICollectorController(const GameObjectId gameObjectId) : AIController(gameObjectId)
+AICollectorController::AICollectorController(const GameObjectId collectorId, const PlayerId playerId) : AIController(collectorId)
 {
+	this->m_Pawn->SetPlayer(playerId);
 }
 
 AICollectorController::~AICollectorController()

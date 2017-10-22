@@ -23,7 +23,7 @@ void Game::GS_INITIALIZED()
 		MenuSystem*			MeS = ECS::ECS_Engine->GetSystemManager()->AddSystem<MenuSystem>();
 
 		// RenderSystem
-		RenderSystem*		ReS = ECS::ECS_Engine->GetSystemManager()->AddSystem<RenderSystem>(this->m_Window);
+		RenderSystem*		RdS = ECS::ECS_Engine->GetSystemManager()->AddSystem<RenderSystem>(this->m_Window);
 
 		// ATTENTION: The order how the Physics and World System are added matters!
 		// PhysicsSystem
@@ -34,7 +34,10 @@ void Game::GS_INITIALIZED()
 		WorldSystem*		WoS = ECS::ECS_Engine->GetSystemManager()->AddSystem<WorldSystem>(world);
 
 		// RespawnSystem
-		RespawnSystem*		RdS = ECS::ECS_Engine->GetSystemManager()->AddSystem<RespawnSystem>();
+		RespawnSystem*		ReS = ECS::ECS_Engine->GetSystemManager()->AddSystem<RespawnSystem>();
+
+		// LifetimeSystem
+		LifetimeSystem*		LS = ECS::ECS_Engine->GetSystemManager()->AddSystem<LifetimeSystem>();
 
 		// ControllerSystem
 		ControllerSystem*	CoS = ECS::ECS_Engine->GetSystemManager()->AddSystem<ControllerSystem>();
@@ -50,6 +53,7 @@ void Game::GS_INITIALIZED()
 		WoS->AddDependencies(InS);
 		PyS->AddDependencies(InS, WoS);
 		RdS->AddDependencies(PyS);
+		LS->AddDependencies(ReS);
 	}	
 
 	// put game to GameState 'RESTARTED'
