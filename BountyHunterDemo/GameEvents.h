@@ -277,6 +277,15 @@ struct PlayerLeft : public ECS::Event::Event<PlayerLeft>
 };
 
 
+struct StashFull : public ECS::Event::Event<StashFull>
+{
+	GameObjectId stashId;
+
+	StashFull(GameObjectId id) : stashId(id)
+	{}
+};
+
+
 ///-------------------------------------------------------------------------------------------------
 /// Summary:	Collision events.
 /// Author:	Tobias Stein

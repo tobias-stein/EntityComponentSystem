@@ -39,25 +39,32 @@ void Game::GS_STARTED()
 
 		Transform initialTransform = glm::translate(glm::mat4(1.0f), spawnPosition) * glm::rotate(angle + glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)) * glm::scale(glm::vec3(2.0f));
 
-		// spawn collector spawn
+		// create collector spawn
 		GameObjectId collectorSpawn = worldSystem->AddGameObject<PlayerSpawn>(Transform(Position(xR, yR, 1.0f)), spawnPosition, angle + glm::radians(90.0f));
 
 		// spawn collector
 		GameObjectId collectorId = worldSystem->AddGameObject<Collector>(initialTransform, collectorSpawn);
 
+		PlayerId playerId = INVALID_PLAYER_ID;
 		if ((i == 0) && (HAS_HUMAN_PLAYER == true))
 		{
 			// create human player
-			PlayerId playerId = playerSystem->AddNewPlayer(DEFAULT_PLAYER_NAME);
+			playerId = playerSystem->AddNewPlayer(DEFAULT_PLAYER_NAME);
+
 			Player* player = playerSystem->GetPlayer(playerId);
 			player->SetController(new PlayerCollectorController(collectorId, playerId));
-			continue;
+		}
+		else
+		{
+			// create ai player
+			playerId = playerSystem->AddNewPlayer(("Player #" + std::to_string(i)).c_str());
+
+			Player* player = playerSystem->GetPlayer(playerId);
+			player->SetController(new AICollectorController(collectorId, playerId));
 		}
 
-		// create ai player
-		PlayerId playerId = playerSystem->AddNewPlayer(("Player #" + std::to_string(i)).c_str());
-		Player* player = playerSystem->GetPlayer(playerId);
-		player->SetController(new AICollectorController(collectorId, playerId));
+		// create stash
+		worldSystem->AddGameObject<Stash>(glm::translate(glm::mat4(1.0f), Position(xR, yR, 1.0f)) * glm::scale(glm::vec3(2.5f)), playerId);
 	}
 
 
@@ -86,6 +93,7 @@ void Game::GS_STARTED_ENTER()
 {
 	RegisterEventCallback(&Game::OnPauseGame);
 	RegisterEventCallback(&Game::OnResumeGame);
+	RegisterEventCallback(&Game::OnStashFull);
 }
 
 void Game::GS_STARTED_LEAVE()

@@ -40,6 +40,7 @@
 #include "TabletopCamera.h"
 #include "Collector.h"
 #include "Bounty.h"
+#include "Stash.h"
 #include "PlayerSpawn.h"
 #include "BountySpawn.h"
 
@@ -175,6 +176,8 @@ public:
 	void OnToggleFullscreen(const ToggleFullscreenEvent* event);
 
 	void OnCollisionBegin(const CollisionBeginEvent* event);
+
+	void OnStashFull(const StashFull* event);
 
 private:
 

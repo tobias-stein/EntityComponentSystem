@@ -14,6 +14,7 @@ void Game::GS_GAMEOVER_ENTER()
 {
 	UnregisterEventCallback(&Game::OnPauseGame);
 	UnregisterEventCallback(&Game::OnResumeGame);
+	UnregisterEventCallback(&Game::OnStashFull);
 
 	ECS::ECS_Engine->SendEvent<GameoverEvent>();
 }

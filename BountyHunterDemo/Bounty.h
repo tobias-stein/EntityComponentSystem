@@ -15,7 +15,7 @@
 #include "CollisionComponent2D.h"
 #include "LifetimeComponent.h"
 
-class Bounty : public GameObject<Bounty>, public ECS::Event::IEventListener
+class Bounty : public GameObject<Bounty>
 {
 private:
 

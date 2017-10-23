@@ -24,7 +24,7 @@ private:
 	FrameCount			m_FrameCount;
 	FrameTime			m_AccFrameTime;
 
-	FrameCount			m_CurrentFPS;
+	float				m_CurrentFPS;
 
 public:
 

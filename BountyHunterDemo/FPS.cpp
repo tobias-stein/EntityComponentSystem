@@ -2,7 +2,7 @@
 
 FPS::FPS()
 {
-	this->m_CurrentFPS = 0;
+	this->m_CurrentFPS = 0.0f;
 
 	this->m_LastUpdate = Clock::now();
 

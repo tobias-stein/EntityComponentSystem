@@ -9,7 +9,8 @@
 CollisionComponent2D::CollisionComponent2D(const Shape& shape, const glm::vec2& scale, uint16 category, uint16 mask) :
 	shapeID(shape.GetShapeID()),
 	collisionCategory(category),
-	collisionMask(mask)
+	collisionMask(mask),
+	isSensor(false)
 {
 	assert(shape.IsValid() != false && "Invalid shape!");
 	Rescale(scale);

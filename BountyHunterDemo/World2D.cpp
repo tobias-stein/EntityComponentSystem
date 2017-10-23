@@ -76,6 +76,8 @@ void World2D::AddGameObject(GameObjectId gameObjectId)
 
 				fixtureDef.filter.categoryBits = coComp->collisionCategory;
 				fixtureDef.filter.maskBits = coComp->collisionMask;
+
+				fixtureDef.isSensor = coComp->isSensor;
 			}
 
 			// create new fixture and add reference to its component

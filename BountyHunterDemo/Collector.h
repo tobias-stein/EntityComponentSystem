@@ -10,6 +10,7 @@
 
 #include "GameObject.h"
 
+#include "MaterialComponent.h"
 #include "RigidbodyComponent.h"
 
 class Collector : public GameObject<Collector>, public ECS::Event::IEventListener
@@ -18,8 +19,13 @@ private:
 
 	TransformComponent*	m_ThisTransform;
 	RigidbodyComponent* m_ThisRigidbody;
+	MaterialComponent*	m_ThisMaterial;
 
 	PlayerId			m_PlayerId;
+
+	float				m_CollectedBounty;
+
+	void UpdateColor();
 
 public:
 
@@ -46,6 +52,8 @@ public:
 
 	inline const PlayerId GetPlayer() const { return this->m_PlayerId; }
 
+	inline float GetCollectedBounty() const { return this->m_CollectedBounty; }
+
 	void MoveForward(float speed);
 	void TurnLeft(float degrees);
 	void TurnRight(float degrees);
@@ -53,6 +61,9 @@ public:
 	void Stop();
 	void StopTurning();
 	void StopMoving();
+
+	void ResetCollectedBounty();
+	void CollectBounty(float bounty);
 
 }; // class Collector
 

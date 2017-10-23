@@ -73,6 +73,7 @@ static constexpr float				COLLECTOR_RESPAWNTIME				{ 5.0f }; // seconds
 /// Summary:	The default bounty respawntime.
 static constexpr float				BOUNTY_RESPAWNTIME					{ 2.0f }; // seconds
 
+
 /// Summary:	The bounty life span.
 static constexpr float				BOUNTY_MIN_LIFETIME					{ 4.0f }; // seconds
 static constexpr float				BOUNTY_MAX_LIFETIME					{ 7.0f }; // seconds
@@ -95,6 +96,9 @@ static constexpr float				MAX_BOUNTY_SCALE					{ 3.0f };
 
 /// Summary:	The default player pocket size, that is, how many bounty he/she can carry at a time.
 static constexpr float				PLAYER_POCKET_SIZE					{ 100.0f }; 
+
+/// Summary:	Size of the player stash.
+static constexpr float				PLAYER_STASH_SIZE					{ 50.0f }; 
 
 // <<<< DEBUG SETTINGS >>>>
 
