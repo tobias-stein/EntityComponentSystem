@@ -15,65 +15,31 @@
 
 #include "EventDelegate.h"
 
-namespace ECS
-{
-	namespace Event
+namespace ECS { namespace Event {
+
+	// forward declaration
+	class IEvent;
+	
+	namespace Internal
 	{
-		// forward declaration
-		class IEvent;
-
-		namespace Internal
+		class IEventDispatcher
 		{
-			class IEventDispatcher
-			{
-			protected:
+		public:
+	
+			virtual ~IEventDispatcher()
+			{}
+	
+			virtual void Dispatch(IEvent* event) = 0;
+	
+			virtual void AddEventCallback(IEventDelegate* const eventDelegate) = 0;
+	
+			virtual void RemoveEventCallback(size_t eventDelegateId) = 0;
+	
+			virtual inline size_t GetEventCallbackCount() const = 0;
+		};
+	
+	} // namespace Internal 
 
-				using EventDelegateList = std::unordered_map<EventDelegateId,IEventDelegate*>;
-
-				EventDelegateList	m_EventCallbacks;
-
-			public:
-
-
-				IEventDispatcher() :
-					m_EventCallbacks(EventDelegateList())
-				{}
-
-				~IEventDispatcher()
-				{
-					this->m_EventCallbacks.clear();
-				}
-
-				// send event to all listener
-				virtual inline void Dispatch(IEvent* event)
-				{}
-
-				inline void AddEventCallback(IEventDelegate* const eventDelegate)
-				{
-					EventDelegateId id = (EventDelegateId)eventDelegate->GetDelegateId();
-
-					EventDelegateList::const_iterator it = this->m_EventCallbacks.find(id);
-
-					// no duplicate
-					if (it != this->m_EventCallbacks.end())
-						return;
-
-					this->m_EventCallbacks[id] = eventDelegate;
-				}
-
-				inline void RemoveEventCallback(size_t eventDelegateId)
-				{
-					this->m_EventCallbacks.erase(eventDelegateId);
-				}
-
-				inline size_t GetEventCallbackCount() const
-				{
-					return this->m_EventCallbacks.size();
-				}
-			};
-
-		} // namespace Internal
-	} // namespace Event
-} // namespace ECS
+}} // namespace ECS::Event
 
 #endif // __I_EVENT_DISPATCHER_H__
