@@ -8,11 +8,11 @@
 
 void Game::GS_TERMINATED()
 {
+	this->Terminate();
 }
 
 void Game::GS_TERMINATED_ENTER()
-{
-	this->Terminate();
+{	
 }
 
 void Game::GS_TERMINATED_LEAVE()

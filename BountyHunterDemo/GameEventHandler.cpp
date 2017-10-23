@@ -16,6 +16,11 @@ void Game::OnResumeGame(const ResumeGameEvent* event)
 	this->PopState();
 }
 
+void Game::OnRestartGame(const RestartGameEvent * event)
+{
+	this->ChangeState(GameState::RESTARTED);
+}
+
 void Game::OnQuitGame(const QuitGameEvent* event)
 {
 	this->ChangeState(GameState::TERMINATED);

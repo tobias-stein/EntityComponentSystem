@@ -70,7 +70,9 @@ enum GameState
 	RUNNING,
 	PAUSED,
 	GAMEOVER,
-	TERMINATED
+	TERMINATED,
+
+	MAX_GAMESTATES
 }; // enum GameState
 
 static constexpr const char* GameState2String[]
@@ -100,5 +102,28 @@ struct GameContext
 	{}
 
 }; // struct GameContext
+
+
+struct IGameMenuOption
+{
+	virtual const char* GetName() const = 0;
+	virtual void		Execute() = 0;
+};
+
+template<class T>
+struct GameMenuOption : public IGameMenuOption
+{
+	const char*			OptionName;
+
+	GameMenuOption(const char* name = nullptr) :
+		OptionName(name)
+	{}
+
+	virtual const char* GetName() const override { return OptionName; }
+	virtual void Execute() override { ECS::ECS_Engine->SendEvent<T>(); }
+
+}; // struct GameMenuOption
+
+
 
 #endif // __GAME_TYPES_H__

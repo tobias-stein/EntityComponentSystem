@@ -47,6 +47,9 @@ struct PauseGameEvent : public ECS::Event::Event<PauseGameEvent>
 struct ResumeGameEvent : public ECS::Event::Event<ResumeGameEvent>
 {};
 
+struct RestartGameEvent : public ECS::Event::Event<RestartGameEvent>
+{};
+
 struct QuitGameEvent : public ECS::Event::Event<QuitGameEvent>
 {};
 

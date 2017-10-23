@@ -172,6 +172,7 @@ public:
 
 	void OnPauseGame(const PauseGameEvent* event);
 	void OnResumeGame(const ResumeGameEvent* event);
+	void OnRestartGame(const RestartGameEvent* event);
 	void OnQuitGame(const QuitGameEvent* event);
 	void OnToggleFullscreen(const ToggleFullscreenEvent* event);
 
@@ -292,5 +293,8 @@ public:
 	
 
 }; // class GameApp
+
+// global game instance, created in 'BountyHunterDemo.cpp'
+extern Game* g_GameInstance;
 
 #endif // __APPLICATION_H__

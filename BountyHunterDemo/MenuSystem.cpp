@@ -5,6 +5,7 @@
 ///-------------------------------------------------------------------------------------------------
 
 #include "MenuSystem.h"
+#include "Game.h"
 
 MenuSystem::MenuSystem()
 {
@@ -14,6 +15,16 @@ MenuSystem::MenuSystem()
 MenuSystem::~MenuSystem()
 {
 	UnregisterEventCallbacks();
+}
+
+void MenuSystem::PrintMenuOptions()
+{
+	SDL_Log("***** MENU OPTIONS *****\n");
+	for (size_t i = 0; i < GAME_MENU_OPTION_COUNT[g_GameInstance->GetActiveGameState()]; ++i)
+	{
+		SDL_Log("Option #%d - %s\t [\'%d\']\n", i + 1,GAME_MENU_OPTIONS[g_GameInstance->GetActiveGameState()][i]->GetName(), i + 1);
+	}
+	SDL_Log("***** MENU OPTIONS *****\n");
 }
 
 void MenuSystem::RegisterEventCallbacks()
@@ -54,5 +65,41 @@ void MenuSystem::OnKeyDownEvent(const KeyDownEvent* event)
 		case SDLK_F1:
 			ECS::ECS_Engine->SendEvent<ToggleFullscreenEvent>();
 			break;
+
+		//--------------------------------------------
+		// GAME 'MENU' OPTIONS
+		//--------------------------------------------
+
+		// option 1
+		case SDLK_1:
+		{
+			if (GAME_MENU_OPTION_COUNT[g_GameInstance->GetActiveGameState()] > 0)
+				GAME_MENU_OPTIONS[g_GameInstance->GetActiveGameState()][GAME_MENU_OPTION_1]->Execute();
+			break;
+		}
+
+		// option 2
+		case SDLK_2:
+		{
+			if (GAME_MENU_OPTION_COUNT[g_GameInstance->GetActiveGameState()] > 1)
+				GAME_MENU_OPTIONS[g_GameInstance->GetActiveGameState()][GAME_MENU_OPTION_2]->Execute();
+			break;
+		}
+
+		// option 3
+		case SDLK_3:
+		{
+			if (GAME_MENU_OPTION_COUNT[g_GameInstance->GetActiveGameState()] > 2)
+				GAME_MENU_OPTIONS[g_GameInstance->GetActiveGameState()][GAME_MENU_OPTION_3]->Execute();
+			break;
+		}
+
+		// option 4
+		case SDLK_4:
+		{
+			if (GAME_MENU_OPTION_COUNT[g_GameInstance->GetActiveGameState()] > 3)
+				GAME_MENU_OPTIONS[g_GameInstance->GetActiveGameState()][GAME_MENU_OPTION_4]->Execute();
+			break;
+		}
 	}
 }
