@@ -453,7 +453,7 @@
     <ClCompile Include="Stash.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Stash.h">
+    <ClCompile Include="CollectorStash.h">
       <Filter>Header Files\Entities</Filter>
     </ClCompile>
   </ItemGroup>

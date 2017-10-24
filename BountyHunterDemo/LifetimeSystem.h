@@ -37,6 +37,8 @@ public:
 
 	virtual void Update(float dt) override;
 
+	void Reset();
+
 }; // class LifetimeSystem 
 
 #endif // __LIFE_TIME_SYSTEM_H__

@@ -19,9 +19,11 @@ void Game::GS_RUNNING()
 void Game::GS_RUNNING_ENTER()
 {
 	RegisterEventCallback(&Game::OnCollisionBegin);
+	RegisterEventCallback(&Game::OnStashFull);
 }
 
 void Game::GS_RUNNING_LEAVE()
 {
 	UnregisterEventCallback(&Game::OnCollisionBegin);
+	UnregisterEventCallback(&Game::OnStashFull);
 }

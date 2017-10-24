@@ -46,10 +46,25 @@ void PlayerSystem::RemovePlayer(PlayerId playerId)
 
 	if (this->m_Players[playerId] != nullptr)
 	{
-		ECS::ECS_Engine->GetSystemManager()->GetSystem<ControllerSystem>()->RegisterController(&this->m_Players[playerId]->GetController());
+		ECS::ECS_Engine->GetSystemManager()->GetSystem<ControllerSystem>()->UnregisterController(&this->m_Players[playerId]->GetController());
 		delete this->m_Players[playerId];
 		this->m_Players[playerId] = nullptr;
 
 		ECS::ECS_Engine->SendEvent<PlayerLeft>(playerId);
+	}
+}
+
+void PlayerSystem::RemoveAllPlayers()
+{
+	for (PlayerId i = 0; i < this->m_Players.size(); ++i)
+	{
+		if (this->m_Players[i] != nullptr)
+		{
+			ECS::ECS_Engine->GetSystemManager()->GetSystem<ControllerSystem>()->UnregisterController(&this->m_Players[i]->GetController());
+			delete this->m_Players[i];
+			this->m_Players[i] = nullptr;
+
+			ECS::ECS_Engine->SendEvent<PlayerLeft>(i);
+		}
 	}
 }

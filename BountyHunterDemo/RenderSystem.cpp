@@ -144,7 +144,7 @@ void RenderSystem::Update(float dt)
 		for(auto renderable : renderableGroup.second)
 		{
 			// ignore disables renderables
-			if (renderable.m_EntityId->IsActive() == false && renderable.m_MaterialComponent->IsActive() == true && renderable.m_ShapeComponent->IsActive() == true)
+			if (renderable.m_GameObject->IsActive() == false && renderable.m_MaterialComponent->IsActive() == true && renderable.m_ShapeComponent->IsActive() == true)
 				continue;
 			
 			// apply material
@@ -312,21 +312,19 @@ void RenderSystem::RegisterRenderable(ECS::IEntity* entity, TransformComponent* 
 	this->m_RenderableGroups[renderableGroup].push_back(Renderable(entity, transform, material, shape));
 }
 
-void RenderSystem::UnregisterRenderable(ECS::IEntity* entity, MaterialComponent* material, ShapeComponent* shape)
+void RenderSystem::UnregisterRenderable(GameObjectId gameObjectId)
 {
-	const RenderableGroupID RGID = CreateRenderableGroupID(material, shape);
-
-	RenderableList& group = this->m_RenderableGroups[RGID];
-	for (RenderableList::iterator it = group.begin(); it != group.end(); ++it)
+	for (auto& RG : this->m_RenderableGroups)
 	{
-		if (it->m_EntityId->GetEntityID() == entity->GetEntityID())
+		for (RenderableList::iterator it = RG.second.begin(); it != RG.second.end(); ++it)
 		{
-			group.erase(it);
-			return;
+			if (it->m_GameObject->GetEntityID() == gameObjectId)
+			{
+				RG.second.erase(it);
+				return;
+			}
 		}
 	}
-
-	assert(false && "RenderableGroups corrupted!");
 }
 
 void RenderSystem::RegisterEventCallbacks()
@@ -395,19 +393,7 @@ void RenderSystem::OnGameObjectCreated(const GameObjectCreated* event)
 
 void RenderSystem::OnGameObjectDestroyed(const GameObjectDestroyed* event)
 {
-	// Get Entity
-	ECS::IEntity* entity = ECS::ECS_Engine->GetEntityManager()->GetEntity(event->m_EntityID);
-	assert(entity != nullptr && "Failed to retrieve entity by id!");
-
-	// get entities material and shape component
-	MaterialComponent*	materialComponent	= entity->GetComponent<MaterialComponent>();
-	ShapeComponent*		shapeComponent		= entity->GetComponent<ShapeComponent>();
-
-	// If there is one of the components missing we can stop, there is nothing todo for the renderer
-	if (materialComponent == nullptr || shapeComponent == nullptr)
-		return;
-
-	UnregisterRenderable(entity, materialComponent, shapeComponent);
+	UnregisterRenderable(event->m_EntityID);
 }
 
 void RenderSystem::OnCameraCreated(const CameraCreated* event)

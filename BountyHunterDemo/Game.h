@@ -40,7 +40,7 @@
 #include "TabletopCamera.h"
 #include "Collector.h"
 #include "Bounty.h"
-#include "Stash.h"
+#include "CollectorStash.h"
 #include "PlayerSpawn.h"
 #include "BountySpawn.h"
 

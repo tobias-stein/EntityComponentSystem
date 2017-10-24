@@ -10,12 +10,18 @@
 #include <ECS/ECS.h>
 #include "Spawn.h"
 
-class SpawnComponent : public Spawn, public ECS::Component<SpawnComponent>
+class SpawnComponent : public ECS::Component<SpawnComponent>
 {
+private:
+
+	Spawn m_Spawn;
+
 public:
 
 	SpawnComponent(const Spawn& spawn);
 	virtual ~SpawnComponent();
+
+	inline Spawn& GetSpawn() { return this->m_Spawn; }
 
 }; // class SpawnComponent
 

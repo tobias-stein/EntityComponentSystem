@@ -82,6 +82,11 @@ void RespawnSystem::RespawnGameObject(const GameObjectId gameObjectId)
 	this->DoRespawn(gameObjectId, entityRespawnComponent);
 }
 
+void RespawnSystem::Reset()
+{
+	this->m_RespawnQueue.clear();
+}
+
 void RespawnSystem::DoRespawn(const GameObjectId gameObjectId, RespawnComponent* entityRespawnComponent)
 {
 	// add to queue

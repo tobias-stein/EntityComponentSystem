@@ -57,6 +57,18 @@ public:
 	void RemovePlayer(PlayerId playerId);
 
 	///-------------------------------------------------------------------------------------------------
+	/// Fn:	void PlayerSystem::RemoveAllPlayers();
+	///
+	/// Summary:	Removes all players.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	24/10/2017
+	///-------------------------------------------------------------------------------------------------
+
+	void RemoveAllPlayers();
+
+	///-------------------------------------------------------------------------------------------------
 	/// Fn:	inline Player* PlayerSystem::GetPlayer(PlayerId playerId) const
 	///
 	/// Summary:	Gets a player by its id.

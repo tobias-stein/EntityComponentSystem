@@ -7,10 +7,10 @@
 #include "SpawnComponent.h"
 
 SpawnComponent::SpawnComponent(const Spawn& spawn) :
-	Spawn(spawn)
+	m_Spawn(spawn)
 {}
 
 SpawnComponent::~SpawnComponent()
 {
-	DeleteSpawn();
+	this->m_Spawn.DeleteSpawn();
 }

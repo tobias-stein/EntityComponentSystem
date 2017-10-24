@@ -18,14 +18,6 @@ private:
 
 	ISpawn* m_SpawnImpl;
 
-protected:
-
-	inline void DeleteSpawn()
-	{
-		delete this->m_SpawnImpl;
-		this->m_SpawnImpl = nullptr;
-	}
-
 public:
 
 	///-------------------------------------------------------------------------------------------------
@@ -45,7 +37,7 @@ public:
 		m_SpawnImpl(spawnImpl)
 	{}
 
-	virtual ~Spawn()
+	~Spawn()
 	{}
 
 	void SetSpawn(ISpawn* spawnImpl)
@@ -53,6 +45,12 @@ public:
 		DeleteSpawn();
 		this->m_SpawnImpl = spawnImpl;
 	}	
+
+	void DeleteSpawn()
+	{
+		delete this->m_SpawnImpl;
+		this->m_SpawnImpl = nullptr;
+	}
 
 	inline SpawnInfo GetFixSpawnInfo() { return this->m_SpawnImpl->GetFixSpawnInfo(); }
 

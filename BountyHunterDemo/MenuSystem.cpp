@@ -52,7 +52,7 @@ void MenuSystem::OnKeyDownEvent(const KeyDownEvent* event)
 		{
 			static bool s_PAUSED = false;
 
-			if(s_PAUSED == false)
+			if(g_GameInstance->IsPaused() == false)
 				ECS::ECS_Engine->SendEvent<PauseGameEvent>();
 			else
 				ECS::ECS_Engine->SendEvent<ResumeGameEvent>();

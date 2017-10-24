@@ -4,7 +4,7 @@
 /// Summary:	Implements the stash class.
 ///-------------------------------------------------------------------------------------------------
 
-#include "Stash.h"
+#include "CollectorStash.h"
 
 #include "ShapeComponent.h"
 #include "CollisionComponent2D.h"

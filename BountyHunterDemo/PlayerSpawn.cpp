@@ -17,5 +17,5 @@ PlayerSpawn::~PlayerSpawn()
 
 SpawnInfo PlayerSpawn::GetSpawnInfo()
 {
-	return GetComponent<SpawnComponent>()->GetFixSpawnInfo();
+	return GetComponent<SpawnComponent>()->GetSpawn().GetFixSpawnInfo();
 }

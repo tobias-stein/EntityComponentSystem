@@ -8,7 +8,15 @@
 
 void Game::GS_RESTARTED()
 {
+
+	// Clear player
+	ECS::ECS_Engine->GetSystemManager()->GetSystem<PlayerSystem>()->RemoveAllPlayers();
+
+	// Clear world
 	ECS::ECS_Engine->GetSystemManager()->GetSystem<WorldSystem>()->Clear();
+
+	ECS::ECS_Engine->GetSystemManager()->GetSystem<RespawnSystem>()->Reset();
+	ECS::ECS_Engine->GetSystemManager()->GetSystem<LifetimeSystem>()->Reset();
 
 	// reset game context
 	this->m_GameContext = GameContext();

@@ -78,6 +78,8 @@ public:
 
 	void RespawnGameObject(const GameObjectId gameObjectId);
 
+	void Reset();
+
 }; // class RespawnSystem
 
 #endif // __RESPAWN_SYSTEM_H__

@@ -92,8 +92,7 @@ void Game::GS_STARTED()
 void Game::GS_STARTED_ENTER()
 {
 	RegisterEventCallback(&Game::OnPauseGame);
-	RegisterEventCallback(&Game::OnResumeGame);
-	RegisterEventCallback(&Game::OnStashFull);
+	RegisterEventCallback(&Game::OnResumeGame);	
 }
 
 void Game::GS_STARTED_LEAVE()

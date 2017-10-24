@@ -25,5 +25,5 @@ BountySpawn::~BountySpawn()
 
 SpawnInfo BountySpawn::GetSpawnInfo()
 {
-	return GetComponent<SpawnComponent>()->SampleRandomSpawnInfo(RandomSpawnSampler::Spherical);
+	return GetComponent<SpawnComponent>()->GetSpawn().SampleRandomSpawnInfo(RandomSpawnSampler::Spherical);
 }

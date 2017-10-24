@@ -49,6 +49,11 @@ void LifetimeSystem::Update(float dt)
 	}
 }
 
+void LifetimeSystem::Reset()
+{
+	this->m_ActiveLifetimeComponents.clear();
+}
+
 
 void LifetimeSystem::RegisterEventCallbacks()
 {
