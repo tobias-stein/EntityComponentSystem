@@ -212,6 +212,8 @@ namespace ECS
 			for (ComponentTypeId componentTypeId = 0; componentTypeId < NUM_COMPONENTS; ++componentTypeId)
 			{
 				const ComponentId componentId = this->m_EntityComponentMap[entityId.index][componentTypeId];
+				if (componentId == INVALID_COMPONENT_ID)
+					continue;
 
 				IComponent* component = this->m_ComponentLUT[componentId];
 				if (component != nullptr)
