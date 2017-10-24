@@ -78,11 +78,11 @@ namespace ECS { namespace Event { namespace Internal {
 		{
 			EventDelegateId id = (EventDelegateId)eventDelegate->GetDelegateId();
 
-			EventDelegateList::const_iterator it = this->m_EventCallbacks.find(id);
-
-			// no duplicate
-			if (it != this->m_EventCallbacks.end())
-				return;
+			// if delegate wasn't deleted since last update, that is, delegate is still in pending list,
+			// remove it from pending list
+			auto pending = std::find(this->m_PendingRemoveDelegates.begin(), this->m_PendingRemoveDelegates.end(), id);
+			if (pending != this->m_PendingRemoveDelegates.end())
+				this->m_PendingRemoveDelegates.erase(pending);
 
 			this->m_EventCallbacks[id] = eventDelegate;
 		}
