@@ -255,20 +255,24 @@ public:
 	}
 
 	///-------------------------------------------------------------------------------------------------
-	/// Fn:	void SimpleFSM::PopState()
+	/// Fn:	void SimpleFSM::PopState(bool activeOldState = true)
 	///
 	/// Summary:	Pops the current active state from stack and restores the previouse one. If there is no
-	/// previous state the NULL_STATE will be active.
+	/// previous state the NULL_STATE will be active. If activeOldState flag is false, only the top state will
+	/// be popped, but the previous state won't be re-activated.
 	///
 	/// Author:	Tobias Stein
 	///
 	/// Date:	21/10/2017
 	///-------------------------------------------------------------------------------------------------
 
-	void PopState()
+	void PopState(bool activeOldState = true)
 	{
 		// remove active state from stack
 		this->m_StateStack.pop();
+
+		if (activeOldState == false)
+			return;
 
 		if (this->m_StateStack.empty() == false)
 		{

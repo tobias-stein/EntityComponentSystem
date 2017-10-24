@@ -18,6 +18,9 @@ void Game::OnResumeGame(const ResumeGameEvent* event)
 
 void Game::OnRestartGame(const RestartGameEvent * event)
 {
+	if (this->IsPaused() == true)
+		PopState(false); // prevent state stack from filling up
+
 	this->ChangeState(GameState::RESTARTED);
 }
 
