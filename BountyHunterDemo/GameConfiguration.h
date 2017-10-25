@@ -98,7 +98,7 @@ static constexpr float				MAX_BOUNTY_SCALE					{ 3.0f };
 static constexpr float				PLAYER_POCKET_SIZE					{ 100.0f }; 
 
 /// Summary:	Size of the player stash.
-static constexpr float				PLAYER_STASH_SIZE					{ 50.0f }; 
+static constexpr float				PLAYER_STASH_SIZE					{ 500.0f }; 
 
 // <<<< DEBUG SETTINGS >>>>
 

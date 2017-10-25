@@ -24,7 +24,7 @@ private:
 	void OnGameObjectCreated(const GameObjectCreated* event);
 	void OnGameObjectDestroyed(const GameObjectDestroyed* event);
 	void OnGameObjectSpawned(const GameObjectSpawned* event);
-	void OnGameObjectKilled(const GameObjectSpawned* event);
+	void OnGameObjectKilled(const GameObjectKilled* event);
 
 	WorldSystem* m_WorldSystem;
 

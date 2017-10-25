@@ -99,7 +99,7 @@ void LifetimeSystem::OnGameObjectSpawned(const GameObjectSpawned* event)
 	}
 }
 
-void LifetimeSystem::OnGameObjectKilled(const GameObjectSpawned* event)
+void LifetimeSystem::OnGameObjectKilled(const GameObjectKilled* event)
 {
 	LifetimeComponent* ltc = ECS::ECS_Engine->GetComponentManager()->GetComponent<LifetimeComponent>(event->m_EntityID);
 	if (ltc != nullptr)
