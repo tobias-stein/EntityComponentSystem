@@ -37,7 +37,7 @@ public:
 	CollisionComponent2D(const Shape& shape, const glm::vec2& scale = glm::vec2(1.0f), uint16 category = 0x0001, uint16 mask = 0xffff);
 	virtual ~CollisionComponent2D();
 
-	void Rescale(glm::vec2 scale);
+	void Rescale(const glm::vec2& scale);
 
 }; // class CollisionComponent
 

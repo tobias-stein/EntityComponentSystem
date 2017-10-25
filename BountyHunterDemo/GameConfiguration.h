@@ -56,10 +56,10 @@ static constexpr size_t				PHYSICS_POSITION_ITERATIONS			{ 6 };
 // <<<< GAME META SETTINGS >>>>
 
 /// Summary:	The max. player amount.
-static constexpr size_t				MAX_PLAYER							{ 1 };
+static constexpr size_t				MAX_PLAYER							{ 8 };
 
 /// Summary:	The max. amount of spawned bounty.
-static constexpr size_t				MAX_BOUNTY							{ 1 };
+static constexpr size_t				MAX_BOUNTY							{ 32 };
 
 /// Summary:	The default freeze time before game starts.
 static constexpr float				DEFAULT_FREEZE_TIME					{ 3.0f }; // seconds

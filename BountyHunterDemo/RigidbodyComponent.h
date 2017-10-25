@@ -34,6 +34,9 @@ public:
 
 	void SetTransform(const Transform& transform);
 
+	void SetScale(const glm::vec2& scale);
+
+
 }; // class RigidbodyComponent
 
 #endif // __RIGID_BODY_COMPONENT_H__

@@ -20,7 +20,7 @@ CollisionComponent2D::~CollisionComponent2D()
 {
 }
 
-void CollisionComponent2D::Rescale(glm::vec2 scale)
+void CollisionComponent2D::Rescale(const glm::vec2& scale)
 {
 	switch (this->shapeID)
 	{

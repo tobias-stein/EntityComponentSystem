@@ -59,5 +59,5 @@ void Bounty::ShuffleBounty()
 
 	this->m_ThisTransform->SetScale(glm::vec3(scale));
 	this->m_ThisMaterial->SetColor(1.0f, 1.0f - alpha, 0.0f);
-	this->m_ThisCollision->Rescale(glm::vec2(scale));
+	this->m_ThisRigidbody->SetScale(glm::vec2(scale));
 }
