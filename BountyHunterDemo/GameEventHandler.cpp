@@ -115,6 +115,7 @@ void Game::OnStashFull(const StashFull* event)
 		Player* player = ECS::ECS_Engine->GetSystemManager()->GetSystem<PlayerSystem>()->GetPlayer(stash->GetOwner());
 
 		SDL_Log("****************************************");
+		SDL_Log("Stash is full!\n");
 		SDL_Log("%s won the match!", player->GetPlayerName());
 		SDL_Log("****************************************");
 

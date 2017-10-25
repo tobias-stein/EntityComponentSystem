@@ -450,11 +450,11 @@
     <ClCompile Include="LifetimeSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Stash.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="CollectorStash.h">
+    <ClCompile Include="Stash.h">
       <Filter>Header Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStash.cpp">
+      <Filter>Source Files\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -54,7 +54,15 @@ void Game::GS_INITIALIZED()
 		PyS->AddDependencies(InS, WoS);
 		RdS->AddDependencies(PyS);
 		LS->AddDependencies(ReS);
-	}	
+		
+		// create two system work state masks: one when runnign, one when game is paused
+		
+		// ingame system work state
+		this->m_Ingame_SystemWSM = ECS::ECS_Engine->GetSystemManager()->GetSystemWorkState();
+
+		// not ingame system work state (gameover, paused, ...)
+		this->m_NotIngame_SystemWSM = ECS::ECS_Engine->GetSystemManager()->GenerateActiveSystemWorkState(MeS, PlS, RdS, InS);
+	} 
 
 	// put game to GameState 'RESTARTED'
 	ChangeState(GameState::RESTARTED);

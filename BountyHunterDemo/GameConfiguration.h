@@ -65,7 +65,7 @@ static constexpr size_t				MAX_BOUNTY							{ 32 };
 static constexpr float				DEFAULT_FREEZE_TIME					{ 3.0f }; // seconds
 
 /// Summary:	The default play time.
-static constexpr float				DEFAULT_PLAY_TIME					{ 90.0f }; // seconds
+static constexpr float				DEFAULT_PLAY_TIME					{ 45.0f }; // seconds
 
 /// Summary:	The default collector respawntime.
 static constexpr float				COLLECTOR_RESPAWNTIME				{ 5.0f }; // seconds

@@ -23,6 +23,9 @@ protected:
 	/// Summary:	The active controller for this player.
 	Controller		m_PlayerController;
 
+	/// Summary:	Identifier for player's stash.
+	GameObjectId	m_StashId;
+
 public:
 
 	Player(const PlayerId playerId, const char* playerName, const Controller& controller = nullptr);
@@ -37,6 +40,9 @@ public:
 
 	inline void SetController(const Controller& controller) { this->m_PlayerController = controller; }
 	inline Controller& GetController() { return this->m_PlayerController; }	
+
+	inline void SetStash(GameObjectId stashId) { this->m_StashId = stashId; }
+	inline GameObjectId GetStash() const { return this->m_StashId; }
 
 }; // class IPlayer
 

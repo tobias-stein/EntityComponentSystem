@@ -12,6 +12,9 @@ void Game::GS_GAMEOVER()
 
 void Game::GS_GAMEOVER_ENTER()
 {
+	// change system manager active work state
+	ECS::ECS_Engine->GetSystemManager()->SetSystemWorkState(this->m_NotIngame_SystemWSM);
+
 	UnregisterEventCallback(&Game::OnPauseGame);
 	UnregisterEventCallback(&Game::OnResumeGame);
 	UnregisterEventCallback(&Game::OnStashFull);

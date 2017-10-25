@@ -321,6 +321,27 @@ namespace ECS
 		///-------------------------------------------------------------------------------------------------
 
 		void SetSystemWorkState(SystemWorkStateMask mask);
+
+		template<class... ActiveSystems>
+		SystemWorkStateMask GenerateActiveSystemWorkState(ActiveSystems&&... activeSystems)
+		{
+			SystemWorkStateMask mask(this->m_SystemWorkOrder.size(), false);
+
+			std::list<ISystem*> AS = { activeSystems... };
+			for (auto s : AS)
+			{
+				for (int i = 0; i < this->m_SystemWorkOrder.size(); ++i)
+				{
+					if (this->m_SystemWorkOrder[i]->GetStaticSystemTypeID() == s->GetStaticSystemTypeID())
+					{
+						mask[i] = true;
+						break;
+					}
+				}
+			}
+
+			return mask;
+		}
 	};
 
 } // namespace ECS

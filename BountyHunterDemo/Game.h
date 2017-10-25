@@ -40,7 +40,7 @@
 #include "TabletopCamera.h"
 #include "Collector.h"
 #include "Bounty.h"
-#include "CollectorStash.h"
+#include "Stash.h"
 #include "PlayerSpawn.h"
 #include "BountySpawn.h"
 
@@ -182,51 +182,26 @@ public:
 
 private:
 
-	/** mWindow
-		The handle to the window instance.
-	*/
-	SDL_Window*			m_Window;
+	SDL_Window*					m_Window;
 
-	
-	/** mWindowX
-		The horizontal offset of the top-left corner of the applications window.
-	*/
-	int					m_WindowPosX;
+	int							m_WindowPosX;
+	int							m_WindowPosY;
 
-	/** mWindowY
-		The vertical offset of the top-left corner of the applications window.
-	*/
-	int					m_WindowPosY;
+	int							m_WindowWidth;
+	int							m_WindowHeight;
 
-	/** mWindowW
-		The width of the window.
-	*/
-	int					m_WindowWidth;
+	bool						m_Fullscreen;
 
-	/** mWindowH
-		The height of the window.
-	*/
-	int					m_WindowHeight;
+	const char*					m_GameTitle;
 
-	/** mFullscreen
-		The fullscreen flag is true if the application is running in fullscreen mode.
-	*/
-	bool				m_Fullscreen;
+	FPS							m_FPS;
+	float						m_DeltaTime;
 
-	/** mGameTitle
-		Game Title.
-	*/
-	const char*			m_GameTitle;
+	GameContext					m_GameContext;
 
-	/// Summary:	A simple frame counter.
-	FPS					m_FPS;
-	
 
-	/// Summary:	The delta time in seconds.
-	float				m_DeltaTime;
-
-	/// Summary:	Context for the game.
-	GameContext			m_GameContext;
+	ECS::SystemWorkStateMask	m_Ingame_SystemWSM;
+	ECS::SystemWorkStateMask	m_NotIngame_SystemWSM;
 
 private:
 

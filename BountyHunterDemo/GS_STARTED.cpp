@@ -46,12 +46,13 @@ void Game::GS_STARTED()
 		GameObjectId collectorId = worldSystem->AddGameObject<Collector>(initialTransform, collectorSpawn);
 
 		PlayerId playerId = INVALID_PLAYER_ID;
+		Player* player = nullptr;
 		if ((i == 0) && (HAS_HUMAN_PLAYER == true))
 		{
 			// create human player
 			playerId = playerSystem->AddNewPlayer(DEFAULT_PLAYER_NAME);
 
-			Player* player = playerSystem->GetPlayer(playerId);
+			player = playerSystem->GetPlayer(playerId);
 			player->SetController(new PlayerCollectorController(collectorId, playerId));
 		}
 		else
@@ -59,12 +60,13 @@ void Game::GS_STARTED()
 			// create ai player
 			playerId = playerSystem->AddNewPlayer(("Player #" + std::to_string(i)).c_str());
 
-			Player* player = playerSystem->GetPlayer(playerId);
+			player = playerSystem->GetPlayer(playerId);
 			player->SetController(new AICollectorController(collectorId, playerId));
 		}
 
 		// create stash
-		worldSystem->AddGameObject<Stash>(glm::translate(glm::mat4(1.0f), Position(xR, yR, 1.0f)) * glm::scale(glm::vec3(2.5f)), playerId);
+		GameObjectId playerStashId = worldSystem->AddGameObject<Stash>(glm::translate(glm::mat4(1.0f), Position(xR, yR, 1.0f)) * glm::scale(glm::vec3(2.5f)), playerId);
+		player->SetStash(playerStashId);
 	}
 
 

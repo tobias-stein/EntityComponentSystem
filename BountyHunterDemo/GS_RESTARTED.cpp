@@ -8,6 +8,8 @@
 
 void Game::GS_RESTARTED()
 {
+	// change system manager active work state
+	ECS::ECS_Engine->GetSystemManager()->SetSystemWorkState(this->m_Ingame_SystemWSM);
 
 	// Clear player
 	ECS::ECS_Engine->GetSystemManager()->GetSystem<PlayerSystem>()->RemoveAllPlayers();
