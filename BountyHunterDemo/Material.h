@@ -10,7 +10,7 @@
 
 // incldue materials
 #include "DefaultMaterial.h"
-
+#include "LineMaterial.h"
 
 class Material
 {

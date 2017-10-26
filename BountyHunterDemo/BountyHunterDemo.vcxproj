@@ -226,6 +226,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameEventHandler.cpp" />
+    <ClCompile Include="GLLineRenderer.cpp" />
     <ClCompile Include="GLShader.cpp" />
     <ClCompile Include="GS_GAMEOVER.cpp" />
     <ClCompile Include="GS_INITIALIZED.cpp" />
@@ -239,6 +240,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="IShape.cpp" />
     <ClCompile Include="LifetimeComponent.cpp" />
     <ClCompile Include="LifetimeSystem.cpp" />
+    <ClCompile Include="LineMaterial.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialComponent.cpp" />
     <ClCompile Include="MaterialGenerator.cpp" />
@@ -332,12 +334,14 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="GameObjectSpawn.h" />
     <ClInclude Include="GameTypes.h" />
     <ClInclude Include="GLBuffer.h" />
+    <ClInclude Include="GLLineRenderer.h" />
     <ClInclude Include="GLShader.h" />
     <ClInclude Include="IController.h" />
     <ClInclude Include="IMaterial.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="LifetimeComponent.h" />
     <ClInclude Include="LifetimeSystem.h" />
+    <ClInclude Include="LineMaterial.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ISpawn.h" />

@@ -30,6 +30,8 @@
 
 #include "GameCamera.h"
 
+#include "GLLineRenderer.h"
+
 class RenderSystem : public ECS::System<RenderSystem>, protected ECS::Event::IEventListener
 {
 	static constexpr size_t		GLOBAL_VERTEX_BUFFER_SIZE { 8388608 /* 8 MB */ };
@@ -74,6 +76,8 @@ class RenderSystem : public ECS::System<RenderSystem>, protected ECS::Event::IEv
 	using RenderableList = std::list<Renderable>;
 	using RenderableGroups = std::unordered_map<RenderableGroup, RenderableList>;
 
+
+
 private:
 	
 	// Application window
@@ -94,6 +98,9 @@ private:
 
 	// Active Camera
 	IGameCamera*		m_ActiveCamera;
+
+	// DEBUG DRAWING
+	GLLineRenderer*		m_DebugLineRenderer;
 
 private:
 
@@ -141,6 +148,108 @@ public:
 	virtual void PreUpdate(float dt) override;
 	virtual void Update(float dt) override;
 	virtual void PostUpdate(float dt) override;
+
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:
+	/// void RenderSystem::DrawLine(Position2D p0, Position2D p1, Color3f color0 = Color3f(1.0f),
+	/// bool arrowHead0 = false, bool arrowHead1 = false);
+	///
+	/// Summary: Draws a 2D line from 'p0' to 'p1'. A RGB color can be specified as well as a starting and/or
+	/// closing arrow head on line start/end.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	26/10/2017
+	///
+	/// Parameters:
+	/// p0 - 		 	The p 0.
+	/// p1 - 		 	The first Position2D.
+	/// color0 - 	 	(Optional) The color 0.
+	/// arrowHead0 - 	(Optional) True to arrow head 0.
+	/// arrowHead1 - 	(Optional) True to arrow head 1.
+	///-------------------------------------------------------------------------------------------------
+
+	void DrawLine(Position2D p0, Position2D p1, bool arrowHead0 = false, bool arrowHead1 = false, Color3f color = Color3f(1.0f));
+
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:
+	/// void RenderSystem::DrawCircle(Position2D center, float radius,
+	/// Color3f color0 = Color3f(1.0f));
+	///
+	/// Summary:	Draws a full circle.
+	///
+	/// Author:	Tobias Stein.
+	///
+	/// Date:	26/10/2017.
+	///
+	/// Parameters:
+	/// center -   	The center.
+	/// radius -   	The radius.
+	/// color0 -   	(Optional) The color 0.
+	///-------------------------------------------------------------------------------------------------
+
+	void DrawCircle(Position2D center, float radius, Color3f color = Color3f(1.0f));
+
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:
+	/// void RenderSystem::DrawSegment(Position2D center, float radius, float start, float end,
+	/// Color3f color0 = Color3f(1.0f));
+	///
+	/// Summary:	Draws a segment, which is sort of semi circle.
+	///
+	/// Author:	Tobias Stein.
+	///
+	/// Date:	26/10/2017.
+	///
+	/// Parameters:
+	/// center -   	The center.
+	/// radius -   	The radius.
+	/// start -    	The start.
+	/// end - 	   	The end.
+	/// color0 -   	(Optional) The color 0.
+	///-------------------------------------------------------------------------------------------------
+
+	void DrawSegment(Position2D center, float radius, float start, float end, Color3f color = Color3f(1.0f));
+
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:
+	/// void RenderSystem::DrawRectangle(Position2D minCorner, Position2D maxCorner,
+	/// Color3f color0 = Color3f(1.0f));
+	///
+	/// Summary:	Draws rectangle specified by its min and max corner points.
+	///
+	/// Author:	Tobias Stein.
+	///
+	/// Date:	26/10/2017.
+	///
+	/// Parameters:
+	/// minCorner - 	The minimum corner.
+	/// maxCorner - 	The maximum corner.
+	/// color0 -    	(Optional) The color 0.
+	///-------------------------------------------------------------------------------------------------
+
+	void DrawRectangle(Position2D minCorner, Position2D maxCorner, Color3f color = Color3f(1.0f));
+
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:
+	/// void RenderSystem::DrawRectangle(Position2D center, float halfExpWidth, float halfExpHeight,
+	/// Color3f color0 = Color3f(1.0f));
+	///
+	/// Summary:	Draws rectangle specified by a center position and helf expanding width and height.
+	///
+	/// Author:	Tobias Stein.
+	///
+	/// Date:	26/10/2017.
+	///
+	/// Parameters:
+	/// center - 			The center.
+	/// halfExpWidth -  	Width of the half exponent.
+	/// halfExpHeight - 	Height of the half exponent.
+	/// color0 - 			(Optional) The color 0.
+	///-------------------------------------------------------------------------------------------------
+
+	void DrawRectangle(Position2D center, float halfExpWidth, float halfExpHeight, Color3f color = Color3f(1.0f));
+
 
 }; // class RenderSystem
 

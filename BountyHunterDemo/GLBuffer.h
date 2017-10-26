@@ -83,14 +83,14 @@ struct VertexBuffer
 	const GLsizeiptr	m_BufferCapacity;
 	GLintptr 			m_CurrentBufferIndex;
 
-	VertexBuffer(const GLsizeiptr size) :
+	VertexBuffer(const GLsizeiptr size, bool dynamic = false) :
 		m_BufferCapacity(size),
 		m_CurrentBufferIndex(0)
 	{
 		glGenBuffers(1, &this->m_ID);
 		glBindBuffer(GL_ARRAY_BUFFER, this->m_ID);
 
-		glBufferData(GL_ARRAY_BUFFER, size, 0, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, size, 0, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glGetLastError();
@@ -145,6 +145,18 @@ struct VertexBuffer
 
 		return dataBufferIndex;
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:	inline void Reset()
+	///
+	/// Summary:	Resets the buffer index, but does not clear the buffer data.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	26/10/2017
+	///-------------------------------------------------------------------------------------------------
+
+	inline void Reset() { this->m_CurrentBufferIndex = 0; }
 };
 
 ///-------------------------------------------------------------------------------------------------
@@ -229,6 +241,18 @@ struct IndexBuffer
 
 		return dataBufferIndex;
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:	inline void Reset()
+	///
+	/// Summary:	Resets the buffer index, but does not clear the buffer data.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	26/10/2017
+	///-------------------------------------------------------------------------------------------------
+
+	inline void Reset() { this->m_CurrentBufferIndex = 0; }
 };
 
 #endif // __GL_BUFFERS_H__

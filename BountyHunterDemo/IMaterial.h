@@ -83,6 +83,7 @@ public:
 
 		DEFAULT_MATERIAL = 0,
 
+		LINE_MATERIAL,
 
 		MAX_MATERIALS
 	}; // enum Type

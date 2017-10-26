@@ -456,6 +456,12 @@
     <ClCompile Include="PlayerStash.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="LineMaterial.cpp">
+      <Filter>Source Files\MaterialGenerator\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="GLLineRenderer.cpp">
+      <Filter>Source Files\OpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MenuSystem.h">
@@ -790,6 +796,12 @@
     </ClInclude>
     <ClInclude Include="LifetimeComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="LineMaterial.h">
+      <Filter>Header Files\MaterialGenerator\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="GLLineRenderer.h">
+      <Filter>Header Files\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

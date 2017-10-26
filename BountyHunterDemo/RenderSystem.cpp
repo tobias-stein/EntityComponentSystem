@@ -13,6 +13,9 @@ RenderSystem::RenderSystem(SDL_Window* window) :
 {
 	InitializeOpenGL();
 
+	// DEBUG DRAWING
+	this->m_DebugLineRenderer = new GLLineRenderer();
+
 	// create global vertex and index buffer
 	this->m_VertexBuffer = new VertexBuffer(GLOBAL_VERTEX_BUFFER_SIZE);
 	this->m_IndexBuffer = new IndexBuffer(GLOBAL_INDEX_BUFFER_SIZE);
@@ -37,13 +40,17 @@ RenderSystem::~RenderSystem()
 		it.second.clear();
 	}
 	
-	
+	// DEBUG DRAWING
+	delete this->m_DebugLineRenderer;
+	this->m_DebugLineRenderer = nullptr;
+
 	// free global vertex and index buffer
 	this->m_VertexBuffer = nullptr;
 	delete this->m_VertexBuffer;
 
 	this->m_IndexBuffer = nullptr;
 	delete this->m_IndexBuffer;
+
 
 	TerminateOpenGL();
 }
@@ -115,6 +122,7 @@ void RenderSystem::Update(float dt)
 		return;
 	}
 
+	/*
 	MaterialID		lastUsedMaterial	= INVALID_MATERIAL_ID;
 	VertexArrayID	lastUsedVertexArray = -1;
 
@@ -172,6 +180,14 @@ void RenderSystem::Update(float dt)
 
 	glBindVertexArray(0);
 	glUseProgram(0);
+	*/
+
+	// DEBUG DRAWING
+	if (DEBUG_DRAWING_ENABLED == true)
+	{
+		// render all lines
+		this->m_DebugLineRenderer->Flush(this->m_ActiveCamera->GetProjectionTransform());
+	}
 }
 
 void RenderSystem::PostUpdate(float dt)
@@ -182,7 +198,6 @@ void RenderSystem::PostUpdate(float dt)
 	// Check for errors
 	glGetLastError();
 }
-
 
 void RenderSystem::SetShapeBufferIndex(ShapeComponent* shapeComponent)
 {
@@ -428,5 +443,135 @@ void RenderSystem::OnCameraDestroyed(const CameraDestroyed* event)
 	{
 		this->m_ActiveCamera = nullptr;
 		SDL_LogWarn(SDL_LOG_PRIORITY_WARN, "Warning RenderSystems active camera got destroyed!");
+	}
+}
+
+
+void RenderSystem::DrawLine(Position2D p0, Position2D p1, bool arrowHead0, bool arrowHead1, Color3f color)
+{
+	if (DEBUG_DRAWING_ENABLED == true)
+	{
+		this->m_DebugLineRenderer->AddLine(Position(p0, -1.0f), Position(p1, -1.0f), color);
+
+		if (arrowHead0 == true)
+		{
+			glm::vec2 dirNorm = glm::normalize(p1 - p0);
+			glm::vec2 perp = glm::vec2(-dirNorm.y, dirNorm.x);
+
+			this->m_DebugLineRenderer->AddLine(Position(p0, -1.0f), Position(p0 + dirNorm - perp, -1.0f), color);
+			this->m_DebugLineRenderer->AddLine(Position(p0, -1.0f), Position(p0 + dirNorm + perp, -1.0f), color);
+		}
+
+		if (arrowHead1 == true)
+		{
+			glm::vec2 dirNorm = glm::normalize(p0 - p1);
+			glm::vec2 perp = glm::vec2(-dirNorm.y, dirNorm.x);
+
+			this->m_DebugLineRenderer->AddLine(Position(p1, -1.0f), Position(p1 + dirNorm - perp, -1.0f), color);
+			this->m_DebugLineRenderer->AddLine(Position(p1, -1.0f), Position(p1 + dirNorm + perp, -1.0f), color);
+		}
+	}
+}
+
+void RenderSystem::DrawCircle(Position2D center, float radius, Color3f color)
+{
+	if (DEBUG_DRAWING_ENABLED == true)
+	{
+		const float NUM_SEGMENTS = 16.0f;
+
+		const float STEP = glm::two_pi<float>() / NUM_SEGMENTS;
+
+		float c = glm::cos(STEP);
+		float s = glm::sin(STEP);
+
+		glm::vec2 r1(1.0f, 0.0f);
+		glm::vec2 v1 = center + radius * r1;
+
+		for (size_t i = 0; i < NUM_SEGMENTS; ++i)
+		{
+			glm::vec2 r2;
+
+			r2.x = c * r1.x - s * r1.y;
+			r2.y = s * r1.x + c * r1.y;
+			glm::vec2 v2 = center + radius * r2;
+
+			this->m_DebugLineRenderer->AddLine(glm::vec3(v1, -1.0f), glm::vec3(v2, -1.0f), color);
+
+			r1 = r2;
+			v1 = v2;
+		}
+	}
+}
+
+void RenderSystem::DrawSegment(Position2D center, float radius, float start, float end, Color3f color)
+{
+	if (DEBUG_DRAWING_ENABLED == true)
+	{
+		const float NUM_SEGMENTS = 16.0f;
+
+		const float STEP = (end - start) / NUM_SEGMENTS;
+
+		float c = glm::cos(STEP);
+		float s = glm::sin(STEP);
+
+		glm::vec2 r1(glm::cos(start), glm::sin(start));
+		glm::vec2 v1 = center + radius * r1;
+
+		this->m_DebugLineRenderer->AddLine(glm::vec3(center, -1.0f), glm::vec3(v1, -1.0f), color);
+
+		for (size_t i = 0; i < NUM_SEGMENTS; ++i)
+		{
+			glm::vec2 r2;
+
+			r2.x = c * r1.x - s * r1.y;
+			r2.y = s * r1.x + c * r1.y;
+			glm::vec2 v2 = center + radius * r2;
+
+			this->m_DebugLineRenderer->AddLine(glm::vec3(v1, -1.0f), glm::vec3(v2, -1.0f), color);
+
+			r1 = r2;
+			v1 = v2;
+		}
+
+		this->m_DebugLineRenderer->AddLine(glm::vec3(center, -1.0f), glm::vec3(v1, -1.0f), color);
+	}
+}
+
+void RenderSystem::DrawRectangle(Position2D minCorner, Position2D maxCorner, Color3f color)
+{
+	if (DEBUG_DRAWING_ENABLED == true)
+	{
+		const float w = maxCorner.x - minCorner.x;
+		const float h = maxCorner.y - minCorner.y;
+
+		// left
+		this->m_DebugLineRenderer->AddLine(glm::vec3(minCorner, -1.0f), glm::vec3(minCorner.x, minCorner.y + h, -1.0f), color);
+
+		// right
+		this->m_DebugLineRenderer->AddLine(glm::vec3(maxCorner, -1.0f), glm::vec3(maxCorner.x, maxCorner.y - h, -1.0f), color);
+
+		// top
+		this->m_DebugLineRenderer->AddLine(glm::vec3(maxCorner, -1.0f), glm::vec3(maxCorner.x - w, maxCorner.y, -1.0f), color);
+
+		// bottom
+		this->m_DebugLineRenderer->AddLine(glm::vec3(minCorner, -1.0f), glm::vec3(minCorner.x + w, minCorner.y, -1.0f), color);
+	}
+}
+
+void RenderSystem::DrawRectangle(Position2D center, float halfExpWidth, float halfExpHeight, Color3f color)
+{
+	if (DEBUG_DRAWING_ENABLED == true)
+	{
+		// left
+		this->m_DebugLineRenderer->AddLine(glm::vec3(center.x - halfExpWidth, center.x - halfExpHeight, -1.0f), glm::vec3(center.x - halfExpWidth, center.x + halfExpHeight, -1.0f), color);
+
+		// right
+		this->m_DebugLineRenderer->AddLine(glm::vec3(center.x + halfExpWidth, center.x - halfExpHeight, -1.0f), glm::vec3(center.x + halfExpWidth, center.x + halfExpHeight, -1.0f), color);
+
+		// top
+		this->m_DebugLineRenderer->AddLine(glm::vec3(center.x - halfExpWidth, center.x + halfExpHeight, -1.0f), glm::vec3(center.x + halfExpWidth, center.x + halfExpHeight, -1.0f), color);
+
+		// bottom
+		this->m_DebugLineRenderer->AddLine(glm::vec3(center.x - halfExpWidth, center.x - halfExpHeight, -1.0f), glm::vec3(center.x + halfExpWidth, center.x - halfExpHeight, -1.0f), color);
 	}
 }

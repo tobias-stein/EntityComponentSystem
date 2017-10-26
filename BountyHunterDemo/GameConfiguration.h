@@ -117,4 +117,7 @@ static constexpr float				PLAYER_STASH_SIZE					{ 500.0f };
 /// Summary:	Enable/Disable CheatSystem
 static constexpr bool				ALLOW_CHEATS						{ true };
 
+/// Summary:	True to enable the debug drawing.
+static constexpr bool				DEBUG_DRAWING_ENABLED				{ true };
+
 #endif // __GAME_CONFIG_H__
