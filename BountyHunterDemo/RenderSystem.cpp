@@ -122,7 +122,6 @@ void RenderSystem::Update(float dt)
 		return;
 	}
 
-	/*
 	MaterialID		lastUsedMaterial	= INVALID_MATERIAL_ID;
 	VertexArrayID	lastUsedVertexArray = -1;
 
@@ -180,7 +179,6 @@ void RenderSystem::Update(float dt)
 
 	glBindVertexArray(0);
 	glUseProgram(0);
-	*/
 
 	// DEBUG DRAWING
 	if (DEBUG_DRAWING_ENABLED == true)

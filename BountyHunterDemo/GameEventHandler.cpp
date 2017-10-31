@@ -105,6 +105,42 @@ void Game::OnCollisionBegin(const CollisionBeginEvent* event)
 			StashBountyAction((Collector*)objectB, (Stash*)objectA);
 		}
 	}
+
+	// If collector collided with wall ...
+	{
+		static const auto WallCollisionAction = [](Collector* collector, Wall* wall)
+		{
+			auto collTC = collector->GetComponent<TransformComponent>();
+			auto wallTC = wall->GetComponent<TransformComponent>();
+
+			auto collPos = collTC->GetPosition();
+			auto wallNrm = wallTC->GetRight();
+			
+			auto newPos = Position(collPos);
+			
+			if ((glm::abs(wallNrm.x) > 0.005f) == true)
+			{
+				newPos.x *= -0.95f;
+			}
+
+			if ((glm::abs(wallNrm.y) > 0.005f) == true)
+			{
+				newPos.y *= -0.95f;
+			}
+
+			collTC->SetPosition(newPos);
+			collector->GetComponent<RigidbodyComponent>()->SetTransform(*collTC);			
+		};
+
+		if ((typeA == Collector::STATIC_ENTITY_TYPE_ID) && (typeB == Wall::STATIC_ENTITY_TYPE_ID))
+		{
+			WallCollisionAction((Collector*)objectA, (Wall*)objectB);
+		}
+		else if ((typeA == Wall::STATIC_ENTITY_TYPE_ID) && (typeB == Collector::STATIC_ENTITY_TYPE_ID))
+		{
+			WallCollisionAction((Collector*)objectB, (Wall*)objectA);
+		}
+	}
 }
 
 void Game::OnStashFull(const StashFull* event)

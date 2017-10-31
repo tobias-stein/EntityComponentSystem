@@ -87,6 +87,21 @@ void Transform::SetScale(const glm::vec3& scale)
 	this->m_Transform = T * R * glm::scale(scale);
 }
 
+void Transform::SetRight(const glm::vec3 & right)
+{
+	this->m_Transform[0] = glm::vec4(right, this->m_Transform[0].w);
+}
+
+void Transform::SetUp(const glm::vec3 & up)
+{
+	this->m_Transform[1] = glm::vec4(up, this->m_Transform[1].w);
+}
+
+void Transform::SetForward(const glm::vec3 & forward)
+{
+	this->m_Transform[2] = glm::vec4(forward, this->m_Transform[2].w);
+}
+
 glm::vec3 Transform::GetRotation() const
 {
 	glm::vec3 euler_angles;

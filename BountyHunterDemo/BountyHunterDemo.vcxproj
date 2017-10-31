@@ -266,6 +266,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="TabletopCamera.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
+    <ClCompile Include="Wall.cpp" />
     <ClCompile Include="World2D.cpp" />
     <ClCompile Include="WorldSystem.cpp" />
   </ItemGroup>
@@ -381,6 +382,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="TriangleShape.h" />
+    <ClInclude Include="Wall.h" />
     <ClInclude Include="World2D.h" />
     <ClInclude Include="WorldSystem.h" />
   </ItemGroup>

@@ -27,13 +27,14 @@ static const uint16_t		DEFAULT_COLLSION_CATEGORY	{ 0x0001 };
 static const uint16_t		PLAYER_COLLSION_CATEGORY	{ 0x0002 };
 static const uint16_t		BOUNTY_COLLSION_CATEGORY	{ 0x0004 };
 static const uint16_t		STASH_COLLSION_CATEGORY		{ 0x0008 };
+static const uint16_t		WALL_COLLSION_CATEGORY		{ 0x0010 };
 
 // Collision rules (masks)
 static const uint16_t		DEFAULT_COLLSION			{ 0xffff };
 static const uint16_t		PLAYER_COLLSION				{ DEFAULT_COLLSION };
 static const uint16_t		STASH_COLLSION				{ DEFAULT_COLLSION };
-static const uint16_t		BOUNTY_COLLSION				{ DEFAULT_COLLSION ^ (BOUNTY_COLLSION_CATEGORY | STASH_COLLSION_CATEGORY) };
-
+static const uint16_t		BOUNTY_COLLSION				{ DEFAULT_COLLSION ^ (BOUNTY_COLLSION_CATEGORY | STASH_COLLSION_CATEGORY | WALL_COLLSION_CATEGORY) };
+static const uint16_t		WALL_COLLSION				{ DEFAULT_COLLSION ^ (WALL_COLLSION_CATEGORY) };
 
 /*
 
@@ -44,15 +45,18 @@ P = player
 B = bounty
 S = Stash
 
-   | D | P | B | S
----+---+---+---+---
- D | x | x | x | x
----+---+---+---+---
- P | x | x | x | x
----+---+---+---+---
- B | x | x |   |
----+---+---+---+---
-
+   | D | P | B | S | W
+---+---+---+---+---+---
+ D | x | x | x | x | x
+---+---+---+---+---+---
+ P | x | x | x | x | x
+---+---+---+---+---+---
+ B | x | x |   |   | 
+---+---+---+---+---+---
+ S | x | x |   |   |
+---+---+---+---+---+---
+ W | x | x |   |   | 
+---+---+---+---+---+---
 */
 
 ///-------------------------------------------------------------------------------------------------

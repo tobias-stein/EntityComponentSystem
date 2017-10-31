@@ -167,6 +167,12 @@ public:
 		return entityId;
 	}
 
+	template<class T>
+	T* GetGameObject(const GameObjectId& objectId)
+	{
+		return static_cast<T*>(ECS::ECS_Engine->GetEntityManager()->GetEntity(objectId));
+	}
+
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	template<class T> void WorldSystem::KillAllGameObjects()
 	///

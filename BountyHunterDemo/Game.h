@@ -43,6 +43,7 @@
 #include "Stash.h"
 #include "PlayerSpawn.h"
 #include "BountySpawn.h"
+#include "Wall.h"
 
 // player controller
 #include "AICollectorController.h"

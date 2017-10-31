@@ -22,6 +22,25 @@ void Game::GS_STARTED()
 
 
 	//------------------------------------------
+	// Create Walls
+	//------------------------------------------
+
+	glm::vec3 wallSize = glm::vec3(1.0f, WORLD_BOUND_MAX[1] + 3.0f, 1.0f);
+
+	// left
+	worldSystem->AddGameObject<Wall>(Transform(Position(WORLD_BOUND_MIN[0] - 3.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::radians(0.0f), wallSize), wallSize);
+
+	// right
+	worldSystem->AddGameObject<Wall>(Transform(Position(WORLD_BOUND_MAX[0] + 3.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::radians(180.0f), wallSize), wallSize);
+
+	// top
+	worldSystem->AddGameObject<Wall>(Transform(Position(0.0f, WORLD_BOUND_MAX[0] + 3.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::radians(90.0f), wallSize), wallSize); 
+
+	// bottom
+	worldSystem->AddGameObject<Wall>(Transform(Position(0.0f, WORLD_BOUND_MIN[0] - 3.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::radians(270.0f), wallSize), wallSize);
+
+
+	//------------------------------------------
 	// Create Player
 	//------------------------------------------
  
@@ -42,8 +61,6 @@ void Game::GS_STARTED()
 		// create collector spawn
 		GameObjectId collectorSpawn = worldSystem->AddGameObject<PlayerSpawn>(Transform(Position(xR, yR, 1.0f)), spawnPosition, angle + glm::radians(90.0f));
 
-		// spawn collector
-		GameObjectId collectorId = worldSystem->AddGameObject<Collector>(initialTransform, collectorSpawn);
 
 		PlayerId playerId = INVALID_PLAYER_ID;
 		Player* player = nullptr;
@@ -52,21 +69,27 @@ void Game::GS_STARTED()
 			// create human player
 			playerId = playerSystem->AddNewPlayer(DEFAULT_PLAYER_NAME);
 
+			// create stash and collector
+			GameObjectId playerStashId = worldSystem->AddGameObject<Stash>(glm::translate(glm::mat4(1.0f), Position(xR, yR, 1.0f)) * glm::scale(glm::vec3(2.5f)), playerId);
+			GameObjectId collectorId = worldSystem->AddGameObject<Collector>(initialTransform, collectorSpawn);
+
 			player = playerSystem->GetPlayer(playerId);
 			player->SetController(new PlayerCollectorController(collectorId, playerId));
+			player->SetStash(playerStashId);
 		}
 		else
 		{
 			// create ai player
 			playerId = playerSystem->AddNewPlayer(("Player #" + std::to_string(i)).c_str());
 
+			// create stash and collector
+			GameObjectId playerStashId = worldSystem->AddGameObject<Stash>(glm::translate(glm::mat4(1.0f), Position(xR, yR, 1.0f)) * glm::scale(glm::vec3(2.5f)), playerId);
+			GameObjectId collectorId = worldSystem->AddGameObject<Collector>(initialTransform, collectorSpawn);
+
 			player = playerSystem->GetPlayer(playerId);
 			player->SetController(new AICollectorController(collectorId, playerId));
+			player->SetStash(playerStashId);
 		}
-
-		// create stash
-		GameObjectId playerStashId = worldSystem->AddGameObject<Stash>(glm::translate(glm::mat4(1.0f), Position(xR, yR, 1.0f)) * glm::scale(glm::vec3(2.5f)), playerId);
-		player->SetStash(playerStashId);
 	}
 
 

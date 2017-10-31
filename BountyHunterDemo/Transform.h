@@ -39,6 +39,10 @@ public:
 	inline glm::vec3 GetUp() const { return glm::vec3(this->m_Transform[1]); }
 	inline glm::vec3 GetForward() const { return glm::vec3(this->m_Transform[2]); }
 
+	void SetRight(const glm::vec3& right);
+	void SetUp(const glm::vec3& up);
+	void SetForward(const glm::vec3& forward);
+
 	inline glm::vec3 GetPosition() const { return glm::vec3(this->m_Transform[3]); }
 
 	
