@@ -15,9 +15,8 @@
 #define __SIMPLE_FSM_H__
 
 #include <stack>
-#include <limits.h>
+#include <limits>
 #include <assert.h>
-
 
 ///-------------------------------------------------------------------------------------------------
 /// Def:	BEGIN_TRANSITION_TABLE
@@ -52,7 +51,7 @@
 ///-------------------------------------------------------------------------------------------------
 /// 
 #define TRANSITION_ENTRY(from, to, onEnter, onLeave, code)																		\
-		{ (SimpleFSM_State)(&from), (SimpleFSM_State)(&to), code, (SimpleFSM_State)(&onEnter), (SimpleFSM_State)(&onLeave ) },	\
+		{ (SimpleFSM_State)(&from), (SimpleFSM_State)(&to), code, (SimpleFSM_State)(&onEnter), (SimpleFSM_State)(&onLeave) },	\
 
 
 ///-------------------------------------------------------------------------------------------------
@@ -65,7 +64,7 @@
 /// Date:	10/10/2017
 ///-------------------------------------------------------------------------------------------------
 #define END_TRANSITION_TABLE																									\
-			{ nullptr, nullptr, NULL_TRANSITION }																				\
+			{ nullptr, nullptr, NULL_TRANSITION, nullptr, nullptr }																\
 		};																														\
 																																\
 		static const size_t TRANSITION_TABLE_LEN = (sizeof(TRANSITION_TABLE) / sizeof(TRANSITION_TABLE[0])) - 1;				\
@@ -94,7 +93,7 @@
 
 
 using SimpleFSM_TransitionCode = unsigned char;
-static constexpr SimpleFSM_TransitionCode NULL_TRANSITION = std::numeric_limits<SimpleFSM_TransitionCode>::max();
+static constexpr SimpleFSM_TransitionCode NULL_TRANSITION = 0xff;
 
 
 class SimpleFSM;
@@ -284,6 +283,26 @@ public:
 			// if there is no previous state, change to NULL_STATE
 			this->m_ActiveState = &SimpleFSM::__NULL_STATE;
 		}
+	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:	void SimpleFSM::ResetFSM()
+	///
+	/// Summary:	Resets the FSM. This will clear the state stack and put the FSM to null-state.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	31/10/2017
+	///-------------------------------------------------------------------------------------------------
+
+	void ResetFSM()
+	{
+		// clear state stack
+		while (this->m_StateStack.empty() == false)
+			this->m_StateStack.pop();
+
+		// set null-state active
+		this->m_ActiveState = &SimpleFSM::__NULL_STATE;
 	}
 
 }; // class SimpleFSM

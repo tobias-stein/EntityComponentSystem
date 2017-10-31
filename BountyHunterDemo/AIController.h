@@ -10,7 +10,7 @@
 #include "IController.h"
 
 template<class T>
-class AIController : public IController, ECS::Event::IEventListener
+class AIController : public IController, public ECS::Event::IEventListener
 {
 protected:
 
