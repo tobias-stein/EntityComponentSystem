@@ -22,42 +22,61 @@ using PlayerId											= size_t;
 static const GameObjectId	INVALID_GAMEOBJECT_ID		{ ECS::INVALID_ENTITY_ID };
 static const PlayerId		INVALID_PLAYER_ID			{ std::numeric_limits<PlayerId>::max() };
 
-// Collision categories
-static const uint16_t		DEFAULT_COLLSION_CATEGORY	{ 0x0001 };
-static const uint16_t		PLAYER_COLLSION_CATEGORY	{ 0x0002 };
-static const uint16_t		BOUNTY_COLLSION_CATEGORY	{ 0x0004 };
-static const uint16_t		STASH_COLLSION_CATEGORY		{ 0x0008 };
-static const uint16_t		WALL_COLLSION_CATEGORY		{ 0x0010 };
-
-// Collision rules (masks)
-static const uint16_t		DEFAULT_COLLSION			{ 0xffff };
-static const uint16_t		PLAYER_COLLSION				{ DEFAULT_COLLSION };
-static const uint16_t		STASH_COLLSION				{ DEFAULT_COLLSION };
-static const uint16_t		BOUNTY_COLLSION				{ DEFAULT_COLLSION ^ (BOUNTY_COLLSION_CATEGORY | STASH_COLLSION_CATEGORY | WALL_COLLSION_CATEGORY) };
-static const uint16_t		WALL_COLLSION				{ DEFAULT_COLLSION ^ (WALL_COLLSION_CATEGORY) };
 
 /*
 
-Collision Matrix:
+	Collision Matrix:
 
-D = default
-P = player
-B = bounty
-S = Stash
+	D = default
+	P = player
+	B = bounty
+	S = Stash
+	W = Wall
+	R = Bounty Radar
+	O = Obstacle Avoider
 
-   | D | P | B | S | W
----+---+---+---+---+---
- D | x | x | x | x | x
----+---+---+---+---+---
- P | x | x | x | x | x
----+---+---+---+---+---
- B | x | x |   |   | 
----+---+---+---+---+---
- S | x | x |   |   |
----+---+---+---+---+---
- W | x | x |   |   | 
----+---+---+---+---+---
+	   | D | P | B | S | W | R | O
+	---+---+---+---+---+---+---+---
+	 D | x | x | x | x | x |   |
+	---+---+---+---+---+---+---+---
+	 P | x | x | x | x | x |   | x
+	---+---+---+---+---+---+---+---
+	 B | x | x |   |   |   | x |
+	---+---+---+---+---+---+---+---
+	 S | x | x |   |   |   |   |
+	---+---+---+---+---+---+---+---
+	 W | x | x |   |   |   |   | 
+	---+---+---+---+---+---+---+---
+	 R |   |   | x |   |   |   | 
+	---+---+---+---+---+---+---+---
+	 O |   | x |   |   |   |   | 
+	---+---+---+---+---+---+---+---
+
 */
+
+enum CollisionCategory
+{
+	Default_Category				= 0x0001,
+	Player_Category					= 0x0002,
+	Bounty_Category					= 0x0004,
+	Stash_Category					= 0x0008,
+	Wall_Category					= 0x0010,
+	BountyRadar_Category			= 0x0020,
+	ObstacleAvoider_Category		= 0x0040
+
+}; // enum CollistionCategory
+
+enum CollisionMask
+{
+	Default_Collision				= 0xffff,
+	Player_Collision				= CollisionMask::Default_Collision,
+	Bounty_Collision				= (CollisionMask::Default_Collision ^ (CollisionCategory::Bounty_Category | CollisionCategory::Stash_Category | CollisionCategory::Wall_Category)),
+	Stash_Collision					= CollisionMask::Default_Collision,
+	Wall_Collision					= (CollisionMask::Default_Collision ^ (CollisionCategory::Wall_Category)),
+	BountyRadar_Collision			= CollisionCategory::Bounty_Category,
+	ObstacleAvoide_Collisionr		= CollisionCategory::Player_Category
+	
+}; // enum CollisionMask
 
 ///-------------------------------------------------------------------------------------------------
 /// Enum:	GameState

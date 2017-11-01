@@ -24,7 +24,7 @@ Bounty::Bounty(GameObjectId spawnId)
 	AddComponent<RespawnComponent>(BOUNTY_RESPAWNTIME, spawnId, true);
 	this->m_ThisRigidbody = AddComponent<RigidbodyComponent>(0.0f, 0.0f, 0.0f, 0.0f, 0.0001f);
 	this->m_ThisTransform = GetComponent<TransformComponent>();
-	this->m_ThisCollision = AddComponent<CollisionComponent2D>(shape, this->m_ThisTransform->GetScale(), BOUNTY_COLLSION_CATEGORY, BOUNTY_COLLSION);
+	this->m_ThisCollision = AddComponent<CollisionComponent2D>(shape, this->m_ThisTransform->GetScale(), CollisionCategory::Bounty_Category, CollisionMask::Bounty_Collision);
 	this->m_ThisLifetime = AddComponent<LifetimeComponent>(BOUNTY_MIN_LIFETIME, BOUNTY_MAX_LIFETIME);
 }
 

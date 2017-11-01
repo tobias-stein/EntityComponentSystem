@@ -21,7 +21,7 @@ Wall::Wall(const glm::vec3& size)
 
 	Shape shape = ShapeGenerator::CreateShape<QuadShape>();
 	AddComponent<ShapeComponent>(shape);
-	auto cc = AddComponent<CollisionComponent2D>(shape, size, WALL_COLLSION_CATEGORY, WALL_COLLSION);
+	auto cc = AddComponent<CollisionComponent2D>(shape, size, CollisionCategory::Wall_Category, CollisionMask::Wall_Collision);
 	cc->isSensor = true;
 }
 

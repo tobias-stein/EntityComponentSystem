@@ -24,7 +24,7 @@ Collector::Collector(GameObjectId spawnId) :
 	AddComponent<RespawnComponent>(COLLECTOR_RESPAWNTIME, spawnId, true);	
 	this->m_ThisTransform = GetComponent<TransformComponent>();
 	this->m_ThisRigidbody = AddComponent<RigidbodyComponent>();
-	AddComponent<CollisionComponent2D>(shape, this->m_ThisTransform->GetScale(), PLAYER_COLLSION_CATEGORY, PLAYER_COLLSION);
+	AddComponent<CollisionComponent2D>(shape, this->m_ThisTransform->GetScale(), CollisionCategory::Player_Category, CollisionMask::Player_Collision);
 
 	UpdateColor();
 }
