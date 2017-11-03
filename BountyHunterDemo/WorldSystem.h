@@ -233,6 +233,21 @@ public:
 	}
 
 	///-------------------------------------------------------------------------------------------------
+	/// Fn:	inline b2World& WorldSystem::GetBox2dWorld()
+	///
+	/// Summary:	Gets box 2D world.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	3/11/2017
+	///
+	/// Returns:	The box 2D world.
+	///-------------------------------------------------------------------------------------------------
+
+	inline b2World* GetBox2dWorld() { return &this->m_Box2DWorld; }
+
+
+	///-------------------------------------------------------------------------------------------------
 	/// Fn:	template<class T> void WorldSystem::KillAllGameObjects()
 	///
 	/// Summary:	Kills all game objects of type T.

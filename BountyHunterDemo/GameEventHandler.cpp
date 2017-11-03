@@ -62,7 +62,7 @@ void Game::OnCollisionBegin(const CollisionBeginEvent* event)
 
 	// If collector collided with bounty, increase player bounty ...
 	{
-		static const auto CollectBountyAction = [](Collector* collector, Bounty* bounty)
+		static const auto CollectBountyAction = [&](Collector* collector, Bounty* bounty)
 		{
 			// Kill the bounty object
 			WorldSystem* WS = ECS::ECS_Engine->GetSystemManager()->GetSystem<WorldSystem>();
@@ -74,11 +74,18 @@ void Game::OnCollisionBegin(const CollisionBeginEvent* event)
 
 		if ((typeA == Collector::STATIC_ENTITY_TYPE_ID) && (typeB == Bounty::STATIC_ENTITY_TYPE_ID))
 		{
-			CollectBountyAction((Collector*)objectA, (Bounty*)objectB);
+			// note: ai controlled collector entities use an additional collision shape (a sensor)
+			// to get notified when bounty is in range. This sensor-shape also will trigger this 
+			// collision check, so we need to check if the collision categories are not of type
+			// radar here...
+			if(event->details.collisionCategoryA == CollisionCategory::Player_Category)
+				CollectBountyAction((Collector*)objectA, (Bounty*)objectB);
 		}
 		else if ((typeA == Bounty::STATIC_ENTITY_TYPE_ID) && (typeB == Collector::STATIC_ENTITY_TYPE_ID))
 		{
-			CollectBountyAction((Collector*)objectB, (Bounty*)objectA);
+			// note: see above.
+			if (event->details.collisionCategoryB == CollisionCategory::Player_Category)
+				CollectBountyAction((Collector*)objectB, (Bounty*)objectA);
 		}
 	}
 

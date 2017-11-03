@@ -9,6 +9,9 @@
 
 #include <ECS/ECS.h>
 #include "GameEvents.h"
+#include "WorldSystem.h"
+
+
 
 class Collector;
 class Bounty;
@@ -33,10 +36,16 @@ private:
 	float			m_ViewDistance;
 	float			m_LOS;
 
-public:
+	b2PolygonShape	m_b2RadarShape;
+	b2Fixture*		m_Radar;
+
+public:	
 
 	BountyRadar(float viewDistance, float lineOfSight);
 	~BountyRadar();
+
+	void Initialize();
+	void Destroy();
 
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	inline const DetectedBounty& BountyRadar::GetDetectedBounty() const
@@ -52,6 +61,21 @@ public:
 
 	inline const DetectedBounty& GetDetectedBounty() const { return this->m_DetectedBounty; }
 
+	inline const float GetViewDistance() const { return this->m_ViewDistance; }
+
+	inline const float GetLineOfSight() const { return this->m_LOS; }
+
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:	void BountyRadar::DebugDrawRadar();
+	///
+	/// Summary:	Draws the radar's outline.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	3/11/2017
+	///-------------------------------------------------------------------------------------------------
+
+	void DebugDrawRadar();
 
 }; // class BountyRadar
 

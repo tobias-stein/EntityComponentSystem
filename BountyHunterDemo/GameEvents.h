@@ -301,6 +301,15 @@ struct CollisionBeginEvent : public ECS::Event::Event<CollisionBeginEvent>
 	GameObjectId objectA;
 	GameObjectId objectB;
 
+	struct collisionDetails
+	{
+		CollisionCategory collisionCategoryA;
+		CollisionCategory collisionCategoryB;
+
+		CollisionMask collisionMaskA;
+		CollisionMask collisionMaskB;
+	} details;
+
 	CollisionBeginEvent(GameObjectId a, GameObjectId b) : objectA(a), objectB(b)
 	{}
 
@@ -310,6 +319,15 @@ struct CollisionEndEvent : public ECS::Event::Event<CollisionEndEvent>
 {
 	GameObjectId objectA;
 	GameObjectId objectB;
+
+	struct collisionDetails
+	{
+		CollisionCategory collisionCategoryA;
+		CollisionCategory collisionCategoryB;
+
+		CollisionMask collisionMaskA;
+		CollisionMask collisionMaskB;
+	} details;
 
 	CollisionEndEvent(GameObjectId a, GameObjectId b) : objectA(a), objectB(b)
 	{}

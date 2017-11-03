@@ -6,6 +6,7 @@
 
 #include "AICollectorController.h"
 
+#include "RenderSystem.h"
 
 AICollectorController::AICollectorController(const GameObjectId collectorId, const PlayerId playerId) : AIController(collectorId)
 {
@@ -14,7 +15,8 @@ AICollectorController::AICollectorController(const GameObjectId collectorId, con
 	ChangeState(SPAWNED);
 
 	// add BountyRadar to collector entity
-	ECS::ECS_Engine->GetComponentManager()->AddComponent<BountyRadar>(collectorId, AI_VIEW_DISTANCE, AI_BOUNTY_RADAR_LOS);
+	this->m_BountyRadar = ECS::ECS_Engine->GetComponentManager()->AddComponent<BountyRadar>(collectorId, AI_VIEW_DISTANCE, AI_BOUNTY_RADAR_LOS);
+	this->m_BountyRadar->Initialize();
 }
 
 AICollectorController::~AICollectorController()
@@ -80,6 +82,7 @@ void AICollectorController::Update(float dt)
 
 void AICollectorController::DrawGizmos()
 {
+	this->m_BountyRadar->DebugDrawRadar();
 }
 
 

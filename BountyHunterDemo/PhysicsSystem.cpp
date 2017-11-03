@@ -50,7 +50,13 @@ void PhysicsSystem::BeginContact(b2Contact* contact)
 	GameObjectId A = ((RigidbodyComponent*)contact->GetFixtureA()->GetUserData())->GetOwner();
 	GameObjectId B = ((RigidbodyComponent*)contact->GetFixtureB()->GetUserData())->GetOwner();
 
-	ECS::ECS_Engine->SendEvent<CollisionBeginEvent>(A, B);
+	CollisionBeginEvent event(A, B);
+	event.details.collisionCategoryA = (CollisionCategory)contact->GetFixtureA()->GetFilterData().categoryBits;
+	event.details.collisionCategoryB = (CollisionCategory)contact->GetFixtureB()->GetFilterData().categoryBits;
+	event.details.collisionMaskA = (CollisionMask)contact->GetFixtureA()->GetFilterData().maskBits;
+	event.details.collisionMaskB = (CollisionMask)contact->GetFixtureB()->GetFilterData().maskBits;
+
+	ECS::ECS_Engine->SendEvent<CollisionBeginEvent>(event);
 }
 
 void PhysicsSystem::EndContact(b2Contact* contact)
@@ -58,5 +64,11 @@ void PhysicsSystem::EndContact(b2Contact* contact)
 	GameObjectId A = ((RigidbodyComponent*)contact->GetFixtureA()->GetUserData())->GetOwner();
 	GameObjectId B = ((RigidbodyComponent*)contact->GetFixtureB()->GetUserData())->GetOwner();
 
-	ECS::ECS_Engine->SendEvent<CollisionEndEvent>(A, B);
+	CollisionEndEvent event(A, B);
+	event.details.collisionCategoryA = (CollisionCategory)contact->GetFixtureA()->GetFilterData().categoryBits;
+	event.details.collisionCategoryB = (CollisionCategory)contact->GetFixtureB()->GetFilterData().categoryBits;
+	event.details.collisionMaskA = (CollisionMask)contact->GetFixtureA()->GetFilterData().maskBits;
+	event.details.collisionMaskB = (CollisionMask)contact->GetFixtureB()->GetFilterData().maskBits;
+
+	ECS::ECS_Engine->SendEvent<CollisionEndEvent>(event);
 }

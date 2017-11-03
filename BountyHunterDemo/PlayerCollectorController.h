@@ -9,7 +9,6 @@
 
 #include "PlayerController.h"
 #include "Collector.h"
-
 class PlayerCollectorController : public PlayerController<Collector>
 {
 private:

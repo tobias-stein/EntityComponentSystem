@@ -59,7 +59,7 @@ static constexpr size_t				PHYSICS_POSITION_ITERATIONS			{ 6 };
 static constexpr size_t				MAX_PLAYER							{ 8 };
 
 /// Summary:	The max. amount of spawned bounty.
-static constexpr size_t				MAX_BOUNTY							{ 32 };
+static constexpr size_t				MAX_BOUNTY							{ 1 };
 
 /// Summary:	The default freeze time before game starts.
 static constexpr float				DEFAULT_FREEZE_TIME					{ 3.0f }; // seconds
@@ -100,10 +100,10 @@ static constexpr float				PLAYER_POCKET_SIZE					{ 100.0f };
 static constexpr float				PLAYER_STASH_SIZE					{ 500.0f }; 
 
 /// Summary:	The line of sight of the ai collector bounty radar.
-static constexpr float				AI_BOUNTY_RADAR_LOS					{ 180.0f * RADIANS };
+static constexpr float				AI_BOUNTY_RADAR_LOS					{ 160.0f * RADIANS };
 
 /// Summary:	View distance of the ai.
-static constexpr float				AI_VIEW_DISTANCE					{ 10.0f }; // units
+static constexpr float				AI_VIEW_DISTANCE					{ 30.0f }; // meter
 
 // <<<< DEBUG SETTINGS >>>>
 
