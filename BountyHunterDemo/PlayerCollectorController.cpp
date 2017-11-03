@@ -18,6 +18,7 @@ PlayerCollectorController::~PlayerCollectorController()
 {
 }
 
+
 void PlayerCollectorController::Update(float dt)
 {
 	if (this->m_Pawn->IsActive() == false)

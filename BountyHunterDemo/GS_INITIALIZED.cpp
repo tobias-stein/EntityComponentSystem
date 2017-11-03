@@ -30,8 +30,7 @@ void Game::GS_INITIALIZED()
 		PhysicsSystem*		PyS = ECS::ECS_Engine->GetSystemManager()->AddSystem<PhysicsSystem>();
 
 		// WorldSystem
-		IWorld*				world = new World2D(Bounds2D(Point2D(WORLD_BOUND_MIN[0], WORLD_BOUND_MIN[1]), Point2D(WORLD_BOUND_MAX[0], WORLD_BOUND_MAX[1])), glm::vec2(WORLD_UP_VECTOR[0], WORLD_UP_VECTOR[1]));
-		WorldSystem*		WoS = ECS::ECS_Engine->GetSystemManager()->AddSystem<WorldSystem>(world);
+		WorldSystem*		WoS = ECS::ECS_Engine->GetSystemManager()->AddSystem<WorldSystem>();
 
 		// RespawnSystem
 		RespawnSystem*		ReS = ECS::ECS_Engine->GetSystemManager()->AddSystem<RespawnSystem>();
@@ -55,6 +54,8 @@ void Game::GS_INITIALIZED()
 		RdS->AddDependencies(PyS);
 		LS->AddDependencies(ReS);
 		
+		ECS::ECS_Engine->GetSystemManager()->UpdateSystemWorkOrder();
+
 		// create two system work state masks: one when runnign, one when game is paused
 		
 		// ingame system work state

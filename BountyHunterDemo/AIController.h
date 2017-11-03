@@ -22,7 +22,9 @@ public:
 		m_Pawn(nullptr)
 	{
 		if (gameObjectId != INVALID_GAMEOBJECT_ID)
+		{
 			this->Possess(gameObjectId);
+		}
 	}
 
 	virtual ~AIController()

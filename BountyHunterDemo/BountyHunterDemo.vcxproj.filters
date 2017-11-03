@@ -82,12 +82,6 @@
     <Filter Include="Header Files\FSM">
       <UniqueIdentifier>{44fe7365-619d-4f56-8453-b37a7af8d381}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\World">
-      <UniqueIdentifier>{ca910ef3-e23a-4667-b320-ba54403aaae4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\World">
-      <UniqueIdentifier>{fd2691c1-70bc-43b6-b0a5-bdcf98ba8e0a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Spawn">
       <UniqueIdentifier>{972ad7b5-3b22-457e-b35d-3869dd4bb544}</UniqueIdentifier>
     </Filter>
@@ -212,9 +206,6 @@
     </ClCompile>
     <ClCompile Include="TabletopCamera.cpp">
       <Filter>Source Files\Entities\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="World2D.cpp">
-      <Filter>Source Files\World</Filter>
     </ClCompile>
     <ClCompile Include="WorldSystem.cpp">
       <Filter>Source Files\Systems</Filter>
@@ -465,6 +456,9 @@
     <ClCompile Include="Wall.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="BountyRadar.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MenuSystem.h">
@@ -556,12 +550,6 @@
     </ClInclude>
     <ClInclude Include="SimpleFSM.h">
       <Filter>Header Files\FSM</Filter>
-    </ClInclude>
-    <ClInclude Include="IWorld.h">
-      <Filter>Header Files\World</Filter>
-    </ClInclude>
-    <ClInclude Include="World2D.h">
-      <Filter>Header Files\World</Filter>
     </ClInclude>
     <ClInclude Include="WorldSystem.h">
       <Filter>Header Files\Systems</Filter>
@@ -808,6 +796,9 @@
     </ClInclude>
     <ClInclude Include="Wall.h">
       <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="BountyRadar.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

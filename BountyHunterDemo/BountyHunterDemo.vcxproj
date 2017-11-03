@@ -215,6 +215,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="AICollectorController.cpp" />
     <ClCompile Include="Bounty.cpp" />
     <ClCompile Include="BountyHunterDemo.cpp" />
+    <ClCompile Include="BountyRadar.cpp" />
     <ClCompile Include="BountySpawn.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CheatSystem.cpp" />
@@ -267,7 +268,6 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="Wall.cpp" />
-    <ClCompile Include="World2D.cpp" />
     <ClCompile Include="WorldSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -322,6 +322,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="AIController.h" />
     <ClInclude Include="Bounds.h" />
     <ClInclude Include="Bounty.h" />
+    <ClInclude Include="BountyRadar.h" />
     <ClInclude Include="BountySpawn.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CheatSystem.h" />
@@ -346,7 +347,6 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ISpawn.h" />
-    <ClInclude Include="IWorld.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialComponent.h" />
     <ClInclude Include="MaterialGenerator.h" />
@@ -383,7 +383,6 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="TriangleShape.h" />
     <ClInclude Include="Wall.h" />
-    <ClInclude Include="World2D.h" />
     <ClInclude Include="WorldSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

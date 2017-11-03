@@ -5,28 +5,23 @@
 ///-------------------------------------------------------------------------------------------------
 
 #include "WorldSystem.h"
+#include "PhysicsSystem.h"
 
-WorldSystem::WorldSystem(IWorld* world) :
-	m_World(world),
+WorldSystem::WorldSystem() :
+	m_Box2DWorld(b2Vec2(WORLD_GRAVITY[0], WORLD_GRAVITY[1])),
 	m_WorldObjects(1024),
 	m_SpawnQueue(1024),
 	m_KillQueue(1014),
 	m_PendingSpawns(0),
 	m_PendingKills(0)
 {
-	assert(world != nullptr && "WorldSystem can not be initialized with null-World!");
+	// Use the PhysicsSystem as contact listener!
+	// attention: PhysicsSystem must be create before WorldSystem, which in turn creates this object.
+	this->m_Box2DWorld.SetContactListener(ECS::ECS_Engine->GetSystemManager()->GetSystem<PhysicsSystem>());
 }
 
 WorldSystem::~WorldSystem()
-{
-
-	// destroy the world.
-	if (this->m_World != nullptr)
-	{
-		delete this->m_World;
-		this->m_World = nullptr;
-	}
-}
+{}
 
 void WorldSystem::PreUpdate(float dt)
 {
@@ -55,7 +50,7 @@ void WorldSystem::PreUpdate(float dt)
 
 void WorldSystem::Update(float dt)
 {
-	this->m_World->Update(dt);
+	this->m_Box2DWorld.Step(dt, PHYSICS_VELOCITY_ITERATIONS, PHYSICS_POSITION_ITERATIONS);
 }
 
 void WorldSystem::PostUpdate(float dt)
@@ -106,7 +101,15 @@ void WorldSystem::KillGameObject(GameObjectId gameObjectId)
 
 void WorldSystem::RemoveGameObject(GameObjectId gameObjectId)
 {
-	this->m_World->RemoveGameObject(gameObjectId);
+	// remove from box2d physics
+	{
+		RigidbodyComponent* rbComp = ECS::ECS_Engine->GetComponentManager()->GetComponent<RigidbodyComponent>(gameObjectId);
+		if (rbComp != nullptr && rbComp->m_Box2DBody != nullptr)
+		{
+			this->m_Box2DWorld.DestroyBody(rbComp->m_Box2DBody);
+			rbComp->m_Box2DBody = nullptr;
+		}
+	}
 
 	ECS::ECS_Engine->GetEntityManager()->DestroyEntity(gameObjectId);
 
@@ -159,5 +162,17 @@ void WorldSystem::Clear()
 	this->m_PendingKills = 0;
 	this->m_PendingSpawns = 0;
 
-	this->m_World->Clear();
+	// clear box2d physics
+	{
+		b2Body* node = this->m_Box2DWorld.GetBodyList();
+		while (node)
+		{
+			b2Body* b = node;
+			node = node->GetNext();
+
+			this->m_Box2DWorld.DestroyBody(b);
+		}
+
+		this->m_Box2DWorld.ClearForces();
+	}
 }

@@ -12,12 +12,19 @@ AICollectorController::AICollectorController(const GameObjectId collectorId, con
 	this->m_Pawn->SetPlayer(playerId);
 	RegisterEventCallbacks();
 	ChangeState(SPAWNED);
+
+	// add BountyRadar to collector entity
+	ECS::ECS_Engine->GetComponentManager()->AddComponent<BountyRadar>(collectorId, AI_VIEW_DISTANCE, AI_BOUNTY_RADAR_LOS);
 }
 
 AICollectorController::~AICollectorController()
 {
 	UnregisterAllEventCallbacks();
+
+	// remove BountyRadar component from collector entity
+	//ECS::ECS_Engine->GetComponentManager()->RemoveComponent<BountyRadar>(this->GetPossessed());
 }
+
 
 void AICollectorController::RegisterEventCallbacks()
 {

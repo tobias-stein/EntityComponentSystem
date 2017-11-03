@@ -73,7 +73,6 @@ static constexpr float				COLLECTOR_RESPAWNTIME				{ 5.0f }; // seconds
 /// Summary:	The default bounty respawntime.
 static constexpr float				BOUNTY_RESPAWNTIME					{ 2.0f }; // seconds
 
-
 /// Summary:	The bounty life span.
 static constexpr float				BOUNTY_MIN_LIFETIME					{ 4.0f }; // seconds
 static constexpr float				BOUNTY_MAX_LIFETIME					{ 7.0f }; // seconds
@@ -99,6 +98,12 @@ static constexpr float				PLAYER_POCKET_SIZE					{ 100.0f };
 
 /// Summary:	Size of the player stash.
 static constexpr float				PLAYER_STASH_SIZE					{ 500.0f }; 
+
+/// Summary:	The line of sight of the ai collector bounty radar.
+static constexpr float				AI_BOUNTY_RADAR_LOS					{ 180.0f * RADIANS };
+
+/// Summary:	View distance of the ai.
+static constexpr float				AI_VIEW_DISTANCE					{ 10.0f }; // units
 
 // <<<< DEBUG SETTINGS >>>>
 

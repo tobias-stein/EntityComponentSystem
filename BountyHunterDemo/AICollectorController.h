@@ -12,6 +12,8 @@
 
 #include "SimpleFSM.h"
 
+#include "BountyRadar.h"
+
 class AICollectorController : public AIController<Collector>, public SimpleFSM
 {
 
@@ -115,14 +117,14 @@ class AICollectorController : public AIController<Collector>, public SimpleFSM
 	void DrawGizmos();
 
 
+	bool				m_isDead;
 
-	bool m_isDead;
+	BountyRadar*		m_BountyRadar;
 
 public:
 
 	AICollectorController(const GameObjectId collectorId, const PlayerId playerId);
 	virtual ~AICollectorController();
-
 
 	// Inherited via AIController
 	virtual void Update(float dt) override;

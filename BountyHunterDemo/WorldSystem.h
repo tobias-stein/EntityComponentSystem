@@ -8,8 +8,18 @@
 #ifndef __WORLD_SYSTEM_H__
 #define __WORLD_SYSTEM_H__
 
-#include "World2D.h"
 #include "GameObject.h"
+
+#include "CollisionComponent2D.h"
+#include "RigidbodyComponent.h"
+
+
+// box2d Physics
+#include "Box2D/Dynamics/b2World.h"
+#include "Box2D/Dynamics/b2Body.h"
+#include "Box2D/Dynamics/b2Fixture.h"
+#include "Box2D/Collision/Shapes/b2PolygonShape.h"
+#include "Box2D/Collision/Shapes/b2CircleShape.h"
 
 class WorldSystem : public ECS::System<WorldSystem>
 {
@@ -54,7 +64,7 @@ class WorldSystem : public ECS::System<WorldSystem>
 
 private:
 
-	IWorld*			m_World;
+	b2World			m_Box2DWorld;
 
 	WorldObjects	m_WorldObjects;
 
@@ -66,7 +76,7 @@ private:
 
 public:
 
-	WorldSystem(IWorld* world);
+	WorldSystem();
 	virtual ~WorldSystem();
 
 	virtual void PreUpdate(float dt) override;
@@ -147,8 +157,57 @@ public:
 		// set initial transform
 		*entityTransformComponent = transform;
 
-		this->m_World->AddGameObject(entityId);
+		// add to box2d physics world ...
+		{
+			RigidbodyComponent* rbComp = ECS::ECS_Engine->GetComponentManager()->GetComponent<RigidbodyComponent>(entityId);
+			CollisionComponent2D* coComp = ECS::ECS_Engine->GetComponentManager()->GetComponent<CollisionComponent2D>(entityId);
 
+			if (rbComp != nullptr)
+			{
+				// Create new rigid body
+				b2BodyDef bodyDef;
+				{
+					bodyDef.type = rbComp->m_Box2DBodyType;
+					bodyDef.linearDamping = rbComp->m_LinearDamping;
+					bodyDef.angularDamping = rbComp->m_AngularDamping;
+				}
+				rbComp->m_Box2DBody = this->m_Box2DWorld.CreateBody(&bodyDef);
+
+				// set initial transform
+				rbComp->SetTransform(*entityTransformComponent);
+
+				if (coComp != nullptr)
+				{
+					b2FixtureDef fixtureDef;
+					{
+						switch (coComp->shapeType)
+						{
+						case b2Shape::e_circle:
+							fixtureDef.shape = &coComp->asCircleShape;
+							break;
+
+						case b2Shape::e_polygon:
+							fixtureDef.shape = &coComp->asPolygonShape;
+							break;
+
+						default:
+							assert(false && "Unsupported collision shape!");
+						}
+
+						fixtureDef.friction = rbComp->m_Friction;
+						fixtureDef.density = rbComp->m_Density;
+
+						fixtureDef.filter.categoryBits = coComp->collisionCategory;
+						fixtureDef.filter.maskBits = coComp->collisionMask;
+
+						fixtureDef.isSensor = coComp->isSensor;
+					}
+
+					// create new fixture and add reference to its component
+					rbComp->m_Box2DBody->CreateFixture(&fixtureDef)->SetUserData(rbComp);
+				}
+			}
+		}
 
 		// add Gameobject to list
 		size_t i = 0;
@@ -214,11 +273,7 @@ public:
 
 	void DumpPhysics()
 	{
-		World2D* w2d = static_cast<World2D*>(this->m_World);
-		if (w2d != nullptr)
-		{
-			w2d->DumpPhysics();
-		}
+		this->m_Box2DWorld.Dump();
 	}
 
 }; // class WorldSystem
