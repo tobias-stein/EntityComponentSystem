@@ -53,8 +53,6 @@ namespace ECS
 		SystemManager(const SystemManager&) = delete;
 		SystemManager& operator=(SystemManager&) = delete;	
 
-		void UpdateSystemWorkOrder();
-
 		///-------------------------------------------------------------------------------------------------
 		/// Fn:	void SystemManager::Update(f32 dt_ms);
 		///
@@ -165,7 +163,7 @@ namespace ECS
 				LogInfo("added '%s' as dependency to '%s'", dependency->GetSystemTypeName(), target->GetSystemTypeName())
 			}
 
-			this->UpdateSystemWorkOrder();
+			//this->UpdateSystemWorkOrder();
 		}
 
 		template<class Target_, class Dependency_, class... Dependencies>
@@ -182,6 +180,19 @@ namespace ECS
 
 			this->AddSystemDependency(target, std::forward<Dependencies>(dependencies)...);
 		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// Fn:	void UpdateSystemWorkOrder();
+		///
+		/// Summary:	Updates the work order of all systems. This should be called when changed system priorities or adding
+		/// new system dependencies.
+		///
+		/// Author:	Tobias Stein
+		///
+		/// Date:	3/11/2017
+		///-------------------------------------------------------------------------------------------------
+
+		void UpdateSystemWorkOrder();
 
 		///-------------------------------------------------------------------------------------------------
 		/// Fn:	template<class T> inline T* SystemManager::GetSystem() const
@@ -284,7 +295,7 @@ namespace ECS
 				it->second->m_Priority = newPriority;
 
 				// re-build system work order
-				this->UpdateSystemWorkOrder();
+				//this->UpdateSystemWorkOrder();
 			}
 			else
 			{
