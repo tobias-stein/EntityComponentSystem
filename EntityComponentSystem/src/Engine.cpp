@@ -56,9 +56,9 @@ namespace ECS
 		ECS_EventHandler->DispatchEvents();
 	}
 
-	void ECSEngine::UnsubscribeEvent(u64 typeId, Event::Internal::EventDelegateId eventDelegateId)
+	void ECSEngine::UnsubscribeEvent(Event::Internal::IEventDelegate* eventDelegate)
 	{
-		ECS_EventHandler->RemoveEventCallback(typeId, eventDelegateId);
+		ECS_EventHandler->RemoveEventCallback(eventDelegate);
 	}
 
 } // namespace ECS

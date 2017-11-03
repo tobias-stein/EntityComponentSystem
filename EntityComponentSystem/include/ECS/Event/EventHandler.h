@@ -72,12 +72,13 @@ namespace ECS { namespace Event {
 		}
 	
 		// Remove event callback
-		inline void RemoveEventCallback(EventTypeId typeId, Internal::EventDelegateId eventDelegateId)
-		{	
+		inline void RemoveEventCallback(Internal::IEventDelegate* eventDelegate)
+		{
+			auto typeId = eventDelegate->GetStaticEventTypeId();
 			EventDispatcherMap::const_iterator iter = this->m_EventDispatcherMap.find(typeId);
 			if (iter != this->m_EventDispatcherMap.end())
 			{
-				this->m_EventDispatcherMap[typeId]->RemoveEventCallback(eventDelegateId);
+				this->m_EventDispatcherMap[typeId]->RemoveEventCallback(eventDelegate);
 			}
 		}
 	

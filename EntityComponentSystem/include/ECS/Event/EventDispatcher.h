@@ -21,9 +21,10 @@ namespace ECS { namespace Event { namespace Internal {
 	{
 		DECLARE_STATIC_LOGGER
 
-		using EventDelegateList			= std::unordered_map<EventDelegateId, IEventDelegate*>;
+		using EventDelegateList			= std::list<IEventDelegate*>;
+
 		//using PendingAddDelegates		= std::list<IEventDelegate*>;
-		using PendingRemoveDelegates	= std::list<EventDelegateId>;	
+		using PendingRemoveDelegates	= std::list<IEventDelegate*>;
 
 		//PendingAddDelegates		m_PendingAddDelegates;
 		PendingRemoveDelegates	m_PendingRemoveDelegates;
@@ -36,7 +37,6 @@ namespace ECS { namespace Event { namespace Internal {
 	
 		// never use!
 		EventDispatcher() :
-			m_EventCallbacks(EventDelegateList()),
 			m_Locked(false)
 		{}
 	
@@ -58,17 +58,15 @@ namespace ECS { namespace Event { namespace Internal {
 				if (this->m_PendingRemoveDelegates.empty() == false)
 				{
 					for (auto EC : this->m_PendingRemoveDelegates)
-						this->m_EventCallbacks.erase(EC);
+						this->m_EventCallbacks.remove(EC);
 
 					this->m_PendingRemoveDelegates.clear();
 				}
 
-				auto EC = this->m_EventCallbacks.begin();
-				while (EC != this->m_EventCallbacks.end())
+				for (auto EC : this->m_EventCallbacks)
 				{
-					assert(EC->second != nullptr && "Invalid event callback.");
-					EC->second->invoke(event);
-					++EC;
+					assert(EC != nullptr && "Invalid event callback.");
+					EC->invoke(event);
 				}
 			}
 			this->m_Locked = false;
@@ -76,26 +74,29 @@ namespace ECS { namespace Event { namespace Internal {
 
 		virtual void AddEventCallback(IEventDelegate* const eventDelegate) override
 		{
-			EventDelegateId id = (EventDelegateId)eventDelegate->GetDelegateId();
-
 			// if delegate wasn't deleted since last update, that is, delegate is still in pending list,
 			// remove it from pending list
-			auto pending = std::find(this->m_PendingRemoveDelegates.begin(), this->m_PendingRemoveDelegates.end(), id);
+			auto pending = std::find(this->m_PendingRemoveDelegates.begin(), this->m_PendingRemoveDelegates.end(), eventDelegate);
 			if (pending != this->m_PendingRemoveDelegates.end())
 				this->m_PendingRemoveDelegates.erase(pending);
 
-			this->m_EventCallbacks[id] = eventDelegate;
+			this->m_EventCallbacks.push_back(eventDelegate);
 		}
 
-		virtual void RemoveEventCallback(size_t eventDelegateId) override
+		virtual void RemoveEventCallback(IEventDelegate* eventDelegate) override
 		{ 
 			if (this->m_Locked == false)
 			{
-				this->m_EventCallbacks.erase(eventDelegateId);
+				this->m_EventCallbacks.remove_if(
+					[&](const IEventDelegate* other) 
+					{ 
+						return other->operator==(eventDelegate); 
+					}
+				);
 			}
 			else
 			{
-				this->m_PendingRemoveDelegates.push_back(eventDelegateId);
+				this->m_PendingRemoveDelegates.push_back(eventDelegate);
 			}
 		}
 

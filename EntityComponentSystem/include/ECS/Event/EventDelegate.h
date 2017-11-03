@@ -32,6 +32,8 @@ namespace ECS { namespace Event {
 
 			virtual inline u64 GetStaticEventTypeId() const = 0;
 
+			virtual bool operator==(const IEventDelegate* other) const = 0;
+
 		}; // class IEventDelegate
 	
 		template<class Class, class EventType>
@@ -56,7 +58,7 @@ namespace ECS { namespace Event {
 	
 			virtual inline EventDelegateId GetDelegateId() const override
 			{			
-				static const EventDelegateId DELEGATE_ID { typeid(Callback).hash_code() };
+				static const EventDelegateId DELEGATE_ID { typeid(Class).hash_code() ^ typeid(Callback).hash_code() };
 				return DELEGATE_ID;
 			}
 
@@ -65,6 +67,18 @@ namespace ECS { namespace Event {
 			{
 				static const u64 SEID { EventType::STATIC_EVENT_TYPE_ID };
 				return SEID;
+			}			
+
+			virtual bool operator==(const IEventDelegate* other) const override
+			{
+				if (this->GetDelegateId() != other->GetDelegateId())
+					return false;
+
+				EventDelegate* delegate = (EventDelegate*)other;
+				if (other == nullptr)
+					return false;
+
+				return ((this->m_Callback == delegate->m_Callback) && (this->m_Receiver == delegate->m_Receiver));
 			}
 
 		}; // class EventDelegate

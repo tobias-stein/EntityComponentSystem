@@ -68,7 +68,7 @@ namespace ECS
 		}
 
 		// Remove event callback
-		inline void UnsubscribeEvent(u64 typeId, Event::Internal::EventDelegateId eventDelegateId);
+		inline void UnsubscribeEvent(Event::Internal::IEventDelegate* eventDelegate);
 
 	public:
 

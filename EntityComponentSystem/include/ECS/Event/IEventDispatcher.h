@@ -33,7 +33,7 @@ namespace ECS { namespace Event {
 	
 			virtual void AddEventCallback(IEventDelegate* const eventDelegate) = 0;
 	
-			virtual void RemoveEventCallback(size_t eventDelegateId) = 0;
+			virtual void RemoveEventCallback(IEventDelegate* eventDelegate) = 0;
 	
 			virtual inline size_t GetEventCallbackCount() const = 0;
 		};

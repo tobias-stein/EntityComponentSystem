@@ -24,7 +24,7 @@ namespace ECS { namespace Event {
 		// unsubcribe from all subscribed events
 		for (auto cb : this->m_RegisteredCallbacks)
 		{
-			ECS_Engine->UnsubscribeEvent(cb->GetStaticEventTypeId(), cb->GetDelegateId());
+			ECS_Engine->UnsubscribeEvent(cb);
 			delete cb;
 			cb = nullptr;
 		}
