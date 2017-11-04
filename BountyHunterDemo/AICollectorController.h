@@ -9,10 +9,15 @@
 
 #include "AIController.h"
 #include "Collector.h"
+#include "Stash.h"
+#include "Bounty.h"
+
+#include "AICollectorControllerDesc.h"
 
 #include "SimpleFSM.h"
 
 #include "BountyRadar.h"
+#include "CollectorAvoider.h"
 
 class AICollectorController : public AIController<Collector>, public SimpleFSM
 {
@@ -117,13 +122,26 @@ class AICollectorController : public AIController<Collector>, public SimpleFSM
 	void DrawGizmos();
 
 
-	bool				m_isDead;
+	AICollectorControllerDesc	m_AICD;
 
-	BountyRadar*		m_BountyRadar;
+	BountyRadar*				m_BountyRadar;
+
+	CollectorAvoider*			m_CollectorAvoider;
+
+	
+	bool						m_isDead;
+
+	// Collector's stash and stash world position
+	Stash*						m_MyStash;
+	Position2D					m_MyStashPosition;
+
+	// Current targeted bounty
+	Bounty*						m_TargetedBounty;
+	Position2D					m_TargetedBountyPosition;
 
 public:
 
-	AICollectorController(const GameObjectId collectorId, const PlayerId playerId);
+	AICollectorController(const GameObjectId collectorId, const PlayerId playerId, const AICollectorControllerDesc& desc = DEFAULT_AI_COLLECTOR_CONTROLLER_DESC);
 	virtual ~AICollectorController();
 
 	// Inherited via AIController

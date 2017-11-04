@@ -220,6 +220,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CheatSystem.cpp" />
     <ClCompile Include="Collector.cpp" />
+    <ClCompile Include="CollectorAvoider.cpp" />
     <ClCompile Include="CollisionComponent2D.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="ControllerSystem.cpp" />
@@ -319,6 +320,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="..\3rdParty\Box2D\Box2D\Dynamics\Joints\b2WheelJoint.h" />
     <ClInclude Include="..\3rdParty\Box2D\Box2D\Rope\b2Rope.h" />
     <ClInclude Include="AICollectorController.h" />
+    <ClInclude Include="AICollectorControllerDesc.h" />
     <ClInclude Include="AIController.h" />
     <ClInclude Include="Bounds.h" />
     <ClInclude Include="Bounty.h" />
@@ -327,6 +329,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CheatSystem.h" />
     <ClInclude Include="Collector.h" />
+    <ClInclude Include="CollectorAvoider.h" />
     <ClInclude Include="CollisionComponent2D.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="ControllerSystem.h" />

@@ -6,6 +6,8 @@
 
 #include "PlayerCollectorController.h"
 
+
+
 PlayerCollectorController::PlayerCollectorController(const GameObjectId collectorId, const PlayerId playerId) : PlayerController(collectorId),
 	m_MoveForward(0),
 	m_TurnLeft(0),

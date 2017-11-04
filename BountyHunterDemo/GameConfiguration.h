@@ -56,10 +56,10 @@ static constexpr size_t				PHYSICS_POSITION_ITERATIONS			{ 6 };
 // <<<< GAME META SETTINGS >>>>
 
 /// Summary:	The max. player amount.
-static constexpr size_t				MAX_PLAYER							{ 8 };
+static constexpr size_t				MAX_PLAYER							{ 2 };
 
 /// Summary:	The max. amount of spawned bounty.
-static constexpr size_t				MAX_BOUNTY							{ 1 };
+static constexpr size_t				MAX_BOUNTY							{ 4 };
 
 /// Summary:	The default freeze time before game starts.
 static constexpr float				DEFAULT_FREEZE_TIME					{ 3.0f }; // seconds
@@ -102,8 +102,11 @@ static constexpr float				PLAYER_STASH_SIZE					{ 500.0f };
 /// Summary:	The line of sight of the ai collector bounty radar.
 static constexpr float				AI_BOUNTY_RADAR_LOS					{ 160.0f * RADIANS };
 
-/// Summary:	View distance of the ai.
-static constexpr float				AI_VIEW_DISTANCE					{ 30.0f }; // meter
+/// Summary:	Distance the ai can see bounty.
+static constexpr float				AI_VIEW_DISTANCE_BOUNTY				{ 30.0f }; // meter
+
+/// Summary:	Distance the ai can see obstacles/collector.
+static constexpr float				AI_VIEW_DISTANCE_OBSTACLE			{ AI_VIEW_DISTANCE_BOUNTY * 0.5f };
 
 // <<<< DEBUG SETTINGS >>>>
 

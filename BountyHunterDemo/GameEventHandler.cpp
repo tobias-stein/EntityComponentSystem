@@ -48,14 +48,17 @@ void Game::OnCollisionBegin(const CollisionBeginEvent* event)
 	{
 		if ((typeA == Collector::STATIC_ENTITY_TYPE_ID) && (typeB == Collector::STATIC_ENTITY_TYPE_ID))
 		{
-			// kill collector
-			WorldSystem* WS = ECS::ECS_Engine->GetSystemManager()->GetSystem<WorldSystem>();
-			WS->KillGameObject(event->objectA);
-			WS->KillGameObject(event->objectB);
+			if ((event->details.collisionCategoryA == CollisionCategory::Player_Category) && (event->details.collisionCategoryB == CollisionCategory::Player_Category))
+			{
+				// kill collector
+				WorldSystem* WS = ECS::ECS_Engine->GetSystemManager()->GetSystem<WorldSystem>();
+				WS->KillGameObject(event->objectA);
+				WS->KillGameObject(event->objectB);
 
-			// reset collected bounty to zero
-			((Collector*)objectA)->ResetCollectedBounty();
-			((Collector*)objectB)->ResetCollectedBounty();
+				// reset collected bounty to zero
+				((Collector*)objectA)->ResetCollectedBounty();
+				((Collector*)objectB)->ResetCollectedBounty();
+			}
 		}
 	}
 

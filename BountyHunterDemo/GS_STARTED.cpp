@@ -74,8 +74,8 @@ void Game::GS_STARTED()
 			GameObjectId collectorId = worldSystem->AddGameObject<Collector>(initialTransform, collectorSpawn);
 
 			player = playerSystem->GetPlayer(playerId);
-			player->SetController(new PlayerCollectorController(collectorId, playerId));
 			player->SetStash(playerStashId);
+			player->SetController(new PlayerCollectorController(collectorId, playerId));
 		}
 		else
 		{
@@ -87,8 +87,8 @@ void Game::GS_STARTED()
 			GameObjectId collectorId = worldSystem->AddGameObject<Collector>(initialTransform, collectorSpawn);
 
 			player = playerSystem->GetPlayer(playerId);
-			player->SetController(new AICollectorController(collectorId, playerId));
 			player->SetStash(playerStashId);
+			player->SetController(new AICollectorController(collectorId, playerId));
 		}
 	}
 

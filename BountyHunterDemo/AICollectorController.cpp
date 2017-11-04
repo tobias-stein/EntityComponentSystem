@@ -6,17 +6,35 @@
 
 #include "AICollectorController.h"
 
-#include "RenderSystem.h"
+#include "PlayerSystem.h"
+#include "RenderSystem.h" // debug draw
 
-AICollectorController::AICollectorController(const GameObjectId collectorId, const PlayerId playerId) : AIController(collectorId)
+AICollectorController::AICollectorController(const GameObjectId collectorId, const PlayerId playerId, const AICollectorControllerDesc& desc) : 
+	AIController(collectorId),
+	m_AICD(desc),
+	m_MyStash(nullptr),
+	m_TargetedBounty(nullptr),
+	m_isDead(false)
 {
-	this->m_Pawn->SetPlayer(playerId);
 	RegisterEventCallbacks();
-	ChangeState(SPAWNED);
+
+
+	// get collector's stash and stash position
+	Player* player = ECS::ECS_Engine->GetSystemManager()->GetSystem<PlayerSystem>()->GetPlayer(playerId);
+	this->m_MyStash = (Stash*)ECS::ECS_Engine->GetEntityManager()->GetEntity(player->GetStash());
+	this->m_MyStashPosition = this->m_MyStash->GetComponent<TransformComponent>()->GetPosition();
+
 
 	// add BountyRadar to collector entity
-	this->m_BountyRadar = ECS::ECS_Engine->GetComponentManager()->AddComponent<BountyRadar>(collectorId, AI_VIEW_DISTANCE, AI_BOUNTY_RADAR_LOS);
+	this->m_BountyRadar = ECS::ECS_Engine->GetComponentManager()->AddComponent<BountyRadar>(collectorId, AI_VIEW_DISTANCE_BOUNTY, AI_BOUNTY_RADAR_LOS);
 	this->m_BountyRadar->Initialize();
+
+	// add CollectorAvoider to collector entity
+	this->m_CollectorAvoider = ECS::ECS_Engine->GetComponentManager()->AddComponent<CollectorAvoider>(collectorId, AI_VIEW_DISTANCE_OBSTACLE, ECS::ECS_Engine->GetComponentManager()->GetComponent<TransformComponent>(collectorId)->GetScale().x);
+	this->m_CollectorAvoider->Initialize();
+
+	this->m_Pawn->SetPlayer(playerId);
+	ChangeState(SPAWNED);
 }
 
 AICollectorController::~AICollectorController()
@@ -82,7 +100,11 @@ void AICollectorController::Update(float dt)
 
 void AICollectorController::DrawGizmos()
 {
+	// draw bounty radar
 	this->m_BountyRadar->DebugDrawRadar();
+
+	// draw avoider
+	this->m_CollectorAvoider->DebugDrawAvoider();
 }
 
 
@@ -96,10 +118,12 @@ void AICollectorController::S_SPAWNED()
 
 void AICollectorController::S_SPAWNED_ENTER()
 {
+	SDL_Log("Player #%d - entered 'SPAWNED' state.", this->m_Pawn->GetPlayer());
 }
 
 void AICollectorController::S_SPAWNED_LEAVE()
 {
+	SDL_Log("Player #%d - left 'SPAWNED' state.", this->m_Pawn->GetPlayer());
 }
 
 
@@ -113,10 +137,12 @@ void AICollectorController::S_FIND_BOUNTY()
 
 void AICollectorController::S_FIND_BOUNTY_ENTER()
 {
+	SDL_Log("Player #%d - entered 'FIND_BOUNTY' state.", this->m_Pawn->GetPlayer());
 }
 
 void AICollectorController::S_FIND_BOUNTY_LEAVE()
 {
+	SDL_Log("Player #%d - left 'FIND_BOUNTY' state.", this->m_Pawn->GetPlayer());
 }
 
 ///-------------------------------------------------------------------------------------------------
@@ -129,10 +155,12 @@ void AICollectorController::S_MOVE_TO_BOUNTY()
 
 void AICollectorController::S_MOVE_TO_BOUNTY_ENTER()
 {
+	SDL_Log("Player #%d - entered 'MOVE_TO_BOUNTY' state.", this->m_Pawn->GetPlayer());
 }
 
 void AICollectorController::S_MOVE_TO_BOUNTY_LEAVE()
 {
+	SDL_Log("Player #%d - left 'MOVE_TO_BOUNTY' state.", this->m_Pawn->GetPlayer());
 }
 
 ///-------------------------------------------------------------------------------------------------
@@ -145,10 +173,12 @@ void AICollectorController::S_BOUNTY_COLLECTED()
 
 void AICollectorController::S_BOUNTY_COLLECTED_ENTER()
 {
+	SDL_Log("Player #%d - entered 'BOUNTY_COLLECTED' state.", this->m_Pawn->GetPlayer());
 }
 
 void AICollectorController::S_BOUNTY_COLLECTED_LEAVE()
 {
+	SDL_Log("Player #%d - left 'BOUNTY_COLLECTED' state.", this->m_Pawn->GetPlayer());
 }
 
 
@@ -162,8 +192,10 @@ void AICollectorController::S_STASH_BOUNTY()
 
 void AICollectorController::S_STASH_BOUNTY_ENTER()
 {
+	SDL_Log("Player #%d - entered 'STASH_BOUNTY' state.", this->m_Pawn->GetPlayer());
 }
 
 void AICollectorController::S_STASH_BOUNTY_LEAVE()
 {
+	SDL_Log("Player #%d - left 'STASH_BOUNTY' state.", this->m_Pawn->GetPlayer());
 }
