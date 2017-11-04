@@ -812,5 +812,8 @@
     <ClInclude Include="AICollectorControllerDesc.h">
       <Filter>Header Files\AI</Filter>
     </ClInclude>
+    <ClInclude Include="BountyCollectStrategy.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

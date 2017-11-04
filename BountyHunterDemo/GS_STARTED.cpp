@@ -88,7 +88,7 @@ void Game::GS_STARTED()
 
 			player = playerSystem->GetPlayer(playerId);
 			player->SetStash(playerStashId);
-			player->SetController(new AICollectorController(collectorId, playerId));
+			player->SetController(new AICollectorController(collectorId, playerId, AICollectorControllerDesc()));
 		}
 	}
 

@@ -100,11 +100,19 @@ void AICollectorController::Update(float dt)
 
 void AICollectorController::DrawGizmos()
 {
+	static RenderSystem* RS = ECS::ECS_Engine->GetSystemManager()->GetSystem<RenderSystem>();
+
 	// draw bounty radar
 	this->m_BountyRadar->DebugDrawRadar();
 
 	// draw avoider
 	this->m_CollectorAvoider->DebugDrawAvoider();
+
+	// draw selected bounty
+	if (this->m_TargetedBounty != nullptr)
+	{
+		RS->DrawLine(this->m_Pawn->GetComponent<TransformComponent>()->GetPosition(), this->m_TargetedBounty->GetComponent<TransformComponent>()->GetPosition(), false, true, Color3f(0.0f, 1.0f, 0.0f));
+	}
 }
 
 
@@ -114,6 +122,9 @@ void AICollectorController::DrawGizmos()
 
 void AICollectorController::S_SPAWNED()
 {
+	this->m_TargetedBounty = nullptr;
+	this->m_Pawn->Stop();
+	ChangeState(FIND_BOUNTY);
 }
 
 void AICollectorController::S_SPAWNED_ENTER()
@@ -133,6 +144,20 @@ void AICollectorController::S_SPAWNED_LEAVE()
 
 void AICollectorController::S_FIND_BOUNTY()
 {
+	assert(this->m_TargetedBounty == nullptr && "AI controller is in invalid state!");
+
+	// Use bounty collect strategy to get next bounty to collect ...
+	Bounty* nextTarget = (Bounty*)BountyCollectStrategies[this->m_AICD.m_BountyCollectStrategy](this->m_Pawn, this->m_BountyRadar->GetDetectedBounty());
+	if (nextTarget == nullptr)
+	{
+		ChangeState(WANDER);
+	}
+	else
+	{
+		this->m_TargetedBounty = nextTarget;
+		this->m_TargetedBountyPosition = nextTarget->GetComponent<TransformComponent>()->GetPosition();
+		ChangeState(MOVE_TO_BOUNTY);
+	}
 }
 
 void AICollectorController::S_FIND_BOUNTY_ENTER()
@@ -146,6 +171,48 @@ void AICollectorController::S_FIND_BOUNTY_LEAVE()
 }
 
 ///-------------------------------------------------------------------------------------------------
+/// State: WANDER 
+///-------------------------------------------------------------------------------------------------
+
+void AICollectorController::S_WANDER()
+{
+	// roll the dice, if random value exceeds a given chance: chnage back to FIND_BOUNTY state
+	if (glm::linearRand(0.0f, 1.0f) > this->m_AICD.m_WanderStateStayChance)
+	{
+		ChangeState(FIND_BOUNTY);
+		return;
+	}
+	// else let ai-controller randomly wander the collector across the world ...
+
+
+	// move full speed ahead
+	this->m_Pawn->MoveForward(COLLECTOR_MAX_MOVE_SPEED);
+
+	float steering = this->m_AICD.m_SteeringRatio_Wander * COLLECTOR_MAX_TURN_SPEED;
+
+	// steer to the left
+	if (glm::linearRand(0.0f, 1.0f) > 0.5f)
+	{
+		this->m_Pawn->TurnLeft(steering);
+	}
+	// steer to the right
+	else
+	{
+		this->m_Pawn->TurnRight(steering);
+	}
+}
+
+void AICollectorController::S_WANDER_ENTER()
+{
+	SDL_Log("Player #%d - entered 'WANDER' state.", this->m_Pawn->GetPlayer());
+}
+
+void AICollectorController::S_WANDER_LEAVE()
+{
+	SDL_Log("Player #%d - left 'WANDER' state.", this->m_Pawn->GetPlayer());
+}
+
+///-------------------------------------------------------------------------------------------------
 /// State: MOVE_TO_BOUNTY 
 ///-------------------------------------------------------------------------------------------------
 
@@ -155,6 +222,7 @@ void AICollectorController::S_MOVE_TO_BOUNTY()
 
 void AICollectorController::S_MOVE_TO_BOUNTY_ENTER()
 {
+	this->m_Pawn->Stop();
 	SDL_Log("Player #%d - entered 'MOVE_TO_BOUNTY' state.", this->m_Pawn->GetPlayer());
 }
 
