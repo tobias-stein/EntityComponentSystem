@@ -165,7 +165,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x86\SDL2.dll" "$(Target
       <AdditionalDependencies>EntityComponentSystem.lib;log4cplusD.lib;SDL2main.lib;SDL2.lib;glew32.lib;glew32s.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(SolutionDir)3rdParty\log4cplus-1.2.1-rc2\bin\x64\log4cplus.dll" "$(TargetDir)\log4cplus.dll"
+      <Command>copy /Y "$(SolutionDir)3rdParty\log4cplus-1.2.1-rc2\bin\x64\log4cplus.dll" "$(TargetDir)\log4cplusD.dll"
 copy /Y "$(SolutionDir)3rdParty\glew-2.1.0\bin\x64\glew32.dll" "$(TargetDir)\glew32.dll"
 copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(TargetDir)\SDL2.dll"</Command>
     </PostBuildEvent>

@@ -21,10 +21,10 @@ static constexpr const char*		DEFAULT_PLAYER_NAME					{ "BountyHunter" };
 // <<<< GAME WINDOW SETTINGS >>>>
 
 /// Summary:	Width of the game window.
-static constexpr unsigned int		GAME_WINDOW_WIDTH					{ 1024 };
+static constexpr unsigned int		GAME_WINDOW_WIDTH					{ 768 };
 
 /// Summary:	Height of the game window.
-static constexpr unsigned int		GAME_WINDOW_HEIGHT					{ 1024 };
+static constexpr unsigned int		GAME_WINDOW_HEIGHT					{ 768 };
 
 /// Summary:	True if game should start in fullscreen mode.
 static constexpr bool				GAME_WINDOW_FULLSCREEN				{ false };
@@ -40,8 +40,8 @@ static constexpr float				DELTA_TIME_STEP						{ 1.0f / 60.0f };
 static constexpr float				WORLD_UP_VECTOR[2]					{ 0.0f, 1.0f };
 
 /// Summary:	The world min and max bounds.
-static constexpr float				WORLD_BOUND_MIN[2]					{ -100.0f, -100.0f };
-static constexpr float				WORLD_BOUND_MAX[2]					{  100.0f,  100.0f };
+static constexpr float				WORLD_BOUND_MIN[2]					{ -75.0f, -75.0f };
+static constexpr float				WORLD_BOUND_MAX[2]					{  75.0f,  75.0f };
 
 // <<<< GAME PHYSICS >>>>
  
