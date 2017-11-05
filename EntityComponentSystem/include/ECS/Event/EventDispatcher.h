@@ -58,8 +58,23 @@ namespace ECS { namespace Event { namespace Internal {
 				if (this->m_PendingRemoveDelegates.empty() == false)
 				{
 					for (auto EC : this->m_PendingRemoveDelegates)
-						this->m_EventCallbacks.remove(EC);
+					{
+						auto result = std::find_if(this->m_EventCallbacks.begin(), this->m_EventCallbacks.end(),
+							[&](const IEventDelegate* other)
+							{
+								return other->operator==(EC);
+							});
 
+						if (result != this->m_EventCallbacks.end())
+						{
+							IEventDelegate* ptrMem = (IEventDelegate*)(*result);
+
+							this->m_EventCallbacks.erase(result);
+
+							delete ptrMem;
+							ptrMem = nullptr;
+						}
+					}
 					this->m_PendingRemoveDelegates.clear();
 				}
 
@@ -76,9 +91,17 @@ namespace ECS { namespace Event { namespace Internal {
 		{
 			// if delegate wasn't deleted since last update, that is, delegate is still in pending list,
 			// remove it from pending list
-			auto pending = std::find(this->m_PendingRemoveDelegates.begin(), this->m_PendingRemoveDelegates.end(), eventDelegate);
-			if (pending != this->m_PendingRemoveDelegates.end())
-				this->m_PendingRemoveDelegates.erase(pending);
+			auto result = std::find_if(this->m_PendingRemoveDelegates.begin(), this->m_PendingRemoveDelegates.end(),
+				[&](const IEventDelegate* other)
+				{
+					return other->operator==(eventDelegate);
+				});
+
+			if (result != this->m_PendingRemoveDelegates.end())
+			{
+				this->m_PendingRemoveDelegates.erase(result);
+				return;
+			}
 
 			this->m_EventCallbacks.push_back(eventDelegate);
 		}
@@ -87,16 +110,32 @@ namespace ECS { namespace Event { namespace Internal {
 		{ 
 			if (this->m_Locked == false)
 			{
-				this->m_EventCallbacks.remove_if(
-					[&](const IEventDelegate* other) 
-					{ 
-						return other->operator==(eventDelegate); 
-					}
-				);
+				auto result = std::find_if(this->m_EventCallbacks.begin(), this->m_EventCallbacks.end(),
+					[&](const IEventDelegate* other)
+					{
+						return other->operator==(eventDelegate);
+					});
+
+				if (result != this->m_EventCallbacks.end())
+				{
+					IEventDelegate* ptrMem = (IEventDelegate*)(*result);
+
+					this->m_EventCallbacks.erase(result);
+
+					delete ptrMem;
+					ptrMem = nullptr;
+				}
 			}
 			else
 			{
-				this->m_PendingRemoveDelegates.push_back(eventDelegate);
+				auto result = std::find_if(this->m_EventCallbacks.begin(), this->m_EventCallbacks.end(),
+					[&](const IEventDelegate* other)
+					{
+						return other->operator==(eventDelegate);
+					});
+
+				assert(result != this->m_EventCallbacks.end() && "");
+				this->m_PendingRemoveDelegates.push_back((*result));
 			}
 		}
 

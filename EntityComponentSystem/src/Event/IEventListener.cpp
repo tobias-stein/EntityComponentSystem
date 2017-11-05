@@ -25,8 +25,6 @@ namespace ECS { namespace Event {
 		for (auto cb : this->m_RegisteredCallbacks)
 		{
 			ECS_Engine->UnsubscribeEvent(cb);
-			delete cb;
-			cb = nullptr;
 		}
 
 		this->m_RegisteredCallbacks.clear();

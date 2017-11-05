@@ -34,6 +34,8 @@ namespace ECS { namespace Event {
 
 			virtual bool operator==(const IEventDelegate* other) const = 0;
 
+			virtual IEventDelegate* clone() = 0;
+
 		}; // class IEventDelegate
 	
 		template<class Class, class EventType>
@@ -50,6 +52,11 @@ namespace ECS { namespace Event {
 				m_Receiver(receiver),
 				m_Callback(callbackFunction)
 			{}
+
+			virtual IEventDelegate* clone() override
+			{
+				return new EventDelegate(this->m_Receiver, this->m_Callback);
+			}
 
 			virtual inline void invoke(const IEvent* const e) override
 			{

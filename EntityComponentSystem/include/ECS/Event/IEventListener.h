@@ -58,9 +58,10 @@ namespace ECS
 			template<class E, class C>
 			inline void RegisterEventCallback(void(C::*Callback)(const E* const))
 			{
-				Internal::IEventDelegate* eventDelegate = new Internal::EventDelegate<C, E>(static_cast<C*>(this), Callback);
-				m_RegisteredCallbacks.push_back(eventDelegate);
 
+				Internal::IEventDelegate* eventDelegate = new Internal::EventDelegate<C, E>(static_cast<C*>(this), Callback);
+
+				m_RegisteredCallbacks.push_back(eventDelegate);
 				ECS_Engine->SubscribeEvent<E>(eventDelegate);
 			}
 
@@ -89,12 +90,14 @@ namespace ECS
 				{
 					if (cb->GetDelegateId() == delegate.GetDelegateId())
 					{
-						ECS_Engine->UnsubscribeEvent(&delegate);
+						this->m_RegisteredCallbacks.remove_if(
+							[&](const Internal::IEventDelegate* other)
+							{
+								return other->operator==(cb);
+							}
+						);
 
-						this->m_RegisteredCallbacks.remove(cb);
-						delete cb;
-						cb = nullptr;
-
+						ECS_Engine->UnsubscribeEvent(&delegate);			
 						break;
 					}
 				}
