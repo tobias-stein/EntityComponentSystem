@@ -25,7 +25,7 @@ void Game::GS_STARTED()
 	// Create Walls
 	//------------------------------------------
 
-	glm::vec3 wallSize = glm::vec3(1.0f, WORLD_BOUND_MAX[1] + 3.0f, 1.0f);
+	glm::vec3 wallSize = glm::vec3(1.0f, WORLD_BOUND_MAX[1] * 1.5f, 1.0f);
 
 	// left
 	worldSystem->AddGameObject<Wall>(Transform(Position(WORLD_BOUND_MIN[0] - 3.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::radians(0.0f), wallSize), wallSize);

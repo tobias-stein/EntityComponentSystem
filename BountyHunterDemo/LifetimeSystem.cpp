@@ -22,8 +22,6 @@ LifetimeSystem::~LifetimeSystem()
 
 void LifetimeSystem::Update(float dt)
 {
-	return;
-
 	auto ltc = this->m_ActiveLifetimeComponents.begin();
 	while (ltc != this->m_ActiveLifetimeComponents.end())
 	{

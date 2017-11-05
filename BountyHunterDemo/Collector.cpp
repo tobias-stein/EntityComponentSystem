@@ -24,7 +24,7 @@ Collector::Collector(GameObjectId spawnId) :
 	AddComponent<RespawnComponent>(COLLECTOR_RESPAWNTIME, spawnId, true);	
 	this->m_ThisTransform = GetComponent<TransformComponent>();
 	this->m_ThisRigidbody = AddComponent<RigidbodyComponent>();
-	AddComponent<CollisionComponent2D>(shape, this->m_ThisTransform->GetScale(), CollisionCategory::Player_Category, CollisionMask::Player_Collision);
+	AddComponent<CollisionComponent2D>(shape, this->m_ThisTransform->AsTransform()->GetScale(), CollisionCategory::Player_Category, CollisionMask::Player_Collision);
 
 	UpdateColor();
 }
@@ -39,7 +39,7 @@ void Collector::OnEnable()
 {
 	UpdateColor();
 
-	this->m_ThisRigidbody->SetTransform(*this->m_ThisTransform);
+	this->m_ThisRigidbody->SetTransform(*this->m_ThisTransform->AsTransform());
 	this->m_ThisRigidbody->m_Box2DBody->SetLinearVelocity(b2Vec2_zero);
 	this->m_ThisRigidbody->m_Box2DBody->SetAngularVelocity(0.0f);
 	this->m_ThisRigidbody->m_Box2DBody->SetActive(true);
@@ -53,7 +53,7 @@ void Collector::OnDisable()
 
 void Collector::MoveForward(float speed)
 {
-	glm::vec2 vel = this->m_ThisTransform->GetUp() * speed;
+	glm::vec2 vel = this->m_ThisTransform->AsTransform()->GetUp() * speed;
 	this->m_ThisRigidbody->m_Box2DBody->SetLinearVelocity(b2Vec2(vel.x, vel.y));
 }
 

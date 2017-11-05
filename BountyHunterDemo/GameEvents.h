@@ -335,4 +335,14 @@ struct CollisionEndEvent : public ECS::Event::Event<CollisionEndEvent>
 }; // struct CollisionEndEvent
 
 
+///-------------------------------------------------------------------------------------------------
+/// Summary:	Debug events.
+/// Author:	Tobias Stein
+///
+/// Date:	05/11/2017
+///-------------------------------------------------------------------------------------------------
+
+struct ToggleDebugDrawEvent : public ECS::Event::Event<ToggleDebugDrawEvent>
+{};
+
 #endif // __GAME_EVENTS_H__

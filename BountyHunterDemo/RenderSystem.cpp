@@ -9,7 +9,8 @@
 RenderSystem::RenderSystem(SDL_Window* window) :
 	m_Window(window),
 	m_ActiveCamera(nullptr),
-	m_BufferedShapes(IShape::MAX_SHAPES, nullptr)
+	m_BufferedShapes(IShape::MAX_SHAPES, nullptr),
+	m_DrawDebug(false)
 {
 	InitializeOpenGL();
 
@@ -184,7 +185,7 @@ void RenderSystem::Update(float dt)
 	if (DEBUG_DRAWING_ENABLED == true)
 	{
 		// render all lines
-		this->m_DebugLineRenderer->Flush(this->m_ActiveCamera->GetProjectionTransform());
+		this->m_DebugLineRenderer->Flush(this->m_ActiveCamera->GetProjectionTransform(), this->m_DrawDebug);
 	}
 }
 
@@ -351,6 +352,8 @@ void RenderSystem::RegisterEventCallbacks()
 
 	RegisterEventCallback(&RenderSystem::OnCameraCreated);
 	RegisterEventCallback(&RenderSystem::OnCameraDestroyed);
+
+	RegisterEventCallback(&RenderSystem::OnToggleDebugDraw);
 }
 
 void RenderSystem::UnregisterEventCallbacks()
@@ -364,6 +367,8 @@ void RenderSystem::UnregisterEventCallbacks()
 
 	UnregisterEventCallback(&RenderSystem::OnCameraCreated);
 	UnregisterEventCallback(&RenderSystem::OnCameraDestroyed);
+
+	UnregisterEventCallback(&RenderSystem::OnToggleDebugDraw);
 }
 
 
@@ -442,6 +447,11 @@ void RenderSystem::OnCameraDestroyed(const CameraDestroyed* event)
 		this->m_ActiveCamera = nullptr;
 		SDL_LogWarn(SDL_LOG_PRIORITY_WARN, "Warning RenderSystems active camera got destroyed!");
 	}
+}
+
+void RenderSystem::OnToggleDebugDraw(const ToggleDebugDrawEvent * event)
+{
+	this->m_DrawDebug = !this->m_DrawDebug;
 }
 
 

@@ -66,6 +66,11 @@ void MenuSystem::OnKeyDownEvent(const KeyDownEvent* event)
 			ECS::ECS_Engine->SendEvent<ToggleFullscreenEvent>();
 			break;
 
+		// toggle debug draw
+		case SDLK_F2:
+			ECS::ECS_Engine->SendEvent<ToggleDebugDrawEvent>();
+			break;
+
 		//--------------------------------------------
 		// GAME 'MENU' OPTIONS
 		//--------------------------------------------

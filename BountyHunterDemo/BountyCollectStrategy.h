@@ -47,18 +47,18 @@ static const BountyCollectStrategy BountyCollectStrategies[BountyCollectStrategy
 		if (bountyList.empty() == true)
 			return nullptr;
 
-		Position2D collectorPosition = collector->GetComponent<TransformComponent>()->GetPosition();
+		Position2D collectorPosition = collector->GetComponent<TransformComponent>()->AsTransform()->GetPosition();
 
 		auto it = bountyList.begin();
 		Bounty* closestBounty = (Bounty*)(*it);
-		float D = glm::distance2(collectorPosition, Position2D(closestBounty->GetComponent<TransformComponent>()->GetPosition()));
+		float D = glm::distance2(collectorPosition, Position2D(closestBounty->GetComponent<TransformComponent>()->AsTransform()->GetPosition()));
 		
 		++it;
 		for (it; it != bountyList.end(); ++it)
 		{
 			Bounty* bounty = (Bounty*)(*it);
 
-			float d = glm::distance2(collectorPosition, Position2D(bounty->GetComponent<TransformComponent>()->GetPosition()));
+			float d = glm::distance2(collectorPosition, Position2D(bounty->GetComponent<TransformComponent>()->AsTransform()->GetPosition()));
 			if (d < D)
 			{
 				D = d;

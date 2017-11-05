@@ -22,7 +22,7 @@ AICollectorController::AICollectorController(const GameObjectId collectorId, con
 	// get collector's stash and stash position
 	Player* player = ECS::ECS_Engine->GetSystemManager()->GetSystem<PlayerSystem>()->GetPlayer(playerId);
 	this->m_MyStash = (Stash*)ECS::ECS_Engine->GetEntityManager()->GetEntity(player->GetStash());
-	this->m_MyStashPosition = this->m_MyStash->GetComponent<TransformComponent>()->GetPosition();
+	this->m_MyStashPosition = this->m_MyStash->GetComponent<TransformComponent>()->AsTransform()->GetPosition();
 
 
 	// add BountyRadar to collector entity
@@ -30,7 +30,7 @@ AICollectorController::AICollectorController(const GameObjectId collectorId, con
 	this->m_BountyRadar->Initialize();
 
 	// add CollectorAvoider to collector entity
-	this->m_CollectorAvoider = ECS::ECS_Engine->GetComponentManager()->AddComponent<CollectorAvoider>(collectorId, AI_VIEW_DISTANCE_OBSTACLE, ECS::ECS_Engine->GetComponentManager()->GetComponent<TransformComponent>(collectorId)->GetScale().x);
+	this->m_CollectorAvoider = ECS::ECS_Engine->GetComponentManager()->AddComponent<CollectorAvoider>(collectorId, AI_VIEW_DISTANCE_OBSTACLE, ECS::ECS_Engine->GetComponentManager()->GetComponent<TransformComponent>(collectorId)->AsTransform()->GetScale().x);
 	this->m_CollectorAvoider->Initialize();
 
 	this->m_Pawn->SetPlayer(playerId);
@@ -112,7 +112,7 @@ void AICollectorController::DrawGizmos()
 	// draw threats
 	for (auto&& threat : this->m_CollectorAvoider->GetDetectedCollector())
 	{
-		RS->DrawLine(this->m_Pawn->GetComponent<TransformComponent>()->GetPosition(), threat->GetComponent<TransformComponent>()->GetPosition(), false, true, Color3f(1.0f, 0.0f, 0.0f));
+		RS->DrawLine(this->m_Pawn->GetComponent<TransformComponent>()->AsTransform()->GetPosition(), threat->GetComponent<TransformComponent>()->AsTransform()->GetPosition(), false, true, Color3f(1.0f, 0.0f, 0.0f));
 	}
 
 	switch (this->GetActiveState())
@@ -122,7 +122,7 @@ void AICollectorController::DrawGizmos()
 			// draw selected bounty
 			if (this->m_TargetedBounty != nullptr)
 			{
-				RS->DrawLine(this->m_Pawn->GetComponent<TransformComponent>()->GetPosition(), this->m_TargetedBountyPosition, false, true, Color3f(0.0f, 1.0f, 0.0f));
+				RS->DrawLine(this->m_Pawn->GetComponent<TransformComponent>()->AsTransform()->GetPosition(), this->m_TargetedBountyPosition, false, true, Color3f(0.0f, 1.0f, 0.0f));
 			}
 			break;
 		}
@@ -130,7 +130,7 @@ void AICollectorController::DrawGizmos()
 		case STASH_BOUNTY:
 		{
 			// draw selected bounty
-			RS->DrawLine(this->m_Pawn->GetComponent<TransformComponent>()->GetPosition(), this->m_MyStashPosition, false, true, Color3f(0.0f, 1.0f, 0.0f));
+			RS->DrawLine(this->m_Pawn->GetComponent<TransformComponent>()->AsTransform()->GetPosition(), this->m_MyStashPosition, false, true, Color3f(0.0f, 1.0f, 0.0f));
 			break;
 		}
 	}
@@ -138,10 +138,55 @@ void AICollectorController::DrawGizmos()
 
 bool AICollectorController::AvoidObstacles()
 {
-	auto threats = this->m_CollectorAvoider->GetDetectedCollector();
+	auto threat = this->m_CollectorAvoider->GetDetectedCollector().begin();
+	auto threatEnd = this->m_CollectorAvoider->GetDetectedCollector().end();
 
-	
-	return false;
+	if (threat == threatEnd)
+		return false;
+
+	// Get Collector and bounty transform
+	auto collectorTF = this->m_Pawn->GetComponent<TransformComponent>();
+
+	// determine closest threat
+	auto closestThreat = threat;
+	float sqD = glm::distance2(Position2D((*closestThreat)->GetComponent<TransformComponent>()->AsTransform()->GetPosition()), Position2D(collectorTF->AsTransform()->GetPosition()));
+	++threat;
+
+	for (threat; threat != threatEnd; ++threat)
+	{
+		float sqd = glm::distance2(Position2D((*threat)->GetComponent<TransformComponent>()->AsTransform()->GetPosition()), Position2D(collectorTF->AsTransform()->GetPosition()));
+		if (sqd < sqD)
+		{
+			sqD = sqd;
+			closestThreat = threat;
+		}
+	}
+
+
+	// try to steer in oposite direction the threat is facing ...
+
+	glm::vec2 myHeading = glm::normalize(collectorTF->AsTransform()->GetRight());
+
+	glm::vec2 threatHeadingNegative = -glm::normalize((*closestThreat)->GetComponent<TransformComponent>()->AsTransform()->GetRight());
+
+	float dot = glm::dot(myHeading, threatHeadingNegative);
+
+	float steering = this->m_AICD.m_SteeringRatio_Avoid * COLLECTOR_MAX_TURN_SPEED;
+	float speedRatio = 0.0f;
+	if (glm::sign(dot) < 0.0f)
+	{
+		this->m_Pawn->TurnLeft(glm::abs(dot) * steering);
+		speedRatio = dot;
+	}
+	else
+	{
+		this->m_Pawn->TurnRight(glm::abs(dot) * steering);
+		speedRatio = dot;
+	}
+
+	this->m_Pawn->MoveForward(speedRatio * COLLECTOR_MAX_MOVE_SPEED);
+
+	return true;
 }
 
 float AICollectorController::MoveToTarget(const Position2D & target)
@@ -151,10 +196,10 @@ float AICollectorController::MoveToTarget(const Position2D & target)
 	auto collectorTF = this->m_Pawn->GetComponent<TransformComponent>();
 
 	if (AvoidObstacles() == true)
-		return glm::distance2(target, Position2D(collectorTF->GetPosition()));
+		return glm::distance2(target, Position2D(collectorTF->AsTransform()->GetPosition()));
 
-	glm::vec2 F = glm::normalize(collectorTF->GetRight());
-	glm::vec2 T = glm::normalize(target - Position2D(collectorTF->GetPosition()));
+	glm::vec2 F = glm::normalize(collectorTF->AsTransform()->GetRight());
+	glm::vec2 T = glm::normalize(target - Position2D(collectorTF->AsTransform()->GetPosition()));
 	float dot = glm::dot(F, T);
 
 	float steering = this->m_AICD.m_SteeringRatio_Target * COLLECTOR_MAX_TURN_SPEED;
@@ -172,7 +217,7 @@ float AICollectorController::MoveToTarget(const Position2D & target)
 
 	this->m_Pawn->MoveForward(speedRatio * COLLECTOR_MAX_MOVE_SPEED);
 
-	return glm::distance2(target, Position2D(collectorTF->GetPosition()));
+	return glm::distance2(target, Position2D(collectorTF->AsTransform()->GetPosition()));
 }
 
 
@@ -189,12 +234,12 @@ void AICollectorController::S_SPAWNED()
 
 void AICollectorController::S_SPAWNED_ENTER()
 {
-	SDL_Log("Player #%d - entered 'SPAWNED' state.", this->m_Pawn->GetPlayer());
+	//SDL_Log("Player #%d - entered 'SPAWNED' state.", this->m_Pawn->GetPlayer());
 }
 
 void AICollectorController::S_SPAWNED_LEAVE()
 {
-	SDL_Log("Player #%d - left 'SPAWNED' state.", this->m_Pawn->GetPlayer());
+	//SDL_Log("Player #%d - left 'SPAWNED' state.", this->m_Pawn->GetPlayer());
 }
 
 
@@ -215,19 +260,19 @@ void AICollectorController::S_FIND_BOUNTY()
 	else
 	{
 		this->m_TargetedBounty = nextTarget;
-		this->m_TargetedBountyPosition = nextTarget->GetComponent<TransformComponent>()->GetPosition();
+		this->m_TargetedBountyPosition = nextTarget->GetComponent<TransformComponent>()->AsTransform()->GetPosition();
 		ChangeState(MOVE_TO_BOUNTY);
 	}
 }
 
 void AICollectorController::S_FIND_BOUNTY_ENTER()
 {
-	SDL_Log("Player #%d - entered 'FIND_BOUNTY' state.", this->m_Pawn->GetPlayer());
+	//SDL_Log("Player #%d - entered 'FIND_BOUNTY' state.", this->m_Pawn->GetPlayer());
 }
 
 void AICollectorController::S_FIND_BOUNTY_LEAVE()
 {
-	SDL_Log("Player #%d - left 'FIND_BOUNTY' state.", this->m_Pawn->GetPlayer());
+	//SDL_Log("Player #%d - left 'FIND_BOUNTY' state.", this->m_Pawn->GetPlayer());
 }
 
 ///-------------------------------------------------------------------------------------------------
@@ -248,10 +293,10 @@ void AICollectorController::S_WANDER()
 	if (AvoidObstacles() == true)
 		return;
 
+	this->m_Pawn->StopTurning();
+
 	// move full speed ahead
 	this->m_Pawn->MoveForward(COLLECTOR_MAX_MOVE_SPEED);
-
-	return;
 
 	float steering = this->m_AICD.m_SteeringRatio_Wander * COLLECTOR_MAX_TURN_SPEED;
 
@@ -269,12 +314,12 @@ void AICollectorController::S_WANDER()
 
 void AICollectorController::S_WANDER_ENTER()
 {
-	SDL_Log("Player #%d - entered 'WANDER' state.", this->m_Pawn->GetPlayer());
+	//SDL_Log("Player #%d - entered 'WANDER' state.", this->m_Pawn->GetPlayer());
 }
 
 void AICollectorController::S_WANDER_LEAVE()
 {
-	SDL_Log("Player #%d - left 'WANDER' state.", this->m_Pawn->GetPlayer());
+	//SDL_Log("Player #%d - left 'WANDER' state.", this->m_Pawn->GetPlayer());
 }
 
 ///-------------------------------------------------------------------------------------------------
@@ -297,12 +342,12 @@ void AICollectorController::S_MOVE_TO_BOUNTY()
 void AICollectorController::S_MOVE_TO_BOUNTY_ENTER()
 {
 	this->m_Pawn->Stop();
-	SDL_Log("Player #%d - entered 'MOVE_TO_BOUNTY' state.", this->m_Pawn->GetPlayer());
+	//SDL_Log("Player #%d - entered 'MOVE_TO_BOUNTY' state.", this->m_Pawn->GetPlayer());
 }
 
 void AICollectorController::S_MOVE_TO_BOUNTY_LEAVE()
 {
-	SDL_Log("Player #%d - left 'MOVE_TO_BOUNTY' state.", this->m_Pawn->GetPlayer());
+	//SDL_Log("Player #%d - left 'MOVE_TO_BOUNTY' state.", this->m_Pawn->GetPlayer());
 }
 
 ///-------------------------------------------------------------------------------------------------
@@ -328,12 +373,12 @@ void AICollectorController::S_BOUNTY_COLLECTED()
 void AICollectorController::S_BOUNTY_COLLECTED_ENTER()
 {
 	this->m_TargetedBounty = nullptr;
-	SDL_Log("Player #%d - entered 'BOUNTY_COLLECTED' state.", this->m_Pawn->GetPlayer());
+	//SDL_Log("Player #%d - entered 'BOUNTY_COLLECTED' state.", this->m_Pawn->GetPlayer());
 }
 
 void AICollectorController::S_BOUNTY_COLLECTED_LEAVE()
 {
-	SDL_Log("Player #%d - left 'BOUNTY_COLLECTED' state.", this->m_Pawn->GetPlayer());
+	//SDL_Log("Player #%d - left 'BOUNTY_COLLECTED' state.", this->m_Pawn->GetPlayer());
 }
 
 
@@ -343,16 +388,16 @@ void AICollectorController::S_BOUNTY_COLLECTED_LEAVE()
 
 void AICollectorController::S_STASH_BOUNTY()
 {
-	if (this->MoveToTarget(this->m_MyStashPosition) <= 0.25f)
+	if (this->MoveToTarget(this->m_MyStashPosition) <= 0.33f)
 		ChangeState(FIND_BOUNTY);
 }
 
 void AICollectorController::S_STASH_BOUNTY_ENTER()
 {
-	SDL_Log("Player #%d - entered 'STASH_BOUNTY' state.", this->m_Pawn->GetPlayer());
+	//SDL_Log("Player #%d - entered 'STASH_BOUNTY' state.", this->m_Pawn->GetPlayer());
 }
 
 void AICollectorController::S_STASH_BOUNTY_LEAVE()
 {
-	SDL_Log("Player #%d - left 'STASH_BOUNTY' state.", this->m_Pawn->GetPlayer());
+	//SDL_Log("Player #%d - left 'STASH_BOUNTY' state.", this->m_Pawn->GetPlayer());
 }

@@ -35,7 +35,7 @@ public:
 
 	void AddLine(const glm::vec3& p0, const glm::vec3& p1, const Color3f& color_rgba = Color3f(1.0f));
 
-	void Flush(const float* projection);
+	void Flush(const float* projection, bool draw = true);
 
 }; // class GLLineRenderer
 

@@ -100,6 +100,7 @@ private:
 	IGameCamera*		m_ActiveCamera;
 
 	// DEBUG DRAWING
+	bool				m_DrawDebug;
 	GLLineRenderer*		m_DebugLineRenderer;
 
 private:
@@ -139,6 +140,8 @@ private:
 
 	void OnCameraCreated(const CameraCreated* event);
 	void OnCameraDestroyed(const CameraDestroyed* event);
+
+	void OnToggleDebugDraw(const ToggleDebugDrawEvent* event);
 
 public:
 

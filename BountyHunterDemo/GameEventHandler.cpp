@@ -120,8 +120,8 @@ void Game::OnCollisionBegin(const CollisionBeginEvent* event)
 	{
 		static const auto WallCollisionAction = [](Collector* collector, Wall* wall)
 		{
-			auto collTC = collector->GetComponent<TransformComponent>();
-			auto wallTC = wall->GetComponent<TransformComponent>();
+			auto collTC = collector->GetComponent<TransformComponent>()->AsTransform();
+			auto wallTC = wall->GetComponent<TransformComponent>()->AsTransform();
 
 			auto collPos = collTC->GetPosition();
 			auto wallNrm = wallTC->GetRight();

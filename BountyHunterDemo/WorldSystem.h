@@ -154,8 +154,11 @@ public:
 		TransformComponent* entityTransformComponent = gameObject->GetComponent<TransformComponent>();
 		assert(entityTransformComponent != nullptr && "Failure! Spawned entity has no TransformComponent!");
 
+		// apply global scale
+		transform.SetScale(transform.GetScale() * GLOBAL_SCALE);
+
 		// set initial transform
-		*entityTransformComponent = transform;
+		entityTransformComponent->SetTransform(transform);
 
 		// add to box2d physics world ...
 		{
@@ -174,7 +177,7 @@ public:
 				rbComp->m_Box2DBody = this->m_Box2DWorld.CreateBody(&bodyDef);
 
 				// set initial transform
-				rbComp->SetTransform(*entityTransformComponent);
+				rbComp->SetTransform(*entityTransformComponent->AsTransform());
 
 				if (coComp != nullptr)
 				{

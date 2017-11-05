@@ -31,8 +31,8 @@ void PhysicsSystem::PreUpdate(float dt)
 
 			const b2Vec2& pos = RB->m_Box2DBody->GetPosition();
 			const float   rot = RB->m_Box2DBody->GetAngle();
-
-			*TFC = glm::translate(glm::mat4(1.0f), Position(pos.x, pos.y, 0.0f)) * glm::yawPitchRoll(0.0f, 0.0f, rot) * glm::scale(TFC->GetScale());
+	
+			TFC->SetTransform(glm::translate(glm::mat4(1.0f), Position(pos.x, pos.y, 0.0f)) * glm::yawPitchRoll(0.0f, 0.0f, rot) * glm::scale(TFC->AsTransform()->GetScale()));
 		}
 	}
 }

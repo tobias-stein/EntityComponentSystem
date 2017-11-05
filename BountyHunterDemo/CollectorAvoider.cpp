@@ -44,7 +44,7 @@ void CollectorAvoider::OnCollisionBegin(const CollisionBeginEvent * event)
 		{
 			if (objectA->GetEntityID() == ownerId)
 			{
-				SDL_Log("'%d' detected obstacle '%d'.", ownerId, objectB->GetEntityID());
+				//SDL_Log("'%d' detected obstacle '%d'.", ownerId, objectB->GetEntityID());
 				this->m_DetectedCollector.push_back((Collector*)objectB);
 			}
 		}
@@ -52,7 +52,7 @@ void CollectorAvoider::OnCollisionBegin(const CollisionBeginEvent * event)
 		{
 			if (objectB->GetEntityID() == ownerId)
 			{
-				SDL_Log("'%d' detected obstacle '%d'.", ownerId, objectA->GetEntityID());
+				//SDL_Log("'%d' detected obstacle '%d'.", ownerId, objectA->GetEntityID());
 				this->m_DetectedCollector.push_back((Collector*)objectA);
 			}
 		}

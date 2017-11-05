@@ -22,7 +22,7 @@ Stash::Stash(PlayerId playerId) :
 	AddComponent<ShapeComponent>(shape);
 	this->m_ThisMaterial = AddComponent<MaterialComponent>(MaterialGenerator::CreateMaterial<DefaultMaterial>());
 	this->m_ThisRigidbody = AddComponent<RigidbodyComponent>();
-	auto cc = AddComponent<CollisionComponent2D>(shape, GetComponent<TransformComponent>()->GetScale(), CollisionCategory::Stash_Category, CollisionMask::Stash_Collision);
+	auto cc = AddComponent<CollisionComponent2D>(shape, GetComponent<TransformComponent>()->AsTransform()->GetScale(), CollisionCategory::Stash_Category, CollisionMask::Stash_Collision);
 	cc->isSensor = true;
 
 	UpdateColor();

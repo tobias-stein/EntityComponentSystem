@@ -12,7 +12,7 @@
 static constexpr const char*		GAME_TITLE							{ "BountyHunter Demo" };
 
 /// Summary:	True if first player is human
-static constexpr bool				HAS_HUMAN_PLAYER					{ true };
+static constexpr bool				HAS_HUMAN_PLAYER					{ false };
 
 /// Summary:	The default player name.
 static constexpr const char*		DEFAULT_PLAYER_NAME					{ "BountyHunter" };
@@ -48,27 +48,30 @@ static constexpr float				WORLD_BOUND_MAX[2]					{  100.0f,  100.0f };
 /// Summary:	The world gravity.
 static constexpr float				WORLD_GRAVITY[2]					{ 0.0f, 0.0f };
 
-static constexpr size_t				PHYSICS_VELOCITY_ITERATIONS			{ 8 };
+static constexpr size_t				PHYSICS_VELOCITY_ITERATIONS			{ 4 };
 
-static constexpr size_t				PHYSICS_POSITION_ITERATIONS			{ 6 };
+static constexpr size_t				PHYSICS_POSITION_ITERATIONS			{ 3 };
 
 
 // <<<< GAME META SETTINGS >>>>
 
+/// Summary:	The global for all game entities scale.
+static constexpr float				GLOBAL_SCALE						{ 0.75f };
+
 /// Summary:	The max. player amount.
-static constexpr size_t				MAX_PLAYER							{ 2 };
+static constexpr size_t				MAX_PLAYER							{ 16 };
 
 /// Summary:	The max. amount of spawned bounty.
-static constexpr size_t				MAX_BOUNTY							{ 4 };
+static constexpr size_t				MAX_BOUNTY							{ 12 };
 
 /// Summary:	The default freeze time before game starts.
 static constexpr float				DEFAULT_FREEZE_TIME					{ 3.0f }; // seconds
 
 /// Summary:	The default play time.
-static constexpr float				DEFAULT_PLAY_TIME					{ 300.0f }; // seconds
+static constexpr float				DEFAULT_PLAY_TIME					{ 90.0f }; // seconds
 
 /// Summary:	The default collector respawntime.
-static constexpr float				COLLECTOR_RESPAWNTIME				{ 5.0f }; // seconds
+static constexpr float				COLLECTOR_RESPAWNTIME				{ 3.0f }; // seconds
 
 /// Summary:	The default bounty respawntime.
 static constexpr float				BOUNTY_RESPAWNTIME					{ 2.0f }; // seconds
@@ -78,7 +81,7 @@ static constexpr float				BOUNTY_MIN_LIFETIME					{ 4.0f }; // seconds
 static constexpr float				BOUNTY_MAX_LIFETIME					{ 7.0f }; // seconds
 
 /// Summary:	Collector max move speed.
-static constexpr float				COLLECTOR_MAX_MOVE_SPEED			{ 25.0f }; // 25m/s
+static constexpr float				COLLECTOR_MAX_MOVE_SPEED			{ 25.0f }; // m/s
 
 /// Summary:	Collector max turn speed.
 static constexpr float				RADIANS								{ 0.0174533f };
@@ -97,16 +100,16 @@ static constexpr float				MAX_BOUNTY_SCALE					{ 3.0f };
 static constexpr float				PLAYER_POCKET_SIZE					{ 100.0f }; 
 
 /// Summary:	Size of the player stash.
-static constexpr float				PLAYER_STASH_SIZE					{ 500.0f }; 
+static constexpr float				PLAYER_STASH_SIZE					{ 250.0f }; 
 
 /// Summary:	The line of sight of the ai collector bounty radar.
-static constexpr float				AI_BOUNTY_RADAR_LOS					{ 90.0f * RADIANS };
+static constexpr float				AI_BOUNTY_RADAR_LOS					{ 120.0f * RADIANS };
 
 /// Summary:	Distance the ai can see bounty.
-static constexpr float				AI_VIEW_DISTANCE_BOUNTY				{ 30.0f }; // meter
+static constexpr float				AI_VIEW_DISTANCE_BOUNTY				{ 25.0f }; // meter
 
 /// Summary:	Distance the ai can see obstacles/collector.
-static constexpr float				AI_VIEW_DISTANCE_OBSTACLE			{ AI_VIEW_DISTANCE_BOUNTY * 0.5f };
+static constexpr float				AI_VIEW_DISTANCE_OBSTACLE			{ AI_VIEW_DISTANCE_BOUNTY * 0.75f };
 
 // <<<< DEBUG SETTINGS >>>>
 

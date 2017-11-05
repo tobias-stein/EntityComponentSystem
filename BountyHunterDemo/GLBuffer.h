@@ -134,7 +134,7 @@ struct VertexBuffer
 
 	GLintptr BufferVertexData(const void* data, GLsizeiptr size)
 	{
-		assert(this->m_CurrentBufferIndex + size < this->m_BufferCapacity && "VertexBuffer capacity exceeded.");
+		assert(this->m_CurrentBufferIndex + size < (this->m_BufferCapacity + 1) && "VertexBuffer capacity exceeded.");
 
 		GLintptr dataBufferIndex = this->m_CurrentBufferIndex;
 
@@ -230,7 +230,7 @@ struct IndexBuffer
 
 	GLintptr BufferIndexData(const void* data, GLsizeiptr size)
 	{
-		assert(this->m_CurrentBufferIndex + size < this->m_BufferCapacity && "IndexBuffer capacity exceeded.");
+		assert(this->m_CurrentBufferIndex + size < (this->m_BufferCapacity + 1) && "IndexBuffer capacity exceeded.");
 
 		GLintptr dataBufferIndex = this->m_CurrentBufferIndex;
 

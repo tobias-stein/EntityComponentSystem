@@ -41,7 +41,7 @@ void WorldSystem::PreUpdate(float dt)
 
 			entity->SetActive(true);
 
-			ECS::ECS_Engine->SendEvent<GameObjectSpawned>(this->m_SpawnQueue[i].m_GameObjectID, *entityTransformComponent);
+			ECS::ECS_Engine->SendEvent<GameObjectSpawned>(this->m_SpawnQueue[i].m_GameObjectID, *entityTransformComponent->AsTransform());
 		}
 	}
 

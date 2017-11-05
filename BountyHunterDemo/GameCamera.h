@@ -93,7 +93,8 @@ public:
 	{
 		if (this->m_viewDirty == true)
 		{
-			this->m_ViewTransform = *this->m_ThisTransformComponent = this->m_Camera->GetViewTransform();
+			this->m_ViewTransform = this->m_Camera->GetViewTransform();
+			this->m_ThisTransformComponent->SetTransform(this->m_ViewTransform);
 			this->m_viewDirty = false;
 		}
 

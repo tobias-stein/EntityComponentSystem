@@ -70,8 +70,11 @@ void GLLineRenderer::AddLine(const glm::vec3& p0, const glm::vec3& p1, const Col
 	this->m_LineCount += 2;
 }
 
-void GLLineRenderer::Flush(const float* projection)
+void GLLineRenderer::Flush(const float* projection, bool draw)
 {
+	if(draw == false)
+		this->m_LineCount = 0;
+
 	if (this->m_LineCount == 0)
 		return;
 
