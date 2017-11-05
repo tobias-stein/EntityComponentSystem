@@ -13,7 +13,7 @@
 
 #pragma once 
 
-#define ECS_GLOBAL_MEMORY_CAPACITY 1073741824 // 1 GB
+#define ECS_GLOBAL_MEMORY_CAPACITY 134217728 // 128 MB
 
 #include "API.h"
 
