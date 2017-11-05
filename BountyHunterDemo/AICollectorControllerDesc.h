@@ -31,9 +31,15 @@ struct AICollectorControllerDesc
 	/// Summary:	The used ratio of max allowed turn speed for steering to wander around.
 	float						m_SteeringRatio_Wander;
 
+	/// Summary:	The used ratio of max allowed turn speed for steering to target bounty.
+	float						m_SteeringRatio_Target;
+
 	/// Summary:	The used ratio of max allowed turn speed for steering to avoid obstacles.
 	float						m_SteeringRatio_Avoid;
 
+
+	/// Summary:	The stash bounty threshold.
+	float						m_StashBountyThreshold;
 	///-------------------------------------------------------------------------------------------------
 	/// Fn:	AICollectorControllerDesc()
 	///
@@ -48,7 +54,9 @@ struct AICollectorControllerDesc
 		m_BountyCollectStrategy(BountyCollectStrategyType::FIRST_STRATEGY),
 		m_WanderStateStayChance(0.5f),
 		m_SteeringRatio_Wander(0.5f),
-		m_SteeringRatio_Avoid(1.0f)
+		m_SteeringRatio_Target(1.0f),
+		m_SteeringRatio_Avoid(1.0f),
+		m_StashBountyThreshold(0.8f)
 	{}
 
 }; // struct AICollectorControllerDesc

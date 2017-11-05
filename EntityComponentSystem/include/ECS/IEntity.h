@@ -40,7 +40,7 @@ namespace ECS
 		virtual ~IEntity();
 
 		template<class T>
-		T* GetComponent()
+		T* GetComponent() const
 		{
 			return ECS_Engine->ECS_ComponentManager->GetComponent<T>(this->m_EntityID);
 		}

@@ -65,7 +65,7 @@ static constexpr size_t				MAX_BOUNTY							{ 4 };
 static constexpr float				DEFAULT_FREEZE_TIME					{ 3.0f }; // seconds
 
 /// Summary:	The default play time.
-static constexpr float				DEFAULT_PLAY_TIME					{ 45.0f }; // seconds
+static constexpr float				DEFAULT_PLAY_TIME					{ 300.0f }; // seconds
 
 /// Summary:	The default collector respawntime.
 static constexpr float				COLLECTOR_RESPAWNTIME				{ 5.0f }; // seconds
@@ -100,7 +100,7 @@ static constexpr float				PLAYER_POCKET_SIZE					{ 100.0f };
 static constexpr float				PLAYER_STASH_SIZE					{ 500.0f }; 
 
 /// Summary:	The line of sight of the ai collector bounty radar.
-static constexpr float				AI_BOUNTY_RADAR_LOS					{ 160.0f * RADIANS };
+static constexpr float				AI_BOUNTY_RADAR_LOS					{ 90.0f * RADIANS };
 
 /// Summary:	Distance the ai can see bounty.
 static constexpr float				AI_VIEW_DISTANCE_BOUNTY				{ 30.0f }; // meter

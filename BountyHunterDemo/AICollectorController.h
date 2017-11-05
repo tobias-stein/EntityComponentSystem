@@ -36,25 +36,25 @@ class AICollectorController : public AIController<Collector>, public SimpleFSM
 	/// Summary:	AI Collector Controller State Transitions.
 	///
 	///				  +-------------+
-	///				  |   SPAWNED   |        +--------+
-	///				  +-------------+    +-->| WANDER |
-	///				         |           |   +--------+
-	///				         v           |     |
-	///				   +-------------+---+     |
-	///			  +--->| FIND_BOUNTY |         |
-	///			  |    +-------------+<--------+
-	///			  |          |                 |
-	///			  |          v                 |
-	///			  |     +----------------+     |
-	///			  |     | MOVE_TO_BOUNTY |     |
-	///			  |     +----------------+     |
-	///			  |          |                 |
-	///			  |          |                 |
-	///			  |          |                 |
-	///			  |          |                 |
-	///			  |          v                 |
-	///			  |     +------------------+   | 
-	///			  |     | BOUNTY_COLLECTED |---+ 
+	///				  |   SPAWNED   |        
+	///				  +-------------+       +--------+
+	///				         |     +------->| WANDER |      
+	///				         v     |        +--------+
+	///				   +-------------+         |
+	///			  +--->| FIND_BOUNTY |<--------+        
+	///			  |    +-------------+
+	///			  |          |                 
+	///			  |          v                 
+	///			  |     +----------------+     
+	///			  |     | MOVE_TO_BOUNTY |     
+	///			  |     +----------------+     
+	///			  |          |                 
+	///			  |          |                 
+	///			  |          |                 
+	///			  |          |                 
+	///			  |          v                 
+	///			  |     +------------------+   
+	///			  +-----| BOUNTY_COLLECTED |
 	///			  |     +------------------+               
 	///			  |          |                    
 	///			  |          v                    
@@ -86,7 +86,7 @@ class AICollectorController : public AIController<Collector>, public SimpleFSM
 		TRANSITION_ENTRY(AICollectorController::S_MOVE_TO_BOUNTY	, AICollectorController::S_BOUNTY_COLLECTED	, AICollectorController::S_BOUNTY_COLLECTED_ENTER	, AICollectorController::S_MOVE_TO_BOUNTY_LEAVE		, BOUNTY_COLLECTED)
 
 		// Transitions to 'STASH_BOUNTY'
-		TRANSITION_ENTRY(AICollectorController::S_BOUNTY_COLLECTED	, AICollectorController::S_STASH_BOUNTY		, AICollectorController::S_STASH_BOUNTY_ENTER		, AICollectorController::S_BOUNTY_COLLECTED_LEAVE	, BOUNTY_COLLECTED)
+		TRANSITION_ENTRY(AICollectorController::S_BOUNTY_COLLECTED	, AICollectorController::S_STASH_BOUNTY		, AICollectorController::S_STASH_BOUNTY_ENTER		, AICollectorController::S_BOUNTY_COLLECTED_LEAVE	, STASH_BOUNTY)
 
 	END_TRANSITION_TABLE
 
@@ -131,6 +131,36 @@ class AICollectorController : public AIController<Collector>, public SimpleFSM
 
 	void DrawGizmos();
 
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:	bool AICollectorController::AvoidObstacles();
+	///
+	/// Summary:	Checks if there are obstacles and trys to avoid them.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	5/11/2017
+	///
+	/// Returns:	True if there are obstacles to avoid.
+	///-------------------------------------------------------------------------------------------------
+
+	bool AvoidObstacles();
+
+	///-------------------------------------------------------------------------------------------------
+	/// Fn:	float AICollectorController::MoveToTarget(const Position2D& target);
+	///
+	/// Summary:	Moves the collector to target.
+	///
+	/// Author:	Tobias Stein
+	///
+	/// Date:	5/11/2017
+	///
+	/// Parameters:
+	/// target - 	Target for the.
+	///
+	/// Returns:	The squared distance to target.
+	///-------------------------------------------------------------------------------------------------
+
+	float MoveToTarget(const Position2D& target);
 
 	AICollectorControllerDesc	m_AICD;
 
