@@ -37,7 +37,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -50,7 +50,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -121,13 +121,14 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>../EntityComponentSystem/include;$(SolutionDir)3rdParty\glm-0.9.8.5\glm;$(SolutionDir)3rdParty\log4cplus-1.2.1-rc2\include;$(SolutionDir)3rdParty\glew-2.1.0\include;$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\include;$(SolutionDir)3rdParty\Box2D;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,16 +138,23 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
       <AdditionalDependencies>EntityComponentSystem.lib;log4cplus.lib;SDL2main.lib;SDL2.lib;glew32.lib;glew32s.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Release;$(SolutionDir)3rdParty\log4cplus-1.2.1-rc2\lib\x86;$(SolutionDir)3rdParty\glew-2.1.0\lib\x86;$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\lib\x86</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(SolutionDir)3rdParty\log4cplus-1.2.1-rc2\bin\x86\log4cplus.dll" "$(TargetDir)\log4cplus.dll"
+copy /Y "$(SolutionDir)3rdParty\glew-2.1.0\bin\x86\glew32.dll" "$(TargetDir)\glew32.dll"
+copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x86\SDL2.dll" "$(TargetDir)\SDL2.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>../EntityComponentSystem/include;$(SolutionDir)3rdParty\glm-0.9.8.5\glm;$(SolutionDir)3rdParty\log4cplus-1.2.1-rc2\include;$(SolutionDir)3rdParty\glew-2.1.0\include;$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\include;$(SolutionDir)3rdParty\Box2D;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,7 +165,7 @@ copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(Target
       <AdditionalDependencies>EntityComponentSystem.lib;log4cplusD.lib;SDL2main.lib;SDL2.lib;glew32.lib;glew32s.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(SolutionDir)3rdParty\log4cplus-1.2.1-rc2\bin\x64\log4cplus.dll" "$(TargetDir)\log4cplusD.dll"
+      <Command>copy /Y "$(SolutionDir)3rdParty\log4cplus-1.2.1-rc2\bin\x64\log4cplus.dll" "$(TargetDir)\log4cplus.dll"
 copy /Y "$(SolutionDir)3rdParty\glew-2.1.0\bin\x64\glew32.dll" "$(TargetDir)\glew32.dll"
 copy /Y "$(SolutionDir)3rdParty\SDL2-2.0.6-win32-x64\bin\x64\SDL2.dll" "$(TargetDir)\SDL2.dll"</Command>
     </PostBuildEvent>
