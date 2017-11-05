@@ -54,8 +54,9 @@ public:
 		// shape type not instantiated yet
 		shape = new S;
 
-		assert(shape->Initialize() && "Failed to initialize shape!");
-		fprintf(stdout, "Shape #%d initialized.", S::SHAPE_TYPE);
+		bool isInitialized = shape->Initialize();
+		assert((isInitialized == true) && "Failed to initialize shape!");
+		fprintf(stdout, "Shape #%d initialized.\n", S::SHAPE_TYPE);
 
 		instance.m_ShapeRegistry[S::SHAPE_TYPE] = shape;
 

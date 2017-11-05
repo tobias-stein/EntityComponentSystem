@@ -54,8 +54,9 @@ public:
 		// material type not instantiated yet
 		material = new M;
 		
-		assert(material->Initialize() && "Failed to initialize material!");
-		fprintf(stdout, "Material #%d initialized.", M::MATERIAL_TYPE);
+		bool isInitialized = material->Initialize();
+		assert((isInitialized == true) && "Failed to initialize material!");
+		fprintf(stdout, "Material #%d initialized.\n", M::MATERIAL_TYPE);
 
 		instance.m_MaterialRegistry[M::MATERIAL_TYPE] = material;
 
