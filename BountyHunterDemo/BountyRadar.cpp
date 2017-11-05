@@ -93,7 +93,7 @@ void BountyRadar::DebugDrawRadar()
 	float halfLOS = this->m_LOS * 0.5f;
 	auto pos = this->m_Radar->GetBody()->GetPosition();
 
-	RS->DrawSegment(Position2D(pos.x, pos.y), this->m_ViewDistance, angle - halfLOS, angle + halfLOS, Color3f(1.0f, 0.8f, 0.0f));
+	RS->DrawSegment(Position2D(pos.x, pos.y), this->m_ViewDistance, angle - halfLOS, angle + halfLOS, Color3f(0.4f, 0.4f, 0.4f));
 }
 
 

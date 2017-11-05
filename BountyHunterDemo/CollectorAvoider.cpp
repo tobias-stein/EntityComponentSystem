@@ -141,7 +141,7 @@ void CollectorAvoider::DebugDrawAvoider()
 
 	Position2D P = Position2D(pos.x, pos.y);
 
-	RS->DrawLine(P + S, P + S + F, false, false, Color3f(1.0f, 0.3f, 0.0f));
-	RS->DrawLine(P - S, P - S + F, false, false, Color3f(1.0f, 0.3f, 0.0f));
-	RS->DrawLine(P - S + F, P + S + F, false, false, Color3f(1.0f, 0.3f, 0.0f));
+	RS->DrawLine(P + S, P + S + F, false, false, Color3f(0.3f, 0.0f, 0.0f));
+	RS->DrawLine(P - S, P - S + F, false, false, Color3f(0.3f, 0.0f, 0.0f));
+	RS->DrawLine(P - S + F, P + S + F, false, false, Color3f(0.3f, 0.0f, 0.0f));
 }
