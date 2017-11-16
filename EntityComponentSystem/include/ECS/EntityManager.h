@@ -34,8 +34,6 @@ namespace ECS
 
 	class ECS_API EntityManager
 	{
-		friend class IEntity;
-
 		DECLARE_LOGGER
 
 
@@ -102,6 +100,9 @@ namespace ECS
 		using PendingDestroyedEntities = std::vector<EntityId>;
 		PendingDestroyedEntities m_PendingDestroyedEntities;
 		size_t m_NumPendingDestroyedEntities;
+
+		/// Summary:	The component manager instance.
+		ComponentManager*	m_ComponentManagerInstance;
 
 	private:	
 
@@ -182,7 +183,7 @@ namespace ECS
 
 	public:
 
-		EntityManager();
+		EntityManager(ComponentManager* componentManagerInstance);
 		~EntityManager();
 
 		///-------------------------------------------------------------------------------------------------
@@ -212,6 +213,7 @@ namespace ECS
 			ECS::EntityId entityId = this->AqcuireEntityId((T*)pObjectMemory);
 
 			((T*)pObjectMemory)->m_EntityID = entityId;
+			((T*)pObjectMemory)->m_ComponentManagerInstance = this->m_ComponentManagerInstance;
 
 			// create entity inplace
 			IEntity* entity = new (pObjectMemory)T(std::forward<ARGS>(args)...);	

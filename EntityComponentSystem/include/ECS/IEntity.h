@@ -24,11 +24,18 @@ namespace ECS
 	{
 		friend class EntityManager;
 
+	private:
+
+		// set on create; in EntityManager
+		ComponentManager*	m_ComponentManagerInstance;
+
 	protected:
 
 		DECLARE_STATIC_LOGGER
 
-		// set on create: set in EntityManager
+		
+
+		// set on create; in EntityManager
 		EntityId				m_EntityID;		
 
 		// if false, entity won't be updated
@@ -42,19 +49,19 @@ namespace ECS
 		template<class T>
 		T* GetComponent() const
 		{
-			return ECS_Engine->ECS_ComponentManager->GetComponent<T>(this->m_EntityID);
+			return this->m_ComponentManagerInstance->GetComponent<T>(this->m_EntityID);
 		}
 
 		template<class T, class ...P>
 		T* AddComponent(P&&... param)
 		{
-			return ECS_Engine->ECS_ComponentManager->AddComponent<T>(this->m_EntityID, std::forward<P>(param)...);
+			return this->m_ComponentManagerInstance->AddComponent<T>(this->m_EntityID, std::forward<P>(param)...);
 		}
 
 		template<class T>
 		void RemoveComponent()
 		{
-			ECS_Engine->ECS_ComponentManager->RemoveComponent<T>(this->m_EntityID);
+			this->m_ComponentManagerInstance->RemoveComponent<T>(this->m_EntityID);
 		}
 
 		// COMPARE ENTITIES

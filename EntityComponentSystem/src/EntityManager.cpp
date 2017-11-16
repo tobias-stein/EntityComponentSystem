@@ -9,9 +9,10 @@
 
 namespace ECS
 {
-	EntityManager::EntityManager() :
+	EntityManager::EntityManager(ComponentManager* componentManagerInstance) :
 		m_PendingDestroyedEntities(1024),
-		m_NumPendingDestroyedEntities(0)
+		m_NumPendingDestroyedEntities(0),
+		m_ComponentManagerInstance(componentManagerInstance)
 	{
 		DEFINE_LOGGER("EntityManager")
 		LogInfo("Initialize EntityManager!")

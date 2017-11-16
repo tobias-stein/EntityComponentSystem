@@ -24,7 +24,7 @@ namespace ECS
 		ECS_EventHandler		= new Event::EventHandler();
 		ECS_SystemManager		= new SystemManager();
 		ECS_ComponentManager	= new ComponentManager();
-		ECS_EntityManager		= new EntityManager();
+		ECS_EntityManager		= new EntityManager(this->ECS_ComponentManager);
 	}
 
 	ECSEngine::~ECSEngine()
