@@ -209,10 +209,14 @@ namespace ECS
 			// aqcuire memory for new entity object of type T
 			void* pObjectMemory = GetEntityContainer<T>()->CreateObject();
 
+			ECS::EntityId entityId = this->AqcuireEntityId((T*)pObjectMemory);
+
+			((T*)pObjectMemory)->m_EntityID = entityId;
+
 			// create entity inplace
 			IEntity* entity = new (pObjectMemory)T(std::forward<ARGS>(args)...);	
 
-			return entity->GetEntityID();
+			return entityId;
 		}
 
 

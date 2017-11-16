@@ -65,8 +65,7 @@ namespace ECS { namespace util {
 			};
 
 
-			Handle() :
-				value(-1)
+			Handle()
 			{}
 
 			Handle(value_type value) :

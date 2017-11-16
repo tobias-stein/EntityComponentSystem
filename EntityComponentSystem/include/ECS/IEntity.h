@@ -28,7 +28,7 @@ namespace ECS
 
 		DECLARE_STATIC_LOGGER
 
-		// set on create
+		// set on create: set in EntityManager
 		EntityId				m_EntityID;		
 
 		// if false, entity won't be updated

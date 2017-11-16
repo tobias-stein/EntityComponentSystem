@@ -18,16 +18,10 @@ namespace ECS
 		
 	IEntity::IEntity() :
 		m_Active(true)
-	{
-		// aqcuire a new unique enity id from EntityManager
-		this->m_EntityID = ECS_Engine->ECS_EntityManager->AqcuireEntityId(this);
-	}
+	{}
 
 	IEntity::~IEntity()
-	{
-		// release id so it can be reused
-		ECS_Engine->ECS_EntityManager->ReleaseEntityId(this->m_EntityID);
-	}
+	{}
 
 	void IEntity::SetActive(bool active)
 	{

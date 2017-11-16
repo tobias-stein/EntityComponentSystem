@@ -58,6 +58,9 @@ namespace ECS
 
 				it->second->DestroyEntity(entity);
 			}
+
+			// free entity id
+			this->ReleaseEntityId(entityId);
 		}
 
 		this->m_NumPendingDestroyedEntities = 0;
