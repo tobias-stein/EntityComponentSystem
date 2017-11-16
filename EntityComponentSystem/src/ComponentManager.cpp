@@ -89,6 +89,9 @@ namespace ECS {
 
 		// free mapping
 		this->m_EntityComponentMap[entityId.index][componentTypeId] = INVALID_COMPONENT_ID;
+
+		// free component id
+		this->ReleaseComponentId(componentId);
 	}
 
 } // namespace ECS

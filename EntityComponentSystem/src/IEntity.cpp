@@ -9,8 +9,6 @@
 */
 
 #include "IEntity.h"
-#include "Engine.h"
-#include "EntityManager.h"
 
 namespace ECS
 {
