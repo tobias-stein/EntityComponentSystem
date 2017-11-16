@@ -55,7 +55,7 @@ namespace ECS
 			if (it != this->m_EntityRegistry.end())
 			{
 				// release entity's components
-				ECS_Engine->ECS_ComponentManager->RemoveAllComponents(entityId);
+				this->m_ComponentManagerInstance->RemoveAllComponents(entityId);
 
 				it->second->DestroyEntity(entity);
 			}

@@ -106,6 +106,9 @@ namespace ECS
 			void* pSystemMem = this->m_SystemAllocator->allocate(sizeof(T), alignof(T));
 			if (pSystemMem != nullptr)
 			{
+
+				((T*)pSystemMem)->m_SystemManagerInstance = this;
+
 				// create new system
 				system = new (pSystemMem)T(std::forward<ARGS>(systemArgs)...);
 				this->m_Systems[STID] = system;

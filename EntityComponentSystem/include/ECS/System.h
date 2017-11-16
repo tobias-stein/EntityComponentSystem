@@ -22,6 +22,12 @@ namespace ECS
 	template<class T>
 	class System : public ISystem
 	{
+		friend class SystemManager;
+
+	private:
+
+		SystemManager* m_SystemManagerInstance;
+
 	protected:
 
 		DECLARE_LOGGER		
@@ -74,7 +80,7 @@ namespace ECS
 		template<class... Dependencies>
 		void AddDependencies(Dependencies&&... dependencies)
 		{
-			ECS_Engine->GetSystemManager()->AddSystemDependency(this, std::forward<Dependencies>(dependencies)...);
+			this->m_SystemManagerInstance->AddSystemDependency(this, std::forward<Dependencies>(dependencies)...);
 		}
 
 		virtual void PreUpdate(f32 dt) override
