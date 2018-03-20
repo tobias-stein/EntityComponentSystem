@@ -47,7 +47,7 @@ namespace ECS
 		for (ISystem* system : this->m_SystemWorkOrder)
 		{
 			// increase interval since last update
-			system->m_TimeSinceLastUpdate = dt_ms;
+			system->m_TimeSinceLastUpdate += dt_ms;
 
 			// check systems update state
 			system->m_NeedsUpdate = (system->m_UpdateInterval < 0.0f) || ((system->m_UpdateInterval > 0.0f) && (system->m_TimeSinceLastUpdate > system->m_UpdateInterval));
