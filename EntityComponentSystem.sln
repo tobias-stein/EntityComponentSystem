@@ -10,11 +10,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testEntityComponentSystem",
 		{FEF185A4-404A-4CA9-9A6D-6F5857E34E39} = {FEF185A4-404A-4CA9-9A6D-6F5857E34E39}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BountyHunterDemo", "BountyHunterDemo\BountyHunterDemo.vcxproj", "{5EC831B4-FB60-448F-9F0A-5381343EDF2B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{FEF185A4-404A-4CA9-9A6D-6F5857E34E39} = {FEF185A4-404A-4CA9-9A6D-6F5857E34E39}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -39,14 +34,6 @@ Global
 		{09A0E8AA-F0EE-4500-BF96-7C1011279D83}.Release|Win32.Build.0 = Release|Win32
 		{09A0E8AA-F0EE-4500-BF96-7C1011279D83}.Release|x64.ActiveCfg = Release|x64
 		{09A0E8AA-F0EE-4500-BF96-7C1011279D83}.Release|x64.Build.0 = Release|x64
-		{5EC831B4-FB60-448F-9F0A-5381343EDF2B}.Debug|Win32.ActiveCfg = Debug|Win32
-		{5EC831B4-FB60-448F-9F0A-5381343EDF2B}.Debug|Win32.Build.0 = Debug|Win32
-		{5EC831B4-FB60-448F-9F0A-5381343EDF2B}.Debug|x64.ActiveCfg = Debug|x64
-		{5EC831B4-FB60-448F-9F0A-5381343EDF2B}.Debug|x64.Build.0 = Debug|x64
-		{5EC831B4-FB60-448F-9F0A-5381343EDF2B}.Release|Win32.ActiveCfg = Release|Win32
-		{5EC831B4-FB60-448F-9F0A-5381343EDF2B}.Release|Win32.Build.0 = Release|Win32
-		{5EC831B4-FB60-448F-9F0A-5381343EDF2B}.Release|x64.ActiveCfg = Release|x64
-		{5EC831B4-FB60-448F-9F0A-5381343EDF2B}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

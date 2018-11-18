@@ -8,7 +8,9 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 namespace Microsoft { namespace VisualStudio { namespace CppUnitTestFramework {
 
 	template<> inline std::wstring ToString<ECS::util::Handle32>(const ECS::util::Handle32& t) { RETURN_WIDE_STRING(t); }
+#ifndef WIN32
 	template<> inline std::wstring ToString<ECS::util::Handle64>(const ECS::util::Handle64& t) { RETURN_WIDE_STRING(t); }
+#endif
 }}}
 
 
