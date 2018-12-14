@@ -3,6 +3,7 @@
 ///
 /// Summary:	Implements the logger manager class.
 
+#if !ECS_DISABLE_LOGGING
 
 #include "Log/LoggerManager.h"
 #include "Log/Logger.h"
@@ -64,3 +65,5 @@ namespace ECS { namespace Log { namespace Internal {
 	}
 
 }}} // namespace ECS::Log::Internal
+
+#endif // !ECS_DISABLE_LOGGING

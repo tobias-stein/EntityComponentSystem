@@ -8,8 +8,6 @@
 	All Rights Reserved. (c) Copyright 2016.
 */
 
-#if !ECS_DISABLE_LOGGING
-
 #ifndef __LOGGER_H__
 #define __LOGGER_H__
 
@@ -17,6 +15,8 @@
 
 #include "log4cplus/logger.h"
 #include "log4cplus/loggingmacros.h"
+
+#if !ECS_DISABLE_LOGGING
 
 namespace ECS { namespace Log {
 
@@ -81,9 +81,8 @@ namespace ECS { namespace Log {
 
 }} // namespace ECS::Log
 
+#endif // !ECS_DISABLE_LOGGING
 
 #include "Log/LoggerMacro.h"
 
-
 #endif // __LOGGER_H__
-#endif // !ECS_DISABLE_LOGGING
