@@ -39,7 +39,7 @@ namespace ECS { namespace Event {
 		delete this->m_EventMemoryAllocator;
 		this->m_EventMemoryAllocator = nullptr;
 	
-		LogInfo("Relealse EventHandler!");
+		LogInfo("Release EventHandler!");
 	}
 
 }} // namespace ECS::Event
